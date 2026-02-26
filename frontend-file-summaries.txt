@@ -1,0 +1,6 @@
+{
+  "frontend/src/App.tsx": "Main application component that composes the full Cheetah 1.0 layout — header, tab bar, sidebar navigation, and five page views (Home, Games, AI, Code, QuickOpen) — with tab state management via useTabs and a footer with caffeine.ai attribution.",
+  "frontend/src/pages/CodeEditorPage.tsx": "Code Editor page container with three switchable sub-tabs (Code Editor, Presentation Builder, Website Builder) rendered via internal tab state.",
+  "frontend/src/pages/QuickOpen.tsx": "Quick Open page displaying six large branded cards (TikTok, YouTube, Wikipedia, Disney+, ChatGPT, Gemini) with brand accent colors and glow effects, each opening the site in a proxy iframe tab. Replaces the missing `SiDisneyplus` icon with a custom inline \"D+\" text component.",
+  "frontend/src/components/codeeditor/WebsiteBuilderTab.tsx": "Website Builder sub-tab with a component palette (header, text, image, button), a layer list with reorder/delete controls, a live canvas preview, a properties panel for editing selected components, and a fullscreen iframe preview mode."
+}

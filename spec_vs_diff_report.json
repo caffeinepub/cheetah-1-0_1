@@ -1,0 +1,107 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-26T23:17:29.915Z",
+  "summary": "The diff implements most of the required features for the Cheetah 1.0 Amethyst Proxy Browser SPA. All eight main pages are present, the tab system is implemented with keyboard shortcuts, the CORS proxy and Google CSE are referenced, Puter.js and CodeMirror integration are present, and the amethyst theme with glassmorphism is applied throughout. A few specific acceptance criteria details appear missing or unverifiable from the truncated diff.",
+  "missing_requirements": [
+    {
+      "requirement": "Google CSE search widget rendered and functional using CSE ID 464f1cf85006c4770 on the Home/Search page",
+      "reason": "The HomeSearch page file is not included in the diff summary (omitted files due to limits), so it cannot be confirmed that the Google CSE widget with ID 464f1cf85006c4770 is actually embedded and functional.",
+      "evidence": []
+    },
+    {
+      "requirement": "Back, Forward, and Refresh navigation buttons for the active iframe on the Home/Search page",
+      "reason": "The HomeSearch page file was omitted from the diff due to truncation limits, so the presence of Back/Forward/Refresh iframe navigation buttons cannot be verified.",
+      "evidence": []
+    },
+    {
+      "requirement": "Puter.js CDN script tag loaded in the AI Assistant page or index.html",
+      "reason": "The AIAssistant.tsx references window.puter but no CDN script tag injection is visible in the diff. The index.html file is not present in the diff summary, so it cannot be confirmed the Puter.js CDN script tag is included.",
+      "evidence": [
+        "frontend/src/pages/AIAssistant.tsx"
+      ]
+    },
+    {
+      "requirement": "CodeMirror loaded via CDN script tag",
+      "reason": "CodeEditorTab.tsx uses window.CodeMirror but the index.html or any CDN script tag inclusion is not visible in the diff. The index.html is among omitted files.",
+      "evidence": [
+        "frontend/src/components/codeeditor/CodeEditorTab.tsx"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "Footer with copyright notice and caffeine.ai attribution link",
+      "reason": "The build request does not mention a footer with a caffeine.ai branding or attribution link. This was added in App.tsx without being requested.",
+      "evidence": [
+        "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "description": "SECURE status indicator badge in the header",
+      "reason": "The build request does not mention a SECURE status badge or pill in the header. This was added in Header.tsx without being specified.",
+      "evidence": [
+        "frontend/src/components/layout/Header.tsx"
+      ]
+    },
+    {
+      "description": "Website Builder components support up/down reordering",
+      "reason": "The WebsiteBuilderTab.tsx imports ChevronUp and ChevronDown icons suggesting component reordering functionality, which was not specified in the requirements.",
+      "evidence": [
+        "frontend/src/components/codeeditor/WebsiteBuilderTab.tsx"
+      ]
+    },
+    {
+      "description": "Website Builder toggle preview show/hide button",
+      "reason": "WebsiteBuilderTab.tsx imports EyeOff icon suggesting a hide-preview toggle, which was not specified in REQ-7. Only a live preview panel was requested.",
+      "evidence": [
+        "frontend/src/components/codeeditor/WebsiteBuilderTab.tsx"
+      ]
+    },
+    {
+      "description": "Presentation Builder supports textColor field per slide in addition to bgColor",
+      "reason": "REQ-7 specifies only a background color picker per slide. The implementation also adds a textColor field which was not requested.",
+      "evidence": [
+        "frontend/src/components/codeeditor/PresentationBuilderTab.tsx"
+      ]
+    },
+    {
+      "description": "AI Assistant fallback error message when Puter.js is unavailable",
+      "reason": "The spec does not mention a specific fallback or error message when Puter.js is not loaded. This is an extra feature beyond the spec.",
+      "evidence": [
+        "frontend/src/pages/AIAssistant.tsx"
+      ]
+    }
+  ],
+  "confidence": 0.62,
+  "changed_files": [
+    "all_files_summary.json",
+    "backend/main.mo",
+    "frontend-file-summaries.txt",
+    "frontend/index.css",
+    "frontend/index.html",
+    "frontend/src/App.tsx",
+    "frontend/src/components/codeeditor/CodeEditorTab.tsx",
+    "frontend/src/components/codeeditor/PresentationBuilderTab.tsx",
+    "frontend/src/components/codeeditor/WebsiteBuilderTab.tsx",
+    "frontend/src/components/common/LoadingSpinner.tsx",
+    "frontend/src/components/layout/Header.tsx",
+    "frontend/src/components/layout/Navigation.tsx",
+    "frontend/src/components/tabs/TabBar.tsx",
+    "frontend/src/components/tabs/TabContent.tsx",
+    "frontend/src/hooks/useActor.ts",
+    "frontend/src/hooks/useInternetIdentity.ts",
+    "frontend/src/hooks/useLocalStorage.ts",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/hooks/useTabs.ts",
+    "frontend/src/index.css",
+    "frontend/src/main.tsx",
+    "frontend/src/pages/AIAssistant.tsx",
+    "frontend/src/pages/CodeEditorPage.tsx",
+    "frontend/src/pages/Games.tsx",
+    "frontend/src/pages/HomeSearch.tsx",
+    "frontend/src/pages/QuickOpen.tsx",
+    "frontend/tailwind.config.js",
+    "project_state.json"
+  ]
+}

@@ -1,0 +1,241 @@
+{
+  "kind": "build_request",
+  "title": "Cheetah 1.0 – Amethyst Proxy Browser SPA",
+  "projectName": "Cheetah 1.0",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Create a single-page React application named 'Cheetah 1.0' with a persistent amethyst/purple high-tech theme: deep purples (#6C3483), violets (#9B59B6), and magenta (#8E44AD) gradients; glassmorphism panels with backdrop blur; neon glow effects on interactive elements; animated gradient backgrounds; and a sleek monospace font. Display 'Cheetah 1.0' prominently in the header alongside a cheetah icon/logo. Dark mode is the default and only mode.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Amethyst theme: deep purples, violets, and magenta gradients",
+          "High-tech futuristic aesthetic with glowing effects, neon borders",
+          "App name \"Cheetah 1.0\" prominently displayed with a cheetah logo/icon"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Header shows 'Cheetah 1.0' text and cheetah icon at all times",
+        "Background uses animated amethyst gradient (purple → deep violet → magenta)",
+        "UI panels use glassmorphism (frosted glass, backdrop-filter: blur)",
+        "Interactive elements (buttons, tabs, links) have neon glow on hover/focus",
+        "Monospace font applied to navigation and code-related elements",
+        "Dark mode is default with no light-mode toggle required"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Implement a sidebar (or top navigation bar) with five navigation destinations: Home/Search, Games, AI Assistant, Code Editor, and Quick Open. Navigating between them updates the main content area without a page reload. Include smooth transitions between pages.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Sidebar or top navigation with these pages"
+        ]
+      },
+      "acceptanceCriteria": [
+        "All five nav items are visible and reachable",
+        "Active page is visually highlighted in the nav",
+        "Switching pages does not cause a full reload",
+        "Transition animation plays when switching pages"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Implement a persistent tab bar above the main content area that supports multiple open iframe tabs simultaneously. Each tab shows the page title, favicon, and a close (×) button. A '+' new-tab button is always visible. Tabs maintain independent iframe state. Support keyboard shortcuts: Ctrl+T (new tab), Ctrl+W (close active tab), Ctrl+L (focus address bar).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Tab system: multiple tabs can be open simultaneously",
+          "Tab bar shows open tabs with titles, favicons, close buttons",
+          "Keyboard shortcut Ctrl+T for new tab",
+          "Ctrl+W to close current tab",
+          "Ctrl+L to focus address bar"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Multiple tabs can be open at the same time",
+        "Each tab shows title, favicon placeholder, and close button",
+        "Clicking a tab switches the visible iframe",
+        "Ctrl+T opens a new blank tab",
+        "Ctrl+W closes the currently active tab",
+        "Ctrl+L focuses the address bar input"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Build the Home/Search page. Include: (1) An address bar that accepts full URLs; (2) A Google Custom Search Engine (CSE ID: 464f1cf85006c4770) search bar; (3) Back, Forward, and Refresh navigation buttons for the active iframe; (4) When a URL is entered or a search result is clicked, load the target URL inside an iframe tab using the allorigins.win CORS proxy (`https://api.allorigins.win/raw?url=<encoded-url>`) as the iframe src; (5) A loading spinner while the iframe loads; (6) An error message with a direct link fallback when the site cannot be embedded.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Google Custom Search Engine (ID: 464f1cf85006c4770) integrated",
+          "Address bar to directly enter URLs",
+          "use allorigins.win or a similar CORS proxy API",
+          "https://api.allorigins.win/raw?url=",
+          "error handling when sites can't be loaded in iframe (show a message with a direct link)"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Address bar accepts and navigates to typed URLs on Enter",
+        "Google CSE search widget is rendered and functional using CSE ID 464f1cf85006c4770",
+        "Clicking a search result opens the URL in a new iframe tab via the allorigins proxy",
+        "Back, Forward, Refresh buttons control the active iframe where applicable",
+        "A spinner is shown while the iframe is loading",
+        "If the iframe fails to load, a user-friendly error message with a direct link is shown"
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Build the Games page. Display the following unblocked school game sites as clickable cards in a responsive grid, each with a thumbnail/icon, site name, and brief description. Clicking a card opens the site in a new proxy iframe tab: Math Playground (mathplayground.com), Cool Math Games (coolmathgames.com), Hooda Math (hoodamath.com), ABCya (abcya.com), Funbrain (funbrain.com), PBS Kids Games (pbskids.org/games), Typing Club (typingclub.com), Scratch (scratch.mit.edu), Khan Academy (khanacademy.org), Prodigy Game (prodigygame.com).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Unblocked school game sites displayed as cards with thumbnails/icons",
+          "When a game site card is clicked, open it in a new iframe tab in the proxy tab system"
+        ]
+      },
+      "acceptanceCriteria": [
+        "All 10 game site cards are displayed in a responsive grid",
+        "Each card shows an icon/thumbnail, site name, and short description",
+        "Clicking a card opens the corresponding URL in a new proxy iframe tab",
+        "Cards have neon/glow hover effects consistent with the amethyst theme"
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Build the AI Assistant (Homework Helper) page. Include: (1) A heading 'AI Homework Helper'; (2) A subject selector dropdown (Math, Science, English, History, Computer Science, Other); (3) A large textarea for the question; (4) A 'Get Answer' button; (5) A response area that renders the AI answer with basic markdown-like formatting (bold, code blocks, lists); (6) A loading spinner while awaiting the response; (7) A 'Copy Answer' button; (8) A scrollable history list of recent question/answer pairs. Use the Puter.js API via `window.puter.ai.chat` — include the Puter.js CDN script tag in the page.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Use the Puter.js AI API (window.puter.ai.chat) for AI responses - include the Puter.js script",
+          "Subject selector: Math, Science, English, History, Computer Science, Other",
+          "History of recent questions/answers",
+          "\"Copy Answer\" button"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Puter.js script is loaded via CDN script tag",
+        "Subject selector has all 6 options",
+        "Submitting a question calls window.puter.ai.chat and displays the response",
+        "A spinner is shown while the request is in flight",
+        "Response area renders basic markdown (bold, inline code, lists)",
+        "'Copy Answer' copies the response text to clipboard",
+        "Recent Q&A pairs are shown in a scrollable history section"
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Build the Code Editor page with three internal sub-tabs: 'Code Editor', 'Presentation Builder', and 'Website Builder'. (1) Code Editor sub-tab: embed CodeMirror (CDN), language selector (HTML, CSS, JavaScript, Python), a Run/Execute button, a live preview panel for HTML/CSS/JS output, and localStorage persistence for editor content. (2) Presentation Builder sub-tab: add/delete slides each with a title, body text, and background color picker; prev/next navigation; a fullscreen 'Present' mode. (3) Website Builder sub-tab: simple component-based builder allowing users to add text blocks, image placeholders, button components, and headers; a live preview panel; note displayed: 'Public sharing only available through the Cheetah proxy'.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Three tabs within this page: \"Code Editor\", \"Presentation Builder\", \"Website Builder\"",
+          "Monaco Editor or CodeMirror embedded",
+          "Live preview panel for HTML/CSS/JS",
+          "Save to local storage",
+          "Add slides, edit slide content",
+          "Present mode (fullscreen)",
+          "Drag-and-drop or simple component-based website builder"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Three sub-tabs are visible and switchable within the Code Editor page",
+        "CodeMirror is loaded via CDN and supports HTML, CSS, JS, Python syntax highlighting",
+        "Run button executes HTML/CSS/JS and renders output in a preview iframe/panel",
+        "Code editor content is saved to and restored from localStorage",
+        "Presentation builder allows adding, editing (title/body/bg color), and deleting slides",
+        "Presentation prev/next navigation works; Present mode goes fullscreen",
+        "Website builder allows adding text, image placeholder, button, and header components",
+        "Website builder shows a live preview of the composed page",
+        "Website builder displays the 'Public sharing' note"
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "text": "Build the Quick Open page. Display the following six sites as large, visually distinct cards in a grid, each with a big icon, site name, and brief description. Clicking a card opens the site in a new proxy iframe tab: TikTok (tiktok.com), YouTube (youtube.com), Wikipedia (wikipedia.org), Disney Plus (disneyplus.com), ChatGPT (chat.openai.com), Google Gemini (gemini.google.com). Use brand-representative accent colors for each card.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "A beautiful grid of quick-access cards",
+          "Each card has a large icon, site name, brief description, and opens the site in a proxy iframe tab when clicked"
+        ]
+      },
+      "acceptanceCriteria": [
+        "All 6 quick-open cards are displayed in a responsive grid",
+        "Each card has a large icon, site name, and brief description",
+        "Each card uses a brand-relevant accent color",
+        "Clicking any card opens the site URL in a new proxy iframe tab"
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "text": "Implement global UX polish: smooth CSS transitions and animations on all page/tab switches and interactive elements; a loading overlay/spinner when iframes are loading; responsive layout that works across desktop and tablet widths; consistent neon glow hover states throughout; and localStorage used to persist open tabs state and settings across sessions.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Smooth animations and transitions throughout",
+          "Loading spinner/animation when pages are loading in iframe",
+          "Responsive design",
+          "LocalStorage for saving settings"
+        ]
+      },
+      "acceptanceCriteria": [
+        "All page transitions use CSS animations",
+        "iframe loading states show a visible spinner",
+        "Layout is usable on screen widths from 768px upward",
+        "Tab and settings state is persisted in localStorage and restored on reload"
+      ]
+    }
+  ],
+  "constraints": [
+    "All Motoko backend logic must remain in a single actor in backend/main.mo — this app is primarily frontend-only; backend should expose minimal or no custom endpoints unless required.",
+    "The allorigins.win CORS proxy URL (https://api.allorigins.win/raw?url=) must be used as the iframe proxy for external sites.",
+    "Google CSE ID 464f1cf85006c4770 must be used exactly as provided.",
+    "Puter.js must be loaded via its CDN script tag and accessed via window.puter.ai.chat.",
+    "CodeMirror must be loaded via CDN.",
+    "Do not open proxied sites in new browser tabs — all external content must open in iframe tabs within the app.",
+    "Immutable frontend paths (hooks, ui components, main.tsx) must not be modified."
+  ],
+  "nonGoals": [
+    "No Rust, Python, or non-Motoko backend code.",
+    "No real authentication or Internet Identity integration for this app.",
+    "No server-side rendering or Next.js/Nuxt.",
+    "No real-time WebSocket features.",
+    "No mobile-first React Native build.",
+    "No light mode theme.",
+    "No external database or cloud storage — localStorage only for persistence."
+  ],
+  "imageRequirements": {
+    "required": [
+      "Stylized cheetah head icon in amethyst/purple neon glow style on a transparent background (cheetah-logo.dim_128x128.png)"
+    ],
+    "edits": []
+  }
+}
