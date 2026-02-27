@@ -55,7 +55,7 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({
 
     // Active proxy label for display
     const proxyIdx = activeTab?.proxyIndex ?? 0;
-    const proxyLabels = ['allorigins.win', 'corsproxy.io', 'cors-anywhere', 'codetabs.com', 'thingproxy'];
+    const proxyLabels = ['proxycroxy.io', 'corsproxy.io', 'cors-anywhere', 'codetabs.com', 'thingproxy'];
     const activeProxyLabel = proxyLabels[proxyIdx] ?? `proxy ${proxyIdx + 1}`;
 
     const handleTryAgain = () => {
@@ -287,9 +287,14 @@ const ErrorPage: React.FC<ErrorPageProps> = ({ url, onTryAgain, onOpenInNewWindo
                         </a>
                     </>
                 ) : (
-                    <p className="text-sm font-mono text-muted-foreground mb-4">
-                        All {PROXY_COUNT} proxy routes were tried. This site may block embedding.
-                    </p>
+                    <>
+                        <p className="text-sm font-mono text-muted-foreground mb-2">
+                            All proxy routes were tried. This site may block embedding.
+                        </p>
+                        <p className="text-xs font-mono mb-4" style={{ color: 'oklch(0.5 0.08 295)' }}>
+                            Tried {PROXY_COUNT} proxy servers
+                        </p>
+                    </>
                 )}
                 <div className="flex gap-3 justify-center flex-wrap">
                     {onTryAgain && (
@@ -298,7 +303,7 @@ const ErrorPage: React.FC<ErrorPageProps> = ({ url, onTryAgain, onOpenInNewWindo
                             className="neon-btn inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm transition-all hover:scale-105"
                             style={{ boxShadow: '0 0 12px oklch(0.62 0.25 295 / 0.3)' }}
                         >
-                            <RefreshCw size={14} />
+                            <RotateCw size={14} />
                             Try Again
                         </button>
                     )}

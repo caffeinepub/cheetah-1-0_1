@@ -14,7 +14,7 @@ export interface Tab {
 
 // Ordered list of proxy strategies
 const PROXY_LIST = [
-    (url: string) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+    (url: string) => `https://proxycroxy.io/${encodeURIComponent(url)}`,
     (url: string) => `https://corsproxy.io/?url=${encodeURIComponent(url)}`,
     (url: string) => `https://cors-anywhere.herokuapp.com/${url}`,
     (url: string) => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,

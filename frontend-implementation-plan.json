@@ -1,34 +1,56 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Add Proxy Links Page",
+  "title": "Replace allorigins.win proxy provider with proxycroxy.io",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Add a new 'Proxy' page accessible from the sidebar navigation that lists the three proxy services with a launch button for each, distinguishing the primary proxy visually",
+      "summary": "Replace allorigins.win with proxycroxy.io in the tab navigation hook",
       "acceptanceCriteria": [
-        "A 'Proxy' navigation entry appears in the sidebar alongside existing page links.",
-        "The Proxy page displays three cards: ProxySite, ProxyOrb, and ProxyProxy.",
-        "ProxyProxy card is visually marked as the primary/most-used proxy (e.g., 'Primary' badge, highlighted border).",
-        "Each card shows the proxy name, its URL (can be truncated for display), and a launch button.",
-        "Clicking the launch button on any card opens that proxy's URL through the app's existing tab/proxy navigation system.",
-        "The page styling is consistent with the existing amethyst/purple dark theme."
+        "No references to allorigins.win remain in useTabs.ts",
+        "The proxy fallback chain uses https://proxycroxy.io as the provider",
+        "Proxied URLs are correctly constructed using https://proxycroxy.io"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/pages/ProxyLinks.tsx",
-          "operation": "create",
-          "description": "Create the ProxyLinks page component that displays three proxy service cards (ProxySite, ProxyOrb, and ProxyProxy). Each card includes the proxy name, URL (truncated for display), and a launch button. The ProxyProxy card must be visually distinguished as primary with a badge and highlighted styling. Use useTabs hook to handle navigation when launch buttons are clicked. Style the page with glassmorphism effects and amethyst/purple theme colors consistent with the existing design system."
+          "path": "frontend/src/hooks/useTabs.ts",
+          "operation": "modify",
+          "description": "Replace all occurrences of allorigins.win CORS proxy URL with https://proxycroxy.io in the proxy fallback chain and URL construction logic"
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Replace allorigins.win with proxycroxy.io in tab and search components",
+      "acceptanceCriteria": [
+        "No references to allorigins.win remain in TabContent.tsx or HomeSearch.tsx",
+        "Proxied iframes load through https://proxycroxy.io"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/tabs/TabContent.tsx",
+          "operation": "modify",
+          "description": "Replace any hardcoded allorigins.win proxy references with https://proxycroxy.io to ensure iframe proxy loading uses the updated provider"
         },
         {
-          "path": "frontend/src/components/layout/Navigation.tsx",
+          "path": "frontend/src/pages/HomeSearch.tsx",
           "operation": "modify",
-          "description": "Add a 'Proxy' navigation button to the sidebar between 'Quick Open' and 'Education'. Include an appropriate icon (e.g., Globe or Network icon) and maintain the existing styling pattern with keyboard shortcut hint support. Wire the button to set the active page to 'proxy' when clicked."
-        },
+          "description": "Replace any hardcoded allorigins.win proxy references with https://proxycroxy.io in the home search page iframe proxy loading logic"
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Update proxy provider display in ProxyInfoPanel",
+      "acceptanceCriteria": [
+        "No references to allorigins.win appear in the ProxyInfoPanel UI",
+        "The panel correctly displays https://proxycroxy.io as the proxy provider"
+      ],
+      "file_operations": [
         {
-          "path": "frontend/src/App.tsx",
+          "path": "frontend/src/components/common/ProxyInfoPanel.tsx",
           "operation": "modify",
-          "description": "Import the new ProxyLinks component and add a case for 'proxy' in the page routing logic to render the ProxyLinks component when the proxy page is active. Ensure the proxy page is included in the page state management alongside existing pages (home, games, ai, code, quickOpen, education)."
+          "description": "Update any displayed CORS proxy route descriptions or labels that reference allorigins.win to instead show https://proxycroxy.io"
         }
       ]
     }

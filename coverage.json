@@ -1,28 +1,47 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-27T21:03:39.152Z",
+  "generatedAt": "2026-02-27T21:19:24.305Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 1,
-    "implemented": 1,
+    "total": 3,
+    "implemented": 3,
     "items": [
       {
         "id": "REQ-1",
-        "summary": "Add a new 'Proxy' page accessible from the sidebar navigation (alongside Home, Games, AI, Code, Quick Open, Education). The page must list the three proxy services used by the app: 1) ProxySite — https://www.proxysite.com, 2) ProxyOrb — https://proxyorb.com, and 3) ProxyProxy (primary/most-used) — https://proxyproxy.net/?__cpo=aHR0cHM6Ly9jaGVldGFoMTItNGV2LmNhZmZlaW5lLnh5eg#caffeineAdminToken=4e5885a0f3111a08883c7259d557d207cdc0e8c8ef2349289317f3bbf1bb43b2. The primary proxy must be visually distinguished (e.g., a 'Primary' badge or highlighted card). Each proxy card must include a launch/open button that navigates to the proxy URL in the app's existing proxy tab system.",
+        "summary": "In the tab navigation hook (useTabs.ts), replace all occurrences of the allorigins.win CORS proxy URL with https://proxycroxy.io as the proxy provider in the fallback chain and any URL construction logic.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/pages/ProxyLinks.tsx",
-          "frontend/src/components/layout/Navigation.tsx",
-          "frontend/src/App.tsx"
+          "frontend/src/hooks/useTabs.ts"
         ],
         "matchedFiles": [
-          "frontend/src/pages/ProxyLinks.tsx",
-          "frontend/src/components/layout/Navigation.tsx",
-          "frontend/src/App.tsx"
+          "frontend/src/hooks/useTabs.ts"
+        ]
+      },
+      {
+        "id": "REQ-2",
+        "summary": "In TabContent.tsx and HomeSearch.tsx, replace any hardcoded allorigins.win proxy references with https://proxycroxy.io to ensure the iframe proxy loading uses the updated provider.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/tabs/TabContent.tsx",
+          "frontend/src/pages/HomeSearch.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/HomeSearch.tsx"
+        ]
+      },
+      {
+        "id": "REQ-3",
+        "summary": "In ProxyInfoPanel.tsx, update any displayed CORS proxy route descriptions or labels that reference allorigins.win to instead show https://proxycroxy.io.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/common/ProxyInfoPanel.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/common/ProxyInfoPanel.tsx"
         ]
       }
     ]
@@ -32,9 +51,9 @@
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/App.tsx",
-    "frontend/src/components/layout/Navigation.tsx",
-    "frontend/src/pages/ProxyLinks.tsx",
+    "frontend/src/components/common/ProxyInfoPanel.tsx",
+    "frontend/src/hooks/useTabs.ts",
+    "frontend/src/pages/HomeSearch.tsx",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

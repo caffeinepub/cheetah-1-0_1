@@ -96,7 +96,7 @@ export const ProxyInfoPanel: React.FC<ProxyInfoPanelProps> = ({ isOpen, onClose 
                             style={{ background: 'oklch(0.14 0.03 290 / 0.7)', borderTop: '1px solid oklch(0.4 0.15 295 / 0.2)' }}
                         >
                             <p className="text-xs font-mono" style={{ color: 'oklch(0.7 0.06 290)' }}>
-                                All browsing traffic is routed through the <span style={{ color: 'oklch(0.72 0.22 295)' }}>allorigins.win</span> CORS proxy to bypass cross-origin restrictions.
+                                All browsing traffic is routed through the <span style={{ color: 'oklch(0.72 0.22 295)' }}>proxycroxy.io</span> CORS proxy to bypass cross-origin restrictions.
                             </p>
                             <div
                                 className="rounded px-2.5 py-2 font-mono text-xs flex items-center gap-2 overflow-x-auto"
@@ -108,7 +108,7 @@ export const ProxyInfoPanel: React.FC<ProxyInfoPanelProps> = ({ isOpen, onClose 
                                 }}
                             >
                                 <span style={{ color: 'oklch(0.5 0.08 290)' }}>GET</span>
-                                <span>https://api.allorigins.win/raw?url=</span>
+                                <span>https://proxycroxy.io/</span>
                                 <span style={{ color: 'oklch(0.72 0.22 310)' }}>&lt;encoded-url&gt;</span>
                             </div>
                         </div>
@@ -175,23 +175,18 @@ export const ProxyInfoPanel: React.FC<ProxyInfoPanelProps> = ({ isOpen, onClose 
                     <div className="flex items-center gap-3">
                         <div className="flex items-center gap-1.5">
                             <div
-                                className="w-1.5 h-1.5 rounded-full"
-                                style={{
-                                    background: 'oklch(0.65 0.22 150)',
-                                    boxShadow: '0 0 6px oklch(0.65 0.22 150 / 0.8)',
-                                    animation: 'pulse-glow 2s ease-in-out infinite',
-                                }}
+                                className="w-1.5 h-1.5 rounded-full animate-pulse"
+                                style={{ background: 'oklch(0.65 0.22 145)' }}
                             />
-                            <span className="text-xs font-mono" style={{ color: 'oklch(0.65 0.22 150)' }}>Active</span>
+                            <span className="text-xs font-mono" style={{ color: 'oklch(0.65 0.22 145)' }}>
+                                ACTIVE
+                            </span>
                         </div>
-                        <span className="text-xs font-mono" style={{ color: 'oklch(0.45 0.08 290)' }}>|</span>
-                        <span className="text-xs font-mono" style={{ color: 'oklch(0.6 0.06 290)' }}>
-                            Provider: <span style={{ color: 'oklch(0.7 0.18 295)' }}>allorigins.win</span>
+                        <span className="text-xs font-mono" style={{ color: 'oklch(0.5 0.08 290)' }}>
+                            proxycroxy.io
                         </span>
                     </div>
-                    <span className="text-xs font-mono" style={{ color: 'oklch(0.5 0.08 290)' }}>
-                        Port <span style={{ color: 'oklch(0.65 0.18 295)' }}>8000</span>
-                    </span>
+                    <Info size={11} style={{ color: 'oklch(0.45 0.08 290)' }} />
                 </div>
             </div>
         </div>
@@ -206,14 +201,14 @@ interface ProxyInfoButtonProps {
 export const ProxyInfoButton: React.FC<ProxyInfoButtonProps> = ({ onClick, isActive }) => (
     <button
         onClick={onClick}
-        className="p-1.5 rounded transition-all"
+        className="p-1.5 rounded transition-all flex-shrink-0"
         style={{
             color: isActive ? 'oklch(0.72 0.25 295)' : 'oklch(0.55 0.1 295)',
-            background: isActive ? 'oklch(0.45 0.22 295 / 0.2)' : 'transparent',
-            border: `1px solid ${isActive ? 'oklch(0.62 0.25 295 / 0.4)' : 'transparent'}`,
+            background: isActive ? 'oklch(0.45 0.22 295 / 0.15)' : 'transparent',
+            border: isActive ? '1px solid oklch(0.62 0.25 295 / 0.3)' : '1px solid transparent',
         }}
         title="Proxy Info"
     >
-        <Info size={15} />
+        <Shield size={15} />
     </button>
 );

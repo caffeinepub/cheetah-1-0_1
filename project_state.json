@@ -1,28 +1,39 @@
 {
   "schemaVersion": "1.0.0",
   "projectStateVersion": 3,
-  "summary": "Project includes an Education page with Ed AI Q&A and self-challenge subjects, and a Proxy page listing proxy services used.",
-  "architectural_notes": [],
+  "summary": "Project involves a proxy page with configurable proxy providers. User is updating the proxy provider from allorigins.win to https://proxycroxy.io.",
+  "architectural_notes": [
+    "Proxy provider set to https://proxycroxy.io (replaced allorigins.win)"
+  ],
   "known_issues": [],
   "isFixRequest": false,
   "existing_features": [
     {
-      "id": "feature-add-a-new-proxy-page-accessible-from-the-sidebar-navigation-alongside-home-games-ai-code-quick-open-education-the-page-must-list-the-three-proxy-services-used-by-the-app-1-proxysite-https-www-proxysite-com-2-proxyorb-https-proxyorb-com-and-3-proxyproxy-primary-most-used-https-proxyproxy-net-cpo-ahr0chm6ly9jagvldgfomtitngv2lmnhzmzlaw5llnh5eg-caffeineadmintoken-4e5885a0f3111a08883c7259d557d207cdc0e8c8ef2349289317f3bbf1bb43b2-the-primary-proxy-must-be-visually-distinguished-e-g-a-primary-badge-or-highlighted-card-each-proxy-card-must-include-a-launch-open-button-that-navigates-to-the-proxy-url-in-the-app-s-existing-proxy-tab-system",
-      "title": "Add a new 'Proxy' page accessible from the sidebar navigation (alongside Home, Games, AI, Code, Quick Open, Education). The page must list the three proxy services used by the app: 1) ProxySite — https://www.proxysite.com, 2) ProxyOrb — https://proxyorb.com, and 3) ProxyProxy (primary/most-used) — https://proxyproxy.net/?__cpo=aHR0cHM6Ly9jaGVldGFoMTItNGV2LmNhZmZlaW5lLnh5eg#caffeineAdminToken=4e5885a0f3111a08883c7259d557d207cdc0e8c8ef2349289317f3bbf1bb43b2. The primary proxy must be visually distinguished (e.g., a 'Primary' badge or highlighted card). Each proxy card must include a launch/open button that navigates to the proxy URL in the app's existing proxy tab system.",
+      "id": "feature-in-the-tab-navigation-hook-usetabs-ts-replace-all-occurrences-of-the-allorigins-win-cors-proxy-url-with-https-proxycroxy-io-as-the-proxy-provider-in-the-fallback-chain-and-any-url-construction-logic",
+      "title": "In the tab navigation hook (useTabs.ts), replace all occurrences of the allorigins.win CORS proxy URL with https://proxycroxy.io as the proxy provider in the fallback chain and any URL construction logic.",
       "reqIds": [
         "REQ-1"
       ],
       "version": 1
-    }
-  ],
-  "new_feature_requests": [
+    },
     {
-      "id": "AR-1",
-      "summary": "Create a Proxy page listing: 1) https://www.proxysite.com, 2) https://proxyorb.com, and primary proxy https://proxyproxy.net (with token)",
-      "reqIds": [],
-      "status": "pending"
+      "id": "feature-in-tabcontent-tsx-and-homesearch-tsx-replace-any-hardcoded-allorigins-win-proxy-references-with-https-proxycroxy-io-to-ensure-the-iframe-proxy-loading-uses-the-updated-provider",
+      "title": "In TabContent.tsx and HomeSearch.tsx, replace any hardcoded allorigins.win proxy references with https://proxycroxy.io to ensure the iframe proxy loading uses the updated provider.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-in-proxyinfopanel-tsx-update-any-displayed-cors-proxy-route-descriptions-or-labels-that-reference-allorigins-win-to-instead-show-https-proxycroxy-io",
+      "title": "In ProxyInfoPanel.tsx, update any displayed CORS proxy route descriptions or labels that reference allorigins.win to instead show https://proxycroxy.io.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
     }
   ],
+  "new_feature_requests": [],
   "gameProjectType": "none",
   "projectName": "Cheetah 1.0",
   "clarification_mode": "instant",
