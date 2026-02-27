@@ -2,8 +2,8 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-replace-the-current-cors-proxy-base-url-with-https-api-allorigins-win-raw-url-or-equivalent-allorigins-win-endpoint-in-usetabs-ts-wherever-proxy-urls-are-generated-so-that-all-proxied-tab-navigation-routes-through-allorigins-win",
-      "featureTitle": "Replace the current CORS proxy base URL with `https://api.allorigins.win/raw?url=` (or equivalent allorigins.win endpoint) in useTabs.ts wherever proxy URLs are generated, so that all proxied tab navigation routes through allorigins.win.",
+      "featureId": "feature-replace-the-current-proxy-provider-base-url-allorigins-win-with-google-com-as-the-cors-proxy-provider-in-usetabs-ts-updating-all-proxy-url-generation-logic-to-use-google-com-instead",
+      "featureTitle": "Replace the current proxy provider base URL (allorigins.win) with google.com as the CORS proxy provider in useTabs.ts, updating all proxy URL generation logic to use google.com instead.",
       "files": [
         "frontend/src/hooks/useTabs.ts"
       ],
@@ -20,10 +20,9 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-update-any-hardcoded-proxy-references-in-homesearch-tsx-and-tabcontent-tsx-to-also-use-allorigins-win-ensuring-the-proxy-status-indicator-and-iframe-src-construction-are-consistent-with-the-change-in-usetabs-ts",
-      "featureTitle": "Update any hardcoded proxy references in HomeSearch.tsx and TabContent.tsx to also use allorigins.win, ensuring the proxy status indicator and iframe src construction are consistent with the change in useTabs.ts.",
+      "featureId": "feature-update-all-hardcoded-proxy-provider-references-in-homesearch-tsx-and-tabcontent-tsx-to-use-google-com-instead-of-allorigins-win-ensuring-consistency-across-all-proxy-related-ui-and-logic",
+      "featureTitle": "Update all hardcoded proxy provider references in HomeSearch.tsx and TabContent.tsx to use google.com instead of allorigins.win, ensuring consistency across all proxy-related UI and logic.",
       "files": [
-        "frontend/src/components/common/ProxyInfoPanel.tsx",
         "frontend/src/pages/HomeSearch.tsx"
       ],
       "components": [

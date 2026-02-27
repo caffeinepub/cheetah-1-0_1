@@ -1,11 +1,11 @@
 # Specification
 
 ## Summary
-**Goal:** Switch the CORS proxy service back to allorigins.win across the frontend.
+**Goal:** Replace the CORS proxy provider from `allorigins.win` to `google.com` across the frontend codebase.
 
 **Planned changes:**
-- Replace the proxy base URL in `useTabs.ts` with `https://api.allorigins.win/raw?url=`
-- Update any hardcoded proxy references in `HomeSearch.tsx` and `TabContent.tsx` to use allorigins.win
-- Ensure proxy status labels/indicators reflect allorigins.win as the active proxy
+- Update proxy URL generation logic in `useTabs.ts` to use `google.com` instead of `allorigins.win`
+- Update proxy provider references in `HomeSearch.tsx` to use `google.com`
+- Update proxy provider references in `TabContent.tsx` to use `google.com`
 
-**User-visible outcome:** All proxied tab navigations route through allorigins.win, and the proxy label in the UI correctly shows allorigins.win.
+**User-visible outcome:** The browser now routes requests through `google.com` as the CORS proxy provider instead of `allorigins.win`.

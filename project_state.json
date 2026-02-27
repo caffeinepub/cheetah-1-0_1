@@ -1,22 +1,24 @@
 {
   "schemaVersion": "1.0.0",
   "projectStateVersion": 3,
-  "summary": "New project",
-  "architectural_notes": [],
+  "summary": "Project involves a web app with a proxy provider configuration, currently being set to google.com.",
+  "architectural_notes": [
+    "Proxy provider is set to google.com"
+  ],
   "known_issues": [],
   "isFixRequest": false,
   "existing_features": [
     {
-      "id": "feature-replace-the-current-cors-proxy-base-url-with-https-api-allorigins-win-raw-url-or-equivalent-allorigins-win-endpoint-in-usetabs-ts-wherever-proxy-urls-are-generated-so-that-all-proxied-tab-navigation-routes-through-allorigins-win",
-      "title": "Replace the current CORS proxy base URL with `https://api.allorigins.win/raw?url=` (or equivalent allorigins.win endpoint) in useTabs.ts wherever proxy URLs are generated, so that all proxied tab navigation routes through allorigins.win.",
+      "id": "feature-replace-the-current-proxy-provider-base-url-allorigins-win-with-google-com-as-the-cors-proxy-provider-in-usetabs-ts-updating-all-proxy-url-generation-logic-to-use-google-com-instead",
+      "title": "Replace the current proxy provider base URL (allorigins.win) with google.com as the CORS proxy provider in useTabs.ts, updating all proxy URL generation logic to use google.com instead.",
       "reqIds": [
         "REQ-1"
       ],
       "version": 1
     },
     {
-      "id": "feature-update-any-hardcoded-proxy-references-in-homesearch-tsx-and-tabcontent-tsx-to-also-use-allorigins-win-ensuring-the-proxy-status-indicator-and-iframe-src-construction-are-consistent-with-the-change-in-usetabs-ts",
-      "title": "Update any hardcoded proxy references in HomeSearch.tsx and TabContent.tsx to also use allorigins.win, ensuring the proxy status indicator and iframe src construction are consistent with the change in useTabs.ts.",
+      "id": "feature-update-all-hardcoded-proxy-provider-references-in-homesearch-tsx-and-tabcontent-tsx-to-use-google-com-instead-of-allorigins-win-ensuring-consistency-across-all-proxy-related-ui-and-logic",
+      "title": "Update all hardcoded proxy provider references in HomeSearch.tsx and TabContent.tsx to use google.com instead of allorigins.win, ensuring consistency across all proxy-related UI and logic.",
       "reqIds": [
         "REQ-2"
       ],
@@ -24,7 +26,7 @@
     }
   ],
   "new_feature_requests": [],
-  "projectName": "Switch proxy service back to allorigins.win",
+  "projectName": "Cheetah Browser",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }

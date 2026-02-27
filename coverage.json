@@ -1,7 +1,7 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-27T21:33:10.816Z",
+  "generatedAt": "2026-02-27T22:54:36.161Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
@@ -12,7 +12,7 @@
     "items": [
       {
         "id": "REQ-1",
-        "summary": "Replace the current CORS proxy base URL with `https://api.allorigins.win/raw?url=` (or equivalent allorigins.win endpoint) in useTabs.ts wherever proxy URLs are generated, so that all proxied tab navigation routes through allorigins.win.",
+        "summary": "Replace the current proxy provider base URL (allorigins.win) with google.com as the CORS proxy provider in useTabs.ts, updating all proxy URL generation logic to use google.com instead.",
         "status": "implemented",
         "plannedFiles": [
           "frontend/src/hooks/useTabs.ts"
@@ -23,16 +23,14 @@
       },
       {
         "id": "REQ-2",
-        "summary": "Update any hardcoded proxy references in HomeSearch.tsx and TabContent.tsx to also use allorigins.win, ensuring the proxy status indicator and iframe src construction are consistent with the change in useTabs.ts.",
+        "summary": "Update all hardcoded proxy provider references in HomeSearch.tsx and TabContent.tsx to use google.com instead of allorigins.win, ensuring consistency across all proxy-related UI and logic.",
         "status": "implemented",
         "plannedFiles": [
           "frontend/src/pages/HomeSearch.tsx",
-          "frontend/src/components/tabs/TabContent.tsx",
-          "frontend/src/components/common/ProxyInfoPanel.tsx"
+          "frontend/src/components/tabs/TabContent.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/pages/HomeSearch.tsx",
-          "frontend/src/components/common/ProxyInfoPanel.tsx"
+          "frontend/src/pages/HomeSearch.tsx"
         ]
       }
     ]

@@ -96,7 +96,7 @@ export const ProxyInfoPanel: React.FC<ProxyInfoPanelProps> = ({ isOpen, onClose 
                             style={{ background: 'oklch(0.14 0.03 290 / 0.7)', borderTop: '1px solid oklch(0.4 0.15 295 / 0.2)' }}
                         >
                             <p className="text-xs font-mono" style={{ color: 'oklch(0.7 0.06 290)' }}>
-                                All browsing traffic is routed through the <span style={{ color: 'oklch(0.72 0.22 295)' }}>allorigins.win</span> CORS proxy to bypass cross-origin restrictions.
+                                All browsing traffic is routed through the <span style={{ color: 'oklch(0.72 0.22 295)' }}>google.com</span> CORS proxy to bypass cross-origin restrictions.
                             </p>
                             <div
                                 className="rounded px-2.5 py-2 font-mono text-xs flex items-center gap-2 overflow-x-auto"
@@ -108,7 +108,7 @@ export const ProxyInfoPanel: React.FC<ProxyInfoPanelProps> = ({ isOpen, onClose 
                                 }}
                             >
                                 <span style={{ color: 'oklch(0.5 0.08 290)' }}>GET</span>
-                                <span>https://api.allorigins.win/raw?url=</span>
+                                <span>https://google.com/search?q=</span>
                                 <span style={{ color: 'oklch(0.72 0.22 310)' }}>&lt;encoded-url&gt;</span>
                             </div>
                         </div>
@@ -144,11 +144,11 @@ export const ProxyInfoPanel: React.FC<ProxyInfoPanelProps> = ({ isOpen, onClose 
                             style={{ background: 'oklch(0.14 0.03 290 / 0.7)', borderTop: '1px solid oklch(0.4 0.15 295 / 0.2)' }}
                         >
                             <p className="text-xs font-mono" style={{ color: 'oklch(0.7 0.06 290)' }}>
-                                Requests are forwarded through the allorigins.win API endpoint. If the primary proxy fails, the browser automatically falls back through a chain of alternative CORS proxies.
+                                Requests are forwarded through the google.com API endpoint. If the primary proxy fails, the browser automatically falls back through a chain of alternative CORS proxies.
                             </p>
                             <div className="flex flex-col gap-1">
                                 {[
-                                    'api.allorigins.win/raw?url=',
+                                    'google.com/search?q=',
                                     'corsproxy.io/?url=',
                                     'cors-anywhere.herokuapp.com/',
                                     'api.codetabs.com/v1/proxy?quest=',
@@ -214,7 +214,7 @@ export const ProxyInfoPanel: React.FC<ProxyInfoPanelProps> = ({ isOpen, onClose 
                             style={{ background: 'oklch(0.65 0.22 150)', boxShadow: '0 0 6px oklch(0.65 0.22 150)' }}
                         />
                         <span className="text-xs font-mono" style={{ color: 'oklch(0.72 0.22 295)' }}>
-                            allorigins.win
+                            google.com
                         </span>
                     </div>
                 </div>

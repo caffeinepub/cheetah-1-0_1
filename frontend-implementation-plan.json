@@ -1,47 +1,41 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Switch proxy service back to allorigins.win",
+  "title": "Change CORS proxy provider to google.com",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Replace the current CORS proxy base URL with allorigins.win in useTabs.ts for all proxied tab navigation",
+      "summary": "Replace allorigins.win with google.com as the CORS proxy provider base URL in useTabs.ts, updating all proxy URL generation logic",
       "acceptanceCriteria": [
-        "Proxy URL construction in useTabs.ts uses allorigins.win as the proxy base.",
-        "Opening a URL in a tab produces an iframe src that begins with the allorigins.win endpoint.",
-        "No references to the previously used proxy service remain in useTabs.ts, HomeSearch.tsx, or TabContent.tsx."
+        "useTabs.ts proxy URL generation uses google.com as the provider base URL",
+        "No references to allorigins.win remain in useTabs.ts"
       ],
       "file_operations": [
         {
           "path": "frontend/src/hooks/useTabs.ts",
           "operation": "modify",
-          "description": "Update the getProxiedUrl function to use https://api.allorigins.win/raw?url= as the proxy base URL instead of the current proxy service. Ensure the proxy-bypass logic for search engines remains intact."
+          "description": "Replace the proxy provider base URL from allorigins.win to google.com in all proxy URL generation logic. Update any string constants, template literals, or URL construction code that references allorigins.win to use google.com instead. Ensure the proxy URL format is adjusted if needed to match google.com's expected CORS proxy structure."
         }
       ]
     },
     {
       "id": "REQ-2",
-      "summary": "Update hardcoded proxy references in HomeSearch.tsx and TabContent.tsx to use allorigins.win consistently",
+      "summary": "Update all hardcoded proxy provider references in HomeSearch.tsx and TabContent.tsx to use google.com instead of allorigins.win",
       "acceptanceCriteria": [
-        "HomeSearch.tsx renders the correct allorigins.win proxy URL in the address bar and iframe.",
-        "TabContent.tsx constructs iframe src URLs using allorigins.win.",
-        "ProxyInfoPanel or any proxy label text reflects allorigins.win as the active proxy."
+        "HomeSearch.tsx references google.com as the proxy provider",
+        "TabContent.tsx references google.com as the proxy provider",
+        "No references to allorigins.win remain in HomeSearch.tsx or TabContent.tsx"
       ],
       "file_operations": [
         {
           "path": "frontend/src/pages/HomeSearch.tsx",
           "operation": "modify",
-          "description": "Update any hardcoded proxy URL construction to use allorigins.win, ensuring the address bar and iframe src display the correct proxy base URL. Update any proxy status text or labels to reflect allorigins.win."
+          "description": "Replace any hardcoded references to allorigins.win with google.com. Update proxy-related UI text, error messages, status displays, or URL construction logic to reflect the new proxy provider."
         },
         {
           "path": "frontend/src/components/tabs/TabContent.tsx",
           "operation": "modify",
-          "description": "Update iframe src construction to use allorigins.win for proxied URLs. Ensure any proxy-related UI text or error messages reference allorigins.win as the active proxy service."
-        },
-        {
-          "path": "frontend/src/components/common/ProxyInfoPanel.tsx",
-          "operation": "modify",
-          "description": "Update the proxy configuration details displayed in the info panel to reflect allorigins.win as the active CORS proxy service, replacing any references to the previous proxy."
+          "description": "Replace any hardcoded references to allorigins.win with google.com. Update proxy-related UI text, error messages, retry logic, or URL display to reflect the new proxy provider."
         }
       ]
     }
