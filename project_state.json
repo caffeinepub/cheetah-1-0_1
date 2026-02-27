@@ -1,41 +1,30 @@
 {
   "schemaVersion": "1.0.0",
   "projectStateVersion": 3,
-  "summary": "Project involves a proxy page with configurable proxy providers. User is updating the proxy provider from allorigins.win to https://proxycroxy.io.",
-  "architectural_notes": [
-    "Proxy provider set to https://proxycroxy.io (replaced allorigins.win)"
-  ],
+  "summary": "New project",
+  "architectural_notes": [],
   "known_issues": [],
   "isFixRequest": false,
   "existing_features": [
     {
-      "id": "feature-in-the-tab-navigation-hook-usetabs-ts-replace-all-occurrences-of-the-allorigins-win-cors-proxy-url-with-https-proxycroxy-io-as-the-proxy-provider-in-the-fallback-chain-and-any-url-construction-logic",
-      "title": "In the tab navigation hook (useTabs.ts), replace all occurrences of the allorigins.win CORS proxy URL with https://proxycroxy.io as the proxy provider in the fallback chain and any URL construction logic.",
+      "id": "feature-replace-the-current-cors-proxy-base-url-with-https-api-allorigins-win-raw-url-or-equivalent-allorigins-win-endpoint-in-usetabs-ts-wherever-proxy-urls-are-generated-so-that-all-proxied-tab-navigation-routes-through-allorigins-win",
+      "title": "Replace the current CORS proxy base URL with `https://api.allorigins.win/raw?url=` (or equivalent allorigins.win endpoint) in useTabs.ts wherever proxy URLs are generated, so that all proxied tab navigation routes through allorigins.win.",
       "reqIds": [
         "REQ-1"
       ],
       "version": 1
     },
     {
-      "id": "feature-in-tabcontent-tsx-and-homesearch-tsx-replace-any-hardcoded-allorigins-win-proxy-references-with-https-proxycroxy-io-to-ensure-the-iframe-proxy-loading-uses-the-updated-provider",
-      "title": "In TabContent.tsx and HomeSearch.tsx, replace any hardcoded allorigins.win proxy references with https://proxycroxy.io to ensure the iframe proxy loading uses the updated provider.",
+      "id": "feature-update-any-hardcoded-proxy-references-in-homesearch-tsx-and-tabcontent-tsx-to-also-use-allorigins-win-ensuring-the-proxy-status-indicator-and-iframe-src-construction-are-consistent-with-the-change-in-usetabs-ts",
+      "title": "Update any hardcoded proxy references in HomeSearch.tsx and TabContent.tsx to also use allorigins.win, ensuring the proxy status indicator and iframe src construction are consistent with the change in useTabs.ts.",
       "reqIds": [
         "REQ-2"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-in-proxyinfopanel-tsx-update-any-displayed-cors-proxy-route-descriptions-or-labels-that-reference-allorigins-win-to-instead-show-https-proxycroxy-io",
-      "title": "In ProxyInfoPanel.tsx, update any displayed CORS proxy route descriptions or labels that reference allorigins.win to instead show https://proxycroxy.io.",
-      "reqIds": [
-        "REQ-3"
       ],
       "version": 1
     }
   ],
   "new_feature_requests": [],
-  "gameProjectType": "none",
-  "projectName": "Cheetah 1.0",
+  "projectName": "Switch proxy service back to allorigins.win",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }

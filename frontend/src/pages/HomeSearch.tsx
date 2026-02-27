@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { ArrowLeft, ArrowRight, RotateCw, Globe, Search, ExternalLink, RefreshCw } from 'lucide-react';
+import { ArrowLeft, ArrowRight, RotateCw, Globe, Search, ExternalLink } from 'lucide-react';
 import type { Tab } from '../hooks/useTabs';
-import { PROXY_COUNT, isTikTokUrl } from '../hooks/useTabs';
+import { PROXY_COUNT, isTikTokUrl, isSearchEngineUrl, DIRECT_PROXY_INDEX } from '../hooks/useTabs';
 import { ProxyInfoPanel, ProxyInfoButton } from '../components/common/ProxyInfoPanel';
 
 interface HomeSearchProps {
@@ -53,9 +53,10 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({
         }
     };
 
-    // Active proxy label for display
+    // Determine if the active tab is using a proxy or loading directly
     const proxyIdx = activeTab?.proxyIndex ?? 0;
-    const proxyLabels = ['proxycroxy.io', 'corsproxy.io', 'cors-anywhere', 'codetabs.com', 'thingproxy'];
+    const isDirect = activeTab ? (activeTab.proxyIndex === DIRECT_PROXY_INDEX || isSearchEngineUrl(activeTab.url)) : false;
+    const proxyLabels = ['allorigins.win', 'corsproxy.io', 'cors-anywhere', 'codetabs.com', 'thingproxy'];
     const activeProxyLabel = proxyLabels[proxyIdx] ?? `proxy ${proxyIdx + 1}`;
 
     const handleTryAgain = () => {
@@ -118,19 +119,33 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({
                     />
                 </div>
 
-                {/* Active proxy indicator */}
+                {/* Connection indicator: Direct for search, proxy label for proxied URLs */}
                 {activeTab?.proxyUrl && (
-                    <span
-                        className="hidden sm:flex items-center text-xs font-mono px-2 py-0.5 rounded-full flex-shrink-0"
-                        style={{
-                            background: 'oklch(0.2 0.08 295 / 0.5)',
-                            border: '1px solid oklch(0.4 0.12 295 / 0.3)',
-                            color: 'oklch(0.55 0.12 295)',
-                        }}
-                        title={`Using proxy: ${activeProxyLabel}`}
-                    >
-                        {activeProxyLabel}
-                    </span>
+                    isDirect ? (
+                        <span
+                            className="hidden sm:flex items-center text-xs font-mono px-2 py-0.5 rounded-full flex-shrink-0"
+                            style={{
+                                background: 'oklch(0.18 0.06 150 / 0.5)',
+                                border: '1px solid oklch(0.45 0.15 150 / 0.4)',
+                                color: 'oklch(0.65 0.18 150)',
+                            }}
+                            title="Direct connection — no proxy"
+                        >
+                            direct
+                        </span>
+                    ) : (
+                        <span
+                            className="hidden sm:flex items-center text-xs font-mono px-2 py-0.5 rounded-full flex-shrink-0"
+                            style={{
+                                background: 'oklch(0.2 0.08 295 / 0.5)',
+                                border: '1px solid oklch(0.4 0.12 295 / 0.3)',
+                                color: 'oklch(0.55 0.12 295)',
+                            }}
+                            title={`Using proxy: ${activeProxyLabel}`}
+                        >
+                            {activeProxyLabel}
+                        </span>
+                    )
                 )}
 
                 <ProxyInfoButton

@@ -1,70 +1,51 @@
 {
   "kind": "build_request",
-  "title": "Replace allorigins.win proxy provider with proxycroxy.io",
-  "projectName": "Cheetah 1.0",
+  "title": "Switch proxy service back to allorigins.win",
   "priority": "normal",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "In the tab navigation hook (useTabs.ts), replace all occurrences of the allorigins.win CORS proxy URL with https://proxycroxy.io as the proxy provider in the fallback chain and any URL construction logic.",
+      "text": "Replace the current CORS proxy base URL with `https://api.allorigins.win/raw?url=` (or equivalent allorigins.win endpoint) in useTabs.ts wherever proxy URLs are generated, so that all proxied tab navigation routes through allorigins.win.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-6"
+          "msg-latest"
         ],
         "quotes": [
-          "make the provider not allorigins.win make it https://proxycroxy.io"
+          "make it allorigins.win again"
         ]
       },
       "acceptanceCriteria": [
-        "No references to allorigins.win remain in useTabs.ts",
-        "The proxy fallback chain uses https://proxycroxy.io as the provider",
-        "Proxied URLs are correctly constructed using https://proxycroxy.io"
+        "Proxy URL construction in useTabs.ts uses allorigins.win as the proxy base.",
+        "Opening a URL in a tab produces an iframe src that begins with the allorigins.win endpoint.",
+        "No references to the previously used proxy service remain in useTabs.ts, HomeSearch.tsx, or TabContent.tsx."
       ]
     },
     {
       "id": "REQ-2",
-      "text": "In TabContent.tsx and HomeSearch.tsx, replace any hardcoded allorigins.win proxy references with https://proxycroxy.io to ensure the iframe proxy loading uses the updated provider.",
+      "text": "Update any hardcoded proxy references in HomeSearch.tsx and TabContent.tsx to also use allorigins.win, ensuring the proxy status indicator and iframe src construction are consistent with the change in useTabs.ts.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-6"
+          "msg-latest"
         ],
         "quotes": [
-          "make the provider not allorigins.win make it https://proxycroxy.io"
+          "make it allorigins.win again"
         ]
       },
       "acceptanceCriteria": [
-        "No references to allorigins.win remain in TabContent.tsx or HomeSearch.tsx",
-        "Proxied iframes load through https://proxycroxy.io"
-      ]
-    },
-    {
-      "id": "REQ-3",
-      "text": "In ProxyInfoPanel.tsx, update any displayed CORS proxy route descriptions or labels that reference allorigins.win to instead show https://proxycroxy.io.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-6"
-        ],
-        "quotes": [
-          "make the provider not allorigins.win make it https://proxycroxy.io"
-        ]
-      },
-      "acceptanceCriteria": [
-        "No references to allorigins.win appear in the ProxyInfoPanel UI",
-        "The panel correctly displays https://proxycroxy.io as the proxy provider"
+        "HomeSearch.tsx renders the correct allorigins.win proxy URL in the address bar and iframe.",
+        "TabContent.tsx constructs iframe src URLs using allorigins.win.",
+        "ProxyInfoPanel or any proxy label text reflects allorigins.win as the active proxy."
       ]
     }
   ],
   "constraints": [
-    "Only replace allorigins.win references — do not change any other proxy providers or services",
-    "Do not modify files listed in frontend.immutablePaths"
+    "Do not change the proxy-bypass logic that prevents proxy services from wrapping search engine queries."
   ],
   "nonGoals": [
-    "Adding new proxy providers",
-    "Changing the ProxyLinks page card list",
-    "Modifying backend logic"
+    "Adding new proxy services or rotating between multiple proxies.",
+    "Changing any backend logic."
   ],
   "imageRequirements": {
     "required": [],

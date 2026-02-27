@@ -2,8 +2,8 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-in-the-tab-navigation-hook-usetabs-ts-replace-all-occurrences-of-the-allorigins-win-cors-proxy-url-with-https-proxycroxy-io-as-the-proxy-provider-in-the-fallback-chain-and-any-url-construction-logic",
-      "featureTitle": "In the tab navigation hook (useTabs.ts), replace all occurrences of the allorigins.win CORS proxy URL with https://proxycroxy.io as the proxy provider in the fallback chain and any URL construction logic.",
+      "featureId": "feature-replace-the-current-cors-proxy-base-url-with-https-api-allorigins-win-raw-url-or-equivalent-allorigins-win-endpoint-in-usetabs-ts-wherever-proxy-urls-are-generated-so-that-all-proxied-tab-navigation-routes-through-allorigins-win",
+      "featureTitle": "Replace the current CORS proxy base URL with `https://api.allorigins.win/raw?url=` (or equivalent allorigins.win endpoint) in useTabs.ts wherever proxy URLs are generated, so that all proxied tab navigation routes through allorigins.win.",
       "files": [
         "frontend/src/hooks/useTabs.ts"
       ],
@@ -20,9 +20,10 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-in-tabcontent-tsx-and-homesearch-tsx-replace-any-hardcoded-allorigins-win-proxy-references-with-https-proxycroxy-io-to-ensure-the-iframe-proxy-loading-uses-the-updated-provider",
-      "featureTitle": "In TabContent.tsx and HomeSearch.tsx, replace any hardcoded allorigins.win proxy references with https://proxycroxy.io to ensure the iframe proxy loading uses the updated provider.",
+      "featureId": "feature-update-any-hardcoded-proxy-references-in-homesearch-tsx-and-tabcontent-tsx-to-also-use-allorigins-win-ensuring-the-proxy-status-indicator-and-iframe-src-construction-are-consistent-with-the-change-in-usetabs-ts",
+      "featureTitle": "Update any hardcoded proxy references in HomeSearch.tsx and TabContent.tsx to also use allorigins.win, ensuring the proxy status indicator and iframe src construction are consistent with the change in useTabs.ts.",
       "files": [
+        "frontend/src/components/common/ProxyInfoPanel.tsx",
         "frontend/src/pages/HomeSearch.tsx"
       ],
       "components": [
@@ -34,24 +35,6 @@
       ],
       "testIds": [
         "REQ-2"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-in-proxyinfopanel-tsx-update-any-displayed-cors-proxy-route-descriptions-or-labels-that-reference-allorigins-win-to-instead-show-https-proxycroxy-io",
-      "featureTitle": "In ProxyInfoPanel.tsx, update any displayed CORS proxy route descriptions or labels that reference allorigins.win to instead show https://proxycroxy.io.",
-      "files": [
-        "frontend/src/components/common/ProxyInfoPanel.tsx"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-3"
       ],
       "confidence": "high"
     }

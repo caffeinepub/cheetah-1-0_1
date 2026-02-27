@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Info, X, Shield, Zap, Globe, ArrowRight, ChevronDown, ChevronUp } from 'lucide-react';
+import { Info, X, Shield, Zap, Globe, ChevronDown, ChevronUp } from 'lucide-react';
 
 interface ProxyInfoPanelProps {
     isOpen: boolean;
@@ -96,7 +96,7 @@ export const ProxyInfoPanel: React.FC<ProxyInfoPanelProps> = ({ isOpen, onClose 
                             style={{ background: 'oklch(0.14 0.03 290 / 0.7)', borderTop: '1px solid oklch(0.4 0.15 295 / 0.2)' }}
                         >
                             <p className="text-xs font-mono" style={{ color: 'oklch(0.7 0.06 290)' }}>
-                                All browsing traffic is routed through the <span style={{ color: 'oklch(0.72 0.22 295)' }}>proxycroxy.io</span> CORS proxy to bypass cross-origin restrictions.
+                                All browsing traffic is routed through the <span style={{ color: 'oklch(0.72 0.22 295)' }}>allorigins.win</span> CORS proxy to bypass cross-origin restrictions.
                             </p>
                             <div
                                 className="rounded px-2.5 py-2 font-mono text-xs flex items-center gap-2 overflow-x-auto"
@@ -108,7 +108,7 @@ export const ProxyInfoPanel: React.FC<ProxyInfoPanelProps> = ({ isOpen, onClose 
                                 }}
                             >
                                 <span style={{ color: 'oklch(0.5 0.08 290)' }}>GET</span>
-                                <span>https://proxycroxy.io/</span>
+                                <span>https://api.allorigins.win/raw?url=</span>
                                 <span style={{ color: 'oklch(0.72 0.22 310)' }}>&lt;encoded-url&gt;</span>
                             </div>
                         </div>
@@ -144,50 +144,81 @@ export const ProxyInfoPanel: React.FC<ProxyInfoPanelProps> = ({ isOpen, onClose 
                             style={{ background: 'oklch(0.14 0.03 290 / 0.7)', borderTop: '1px solid oklch(0.4 0.15 295 / 0.2)' }}
                         >
                             <p className="text-xs font-mono" style={{ color: 'oklch(0.7 0.06 290)' }}>
-                                Conceptually equivalent to a local proxy server listening on port{' '}
-                                <span style={{ color: 'oklch(0.72 0.22 295)' }}>8000</span> and forwarding requests to the target URL.
+                                Requests are forwarded through the allorigins.win API endpoint. If the primary proxy fails, the browser automatically falls back through a chain of alternative CORS proxies.
                             </p>
-                            <div
-                                className="rounded px-2.5 py-2 font-mono text-xs flex items-center gap-2"
-                                style={{
-                                    background: 'oklch(0.1 0.02 290)',
-                                    border: '1px solid oklch(0.35 0.12 295 / 0.4)',
-                                }}
-                            >
-                                <span style={{ color: 'oklch(0.62 0.18 295)' }}>localhost</span>
-                                <span style={{ color: 'oklch(0.5 0.08 290)' }}>:</span>
-                                <span style={{ color: 'oklch(0.72 0.22 310)' }}>8000</span>
-                                <ArrowRight size={10} style={{ color: 'oklch(0.5 0.08 290)' }} />
-                                <span style={{ color: 'oklch(0.7 0.15 295)' }}>target URL</span>
+                            <div className="flex flex-col gap-1">
+                                {[
+                                    'api.allorigins.win/raw?url=',
+                                    'corsproxy.io/?url=',
+                                    'cors-anywhere.herokuapp.com/',
+                                    'api.codetabs.com/v1/proxy?quest=',
+                                    'thingproxy.freeboard.io/fetch/',
+                                ].map((proxy, i) => (
+                                    <div
+                                        key={proxy}
+                                        className="flex items-center gap-2 text-xs font-mono px-2 py-1 rounded"
+                                        style={{
+                                            background: i === 0 ? 'oklch(0.2 0.08 295 / 0.3)' : 'oklch(0.12 0.02 290 / 0.5)',
+                                            border: `1px solid ${i === 0 ? 'oklch(0.5 0.18 295 / 0.4)' : 'oklch(0.3 0.06 290 / 0.3)'}`,
+                                        }}
+                                    >
+                                        <span
+                                            className="w-4 h-4 rounded-full flex items-center justify-center text-xs shrink-0"
+                                            style={{
+                                                background: i === 0 ? 'oklch(0.55 0.22 295 / 0.4)' : 'oklch(0.25 0.05 290 / 0.5)',
+                                                color: i === 0 ? 'oklch(0.82 0.2 295)' : 'oklch(0.5 0.08 290)',
+                                                fontSize: '9px',
+                                            }}
+                                        >
+                                            {i + 1}
+                                        </span>
+                                        <span style={{ color: i === 0 ? 'oklch(0.75 0.18 295)' : 'oklch(0.55 0.08 290)' }}>
+                                            {proxy}
+                                        </span>
+                                        {i === 0 && (
+                                            <span
+                                                className="ml-auto text-xs px-1 rounded"
+                                                style={{
+                                                    background: 'oklch(0.35 0.15 150 / 0.3)',
+                                                    color: 'oklch(0.65 0.18 150)',
+                                                    fontSize: '9px',
+                                                }}
+                                            >
+                                                active
+                                            </span>
+                                        )}
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     )}
                 </div>
 
-                {/* Status row */}
+                {/* Status */}
                 <div
-                    className="rounded-lg px-3 py-2 flex items-center justify-between"
+                    className="flex items-center justify-between px-3 py-2 rounded-lg"
                     style={{
-                        background: 'oklch(0.18 0.05 290 / 0.5)',
-                        border: '1px solid oklch(0.4 0.15 295 / 0.2)',
+                        background: 'oklch(0.18 0.05 290 / 0.6)',
+                        border: '1px solid oklch(0.4 0.15 295 / 0.25)',
                     }}
                 >
-                    <div className="flex items-center gap-3">
-                        <div className="flex items-center gap-1.5">
-                            <div
-                                className="w-1.5 h-1.5 rounded-full animate-pulse"
-                                style={{ background: 'oklch(0.65 0.22 145)' }}
-                            />
-                            <span className="text-xs font-mono" style={{ color: 'oklch(0.65 0.22 145)' }}>
-                                ACTIVE
-                            </span>
-                        </div>
-                        <span className="text-xs font-mono" style={{ color: 'oklch(0.5 0.08 290)' }}>
-                            proxycroxy.io
+                    <div className="flex items-center gap-2">
+                        <Info size={12} style={{ color: 'oklch(0.65 0.22 295)' }} />
+                        <span className="text-xs font-mono" style={{ color: 'oklch(0.7 0.08 290)' }}>
+                            Primary Proxy
                         </span>
                     </div>
-                    <Info size={11} style={{ color: 'oklch(0.45 0.08 290)' }} />
+                    <div className="flex items-center gap-1.5">
+                        <div
+                            className="w-1.5 h-1.5 rounded-full"
+                            style={{ background: 'oklch(0.65 0.22 150)', boxShadow: '0 0 6px oklch(0.65 0.22 150)' }}
+                        />
+                        <span className="text-xs font-mono" style={{ color: 'oklch(0.72 0.22 295)' }}>
+                            allorigins.win
+                        </span>
+                    </div>
                 </div>
+
             </div>
         </div>
     );
@@ -201,14 +232,14 @@ interface ProxyInfoButtonProps {
 export const ProxyInfoButton: React.FC<ProxyInfoButtonProps> = ({ onClick, isActive }) => (
     <button
         onClick={onClick}
-        className="p-1.5 rounded transition-all flex-shrink-0"
-        style={{
-            color: isActive ? 'oklch(0.72 0.25 295)' : 'oklch(0.55 0.1 295)',
-            background: isActive ? 'oklch(0.45 0.22 295 / 0.15)' : 'transparent',
-            border: isActive ? '1px solid oklch(0.62 0.25 295 / 0.3)' : '1px solid transparent',
+        className="p-1.5 rounded transition-all"
+        style={{ color: isActive ? 'oklch(0.72 0.25 295)' : 'oklch(0.55 0.1 295)' }}
+        onMouseEnter={e => ((e.currentTarget as HTMLButtonElement).style.color = 'oklch(0.72 0.25 295)')}
+        onMouseLeave={e => {
+            if (!isActive) (e.currentTarget as HTMLButtonElement).style.color = 'oklch(0.55 0.1 295)';
         }}
         title="Proxy Info"
     >
-        <Shield size={15} />
+        <Info size={15} />
     </button>
 );

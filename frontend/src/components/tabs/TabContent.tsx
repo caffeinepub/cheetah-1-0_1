@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
-import { AlertTriangle, ExternalLink, RefreshCw, RotateCw } from 'lucide-react';
+import { AlertTriangle, ExternalLink, RotateCw } from 'lucide-react';
 import type { Tab } from '../../hooks/useTabs';
-import { PROXY_COUNT, isTikTokUrl } from '../../hooks/useTabs';
+import { PROXY_COUNT, isTikTokUrl, isSearchEngineUrl } from '../../hooks/useTabs';
 
 interface TabContentProps {
     tab: Tab;
@@ -20,6 +20,11 @@ export const TabContent: React.FC<TabContentProps> = ({ tab, isActive, onLoad, o
     };
 
     const handleError = () => {
+        // Search engine URLs load directly — don't cycle through proxies on error
+        if (isSearchEngineUrl(tab.url)) {
+            onError(tab.id);
+            return;
+        }
         if (onRetry && tab.proxyIndex < PROXY_COUNT - 1) {
             onRetry(tab.id);
         } else {

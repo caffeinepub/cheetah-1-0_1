@@ -1,18 +1,18 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-27T21:19:24.305Z",
+  "generatedAt": "2026-02-27T21:33:10.816Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 3,
-    "implemented": 3,
+    "total": 2,
+    "implemented": 2,
     "items": [
       {
         "id": "REQ-1",
-        "summary": "In the tab navigation hook (useTabs.ts), replace all occurrences of the allorigins.win CORS proxy URL with https://proxycroxy.io as the proxy provider in the fallback chain and any URL construction logic.",
+        "summary": "Replace the current CORS proxy base URL with `https://api.allorigins.win/raw?url=` (or equivalent allorigins.win endpoint) in useTabs.ts wherever proxy URLs are generated, so that all proxied tab navigation routes through allorigins.win.",
         "status": "implemented",
         "plannedFiles": [
           "frontend/src/hooks/useTabs.ts"
@@ -23,24 +23,15 @@
       },
       {
         "id": "REQ-2",
-        "summary": "In TabContent.tsx and HomeSearch.tsx, replace any hardcoded allorigins.win proxy references with https://proxycroxy.io to ensure the iframe proxy loading uses the updated provider.",
+        "summary": "Update any hardcoded proxy references in HomeSearch.tsx and TabContent.tsx to also use allorigins.win, ensuring the proxy status indicator and iframe src construction are consistent with the change in useTabs.ts.",
         "status": "implemented",
         "plannedFiles": [
+          "frontend/src/pages/HomeSearch.tsx",
           "frontend/src/components/tabs/TabContent.tsx",
-          "frontend/src/pages/HomeSearch.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/pages/HomeSearch.tsx"
-        ]
-      },
-      {
-        "id": "REQ-3",
-        "summary": "In ProxyInfoPanel.tsx, update any displayed CORS proxy route descriptions or labels that reference allorigins.win to instead show https://proxycroxy.io.",
-        "status": "implemented",
-        "plannedFiles": [
           "frontend/src/components/common/ProxyInfoPanel.tsx"
         ],
         "matchedFiles": [
+          "frontend/src/pages/HomeSearch.tsx",
           "frontend/src/components/common/ProxyInfoPanel.tsx"
         ]
       }

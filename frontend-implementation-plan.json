@@ -1,56 +1,47 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Replace allorigins.win proxy provider with proxycroxy.io",
+  "title": "Switch proxy service back to allorigins.win",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Replace allorigins.win with proxycroxy.io in the tab navigation hook",
+      "summary": "Replace the current CORS proxy base URL with allorigins.win in useTabs.ts for all proxied tab navigation",
       "acceptanceCriteria": [
-        "No references to allorigins.win remain in useTabs.ts",
-        "The proxy fallback chain uses https://proxycroxy.io as the provider",
-        "Proxied URLs are correctly constructed using https://proxycroxy.io"
+        "Proxy URL construction in useTabs.ts uses allorigins.win as the proxy base.",
+        "Opening a URL in a tab produces an iframe src that begins with the allorigins.win endpoint.",
+        "No references to the previously used proxy service remain in useTabs.ts, HomeSearch.tsx, or TabContent.tsx."
       ],
       "file_operations": [
         {
           "path": "frontend/src/hooks/useTabs.ts",
           "operation": "modify",
-          "description": "Replace all occurrences of allorigins.win CORS proxy URL with https://proxycroxy.io in the proxy fallback chain and URL construction logic"
+          "description": "Update the getProxiedUrl function to use https://api.allorigins.win/raw?url= as the proxy base URL instead of the current proxy service. Ensure the proxy-bypass logic for search engines remains intact."
         }
       ]
     },
     {
       "id": "REQ-2",
-      "summary": "Replace allorigins.win with proxycroxy.io in tab and search components",
+      "summary": "Update hardcoded proxy references in HomeSearch.tsx and TabContent.tsx to use allorigins.win consistently",
       "acceptanceCriteria": [
-        "No references to allorigins.win remain in TabContent.tsx or HomeSearch.tsx",
-        "Proxied iframes load through https://proxycroxy.io"
+        "HomeSearch.tsx renders the correct allorigins.win proxy URL in the address bar and iframe.",
+        "TabContent.tsx constructs iframe src URLs using allorigins.win.",
+        "ProxyInfoPanel or any proxy label text reflects allorigins.win as the active proxy."
       ],
       "file_operations": [
-        {
-          "path": "frontend/src/components/tabs/TabContent.tsx",
-          "operation": "modify",
-          "description": "Replace any hardcoded allorigins.win proxy references with https://proxycroxy.io to ensure iframe proxy loading uses the updated provider"
-        },
         {
           "path": "frontend/src/pages/HomeSearch.tsx",
           "operation": "modify",
-          "description": "Replace any hardcoded allorigins.win proxy references with https://proxycroxy.io in the home search page iframe proxy loading logic"
-        }
-      ]
-    },
-    {
-      "id": "REQ-3",
-      "summary": "Update proxy provider display in ProxyInfoPanel",
-      "acceptanceCriteria": [
-        "No references to allorigins.win appear in the ProxyInfoPanel UI",
-        "The panel correctly displays https://proxycroxy.io as the proxy provider"
-      ],
-      "file_operations": [
+          "description": "Update any hardcoded proxy URL construction to use allorigins.win, ensuring the address bar and iframe src display the correct proxy base URL. Update any proxy status text or labels to reflect allorigins.win."
+        },
+        {
+          "path": "frontend/src/components/tabs/TabContent.tsx",
+          "operation": "modify",
+          "description": "Update iframe src construction to use allorigins.win for proxied URLs. Ensure any proxy-related UI text or error messages reference allorigins.win as the active proxy service."
+        },
         {
           "path": "frontend/src/components/common/ProxyInfoPanel.tsx",
           "operation": "modify",
-          "description": "Update any displayed CORS proxy route descriptions or labels that reference allorigins.win to instead show https://proxycroxy.io"
+          "description": "Update the proxy configuration details displayed in the info panel to reflect allorigins.win as the active CORS proxy service, replacing any references to the previous proxy."
         }
       ]
     }

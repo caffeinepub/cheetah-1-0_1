@@ -14,7 +14,7 @@ export interface Tab {
 
 // Ordered list of proxy strategies
 const PROXY_LIST = [
-    (url: string) => `https://proxycroxy.io/${encodeURIComponent(url)}`,
+    (url: string) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
     (url: string) => `https://corsproxy.io/?url=${encodeURIComponent(url)}`,
     (url: string) => `https://cors-anywhere.herokuapp.com/${url}`,
     (url: string) => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
@@ -22,6 +22,9 @@ const PROXY_LIST = [
 ];
 
 export const PROXY_COUNT = PROXY_LIST.length;
+
+// Sentinel value indicating no proxy is used (direct navigation)
+export const DIRECT_PROXY_INDEX = -1;
 
 // TikTok embed URL used as a final fallback before showing error
 const TIKTOK_EMBED_URL = 'https://www.tiktok.com/embed/';
@@ -35,8 +38,33 @@ export function isTikTokUrl(url: string): boolean {
     }
 }
 
+/**
+ * Returns true if the URL is a search engine results page that should
+ * be loaded directly without any proxy wrapping.
+ */
+export function isSearchEngineUrl(url: string): boolean {
+    if (!url) return false;
+    try {
+        const parsed = new URL(url);
+        const hostname = parsed.hostname.replace('www.', '');
+        // Google search
+        if (hostname === 'google.com' && parsed.pathname.startsWith('/search')) return true;
+        // Bing search
+        if (hostname === 'bing.com' && parsed.pathname.startsWith('/search')) return true;
+        // DuckDuckGo search
+        if (hostname === 'duckduckgo.com' && (parsed.pathname === '/' || parsed.pathname === '')) return true;
+        // Yahoo search
+        if (hostname === 'search.yahoo.com') return true;
+        return false;
+    } catch {
+        return false;
+    }
+}
+
 export function makeProxyUrl(url: string, proxyIndex = 0): string {
     if (!url) return '';
+    // Search engine URLs bypass the proxy and load directly
+    if (isSearchEngineUrl(url)) return url;
     const idx = Math.min(proxyIndex, PROXY_LIST.length - 1);
     return PROXY_LIST[idx](url);
 }
@@ -50,12 +78,14 @@ export function normalizeUrl(input: string): string {
 }
 
 function createNewTab(url = '', title = 'New Tab'): Tab {
+    const normalized = url ? normalizeUrl(url) : '';
+    const isDirect = normalized ? isSearchEngineUrl(normalized) : false;
     return {
         id: Date.now().toString() + Math.random().toString(36).slice(2),
         title,
-        url,
-        proxyUrl: url ? makeProxyUrl(normalizeUrl(url), 0) : '',
-        proxyIndex: 0,
+        url: normalized,
+        proxyUrl: normalized ? makeProxyUrl(normalized, 0) : '',
+        proxyIndex: isDirect ? DIRECT_PROXY_INDEX : 0,
         hasError: false,
         isTikTokEmbed: false,
     };
@@ -84,7 +114,10 @@ export function useTabs(addressBarRef?: React.RefObject<HTMLInputElement | null>
 
     const openUrl = useCallback((url: string, newTab = false, proxyIndex = 0) => {
         const normalized = normalizeUrl(url);
-        const proxy = makeProxyUrl(normalized, proxyIndex);
+        const isDirect = isSearchEngineUrl(normalized);
+        // Direct search engine URLs bypass proxy entirely
+        const proxy = isDirect ? normalized : makeProxyUrl(normalized, proxyIndex);
+        const effectiveProxyIndex = isDirect ? DIRECT_PROXY_INDEX : proxyIndex;
         const title = (() => {
             try { return new URL(normalized).hostname; } catch { return url; }
         })();
@@ -92,7 +125,7 @@ export function useTabs(addressBarRef?: React.RefObject<HTMLInputElement | null>
         if (newTab) {
             const tab = createNewTab(normalized, title);
             tab.proxyUrl = proxy;
-            tab.proxyIndex = proxyIndex;
+            tab.proxyIndex = effectiveProxyIndex;
             setTabs(prev => ({
                 tabs: [...prev.tabs, tab],
                 activeTabId: tab.id,
@@ -102,7 +135,7 @@ export function useTabs(addressBarRef?: React.RefObject<HTMLInputElement | null>
                 ...prev,
                 tabs: prev.tabs.map(t =>
                     t.id === activeTabId
-                        ? { ...t, url: normalized, proxyUrl: proxy, proxyIndex, title, hasError: false, isTikTokEmbed: false }
+                        ? { ...t, url: normalized, proxyUrl: proxy, proxyIndex: effectiveProxyIndex, title, hasError: false, isTikTokEmbed: false }
                         : t
                 ),
             }));
@@ -112,18 +145,21 @@ export function useTabs(addressBarRef?: React.RefObject<HTMLInputElement | null>
     /**
      * Re-initiate the full proxy chain from the beginning for a given tab.
      * Resets proxyIndex to 0 and clears error state.
+     * For search engine URLs, resets to direct navigation (no proxy).
      */
     const navigateToUrl = useCallback((id: string, url?: string) => {
         setTabs(prev => {
             const tab = prev.tabs.find(t => t.id === id);
             if (!tab) return prev;
             const targetUrl = url ?? tab.url;
-            const newProxyUrl = makeProxyUrl(targetUrl, 0);
+            const isDirect = isSearchEngineUrl(targetUrl);
+            const newProxyUrl = isDirect ? targetUrl : makeProxyUrl(targetUrl, 0);
+            const newProxyIndex = isDirect ? DIRECT_PROXY_INDEX : 0;
             return {
                 ...prev,
                 tabs: prev.tabs.map(t =>
                     t.id === id
-                        ? { ...t, url: targetUrl, proxyUrl: newProxyUrl, proxyIndex: 0, hasError: false, isTikTokEmbed: false }
+                        ? { ...t, url: targetUrl, proxyUrl: newProxyUrl, proxyIndex: newProxyIndex, hasError: false, isTikTokEmbed: false }
                         : t
                 ),
             };
@@ -134,6 +170,16 @@ export function useTabs(addressBarRef?: React.RefObject<HTMLInputElement | null>
         setTabs(prev => {
             const tab = prev.tabs.find(t => t.id === id);
             if (!tab) return prev;
+
+            // Search engine URLs never use proxy — skip retry logic
+            if (isSearchEngineUrl(tab.url)) {
+                return {
+                    ...prev,
+                    tabs: prev.tabs.map(t =>
+                        t.id === id ? { ...t, hasError: true } : t
+                    ),
+                };
+            }
 
             const nextIndex = tab.proxyIndex + 1;
 

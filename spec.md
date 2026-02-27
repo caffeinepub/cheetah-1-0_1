@@ -1,11 +1,11 @@
 # Specification
 
 ## Summary
-**Goal:** Replace the `allorigins.win` CORS proxy provider with `https://proxycroxy.io` across the Cheetah 1.0 frontend.
+**Goal:** Switch the CORS proxy service back to allorigins.win across the frontend.
 
 **Planned changes:**
-- In `useTabs.ts`, replace all `allorigins.win` references with `https://proxycroxy.io` in the proxy fallback chain and URL construction logic
-- In `TabContent.tsx` and `HomeSearch.tsx`, replace any hardcoded `allorigins.win` references with `https://proxycroxy.io`
-- In `ProxyInfoPanel.tsx`, update displayed labels and descriptions that reference `allorigins.win` to show `https://proxycroxy.io`
+- Replace the proxy base URL in `useTabs.ts` with `https://api.allorigins.win/raw?url=`
+- Update any hardcoded proxy references in `HomeSearch.tsx` and `TabContent.tsx` to use allorigins.win
+- Ensure proxy status labels/indicators reflect allorigins.win as the active proxy
 
-**User-visible outcome:** All proxied content and iframe loading routes through `https://proxycroxy.io` instead of `allorigins.win`, and the ProxyInfoPanel displays the updated provider.
+**User-visible outcome:** All proxied tab navigations route through allorigins.win, and the proxy label in the UI correctly shows allorigins.win.
