@@ -2,10 +2,9 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-remove-all-loading-spinners-loading-overlays-and-loading-state-indicators-from-the-iframe-tab-browsing-experience-when-a-url-is-loaded-in-a-tab-the-iframe-must-appear-immediately-with-no-loading-screen-no-spinner-and-no-in-progress-visual-state-this-applies-to-tabbar-tsx-remove-per-tab-loading-indicators-tabcontent-tsx-remove-the-loading-overlay-spinner-shown-while-the-iframe-loads-and-usetabs-ts-remove-the-isloading-loading-state-tracking-for-tabs-entirely-or-stop-using-it-to-gate-rendering",
-      "featureTitle": "Remove all loading spinners, loading overlays, and loading state indicators from the iframe tab browsing experience. When a URL is loaded in a tab, the iframe must appear immediately with no loading screen, no spinner, and no in-progress visual state. This applies to TabBar.tsx (remove per-tab loading indicators), TabContent.tsx (remove the loading overlay/spinner shown while the iframe loads), and useTabs.ts (remove the isLoading/loading state tracking for tabs entirely or stop using it to gate rendering).",
+      "featureId": "feature-expand-the-cors-proxy-fallback-chain-in-usetabs-ts-and-tabcontent-tsx-to-maximize-the-number-of-sites-that-successfully-load-in-iframes-add-the-following-additional-proxies-to-the-rotation-after-the-existing-ones-https-api-codetabs-com-v1-proxy-quest-url-https-thingproxy-freeboard-io-fetch-url-and-https-yacdn-org-proxy-url-attempt-each-proxy-in-sequence-and-only-show-the-error-fallback-state-after-all-proxies-have-been-exhausted",
+      "featureTitle": "Expand the CORS proxy fallback chain in `useTabs.ts` and `TabContent.tsx` to maximize the number of sites that successfully load in iframes. Add the following additional proxies to the rotation after the existing ones: `https://api.codetabs.com/v1/proxy?quest=<url>`, `https://thingproxy.freeboard.io/fetch/<url>`, and `https://yacdn.org/proxy/<url>`. Attempt each proxy in sequence and only show the error/fallback state after all proxies have been exhausted.",
       "files": [
-        "frontend/src/components/tabs/TabBar.tsx",
         "frontend/src/components/tabs/TabContent.tsx",
         "frontend/src/hooks/useTabs.ts"
       ],
@@ -17,7 +16,45 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-14"
+        "REQ-15"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-for-tiktok-tiktok-com-specifically-implement-a-dedicated-handling-strategy-in-usetabs-ts-and-tabcontent-tsx-when-the-url-being-loaded-matches-tiktok-com-or-www-tiktok-com-use-an-embedded-iframe-with-src-set-to-https-www-tiktok-com-embed-as-the-primary-attempt-and-also-try-the-full-proxy-chain-using-https-tiktok-com-as-the-target-additionally-in-quickopen-tsx-update-the-tiktok-card-s-url-to-use-https-www-tiktok-com-and-add-a-note-in-the-error-fallback-state-that-links-directly-to-https-www-tiktok-com-with-target-blank-for-cases-where-embedding-is-blocked-by-tiktok-s-own-x-frame-options-headers",
+      "featureTitle": "For TikTok (tiktok.com) specifically, implement a dedicated handling strategy in `useTabs.ts` and `TabContent.tsx`. When the URL being loaded matches `tiktok.com` (or `www.tiktok.com`), use an embedded `<iframe>` with `src` set to `https://www.tiktok.com/embed/` as the primary attempt, and also try the full proxy chain using `https://tiktok.com` as the target. Additionally, in `QuickOpen.tsx`, update the TikTok card's URL to use `https://www.tiktok.com` and add a note in the error fallback state that links directly to `https://www.tiktok.com` with `target=\"_blank\"` for cases where embedding is blocked by TikTok's own X-Frame-Options headers.",
+      "files": [
+        "frontend/src/components/tabs/TabContent.tsx",
+        "frontend/src/hooks/useTabs.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-16"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-a-per-tab-retry-mechanism-in-tabcontent-tsx-when-the-error-state-is-displayed-all-proxies-exhausted-show-a-try-again-button-that-re-initiates-the-full-proxy-fallback-chain-for-the-current-url-also-add-a-open-in-new-window-button-that-opens-the-raw-non-proxied-url-directly-in-a-new-browser-tab-via-window-open-url-blank",
+      "featureTitle": "Add a per-tab retry mechanism in `TabContent.tsx`. When the error state is displayed (all proxies exhausted), show a 'Try Again' button that re-initiates the full proxy fallback chain for the current URL. Also add a 'Open in New Window' button that opens the raw (non-proxied) URL directly in a new browser tab via `window.open(url, '_blank')`.",
+      "files": [
+        "frontend/src/components/tabs/TabContent.tsx",
+        "frontend/src/hooks/useTabs.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-17"
       ],
       "confidence": "high"
     }

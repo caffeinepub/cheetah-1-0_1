@@ -1,12 +1,14 @@
 # Specification
 
 ## Summary
-**Goal:** Remove all loading states and loading UI from the iframe tab browsing experience in Cheetah 1.0.
+**Goal:** Expand the proxy fallback chain to load more websites successfully in iframes, add dedicated TikTok handling, and improve the error state with retry and open-in-new-window options.
 
 **Planned changes:**
-- Remove per-tab loading indicators from `TabBar.tsx`
-- Remove the loading overlay/spinner from `TabContent.tsx` so the iframe renders immediately when a URL is set
-- Remove or stop using `isLoading`/`loading` state tracking in `useTabs.ts` for tab rendering
-- Preserve error state UI for when all proxy fallbacks fail
+- Add three additional proxies to the fallback chain (`codetabs.com`, `thingproxy.freeboard.io`, `yacdn.org`) after the existing three, attempted in sequence before showing an error state
+- Add dedicated TikTok handling: try full proxy chain first, then fall back to `https://www.tiktok.com/embed/`, and if all fail show a direct link to TikTok opening in a new tab
+- Update the TikTok card in QuickOpen to use `https://www.tiktok.com`
+- Add a "Try Again" button in the error state that re-initiates the full proxy chain from the beginning
+- Add an "Open in New Window" button in the error state that opens the original URL directly in a new browser tab
+- Style both new buttons with the existing amethyst/purple neon glow theme
 
-**User-visible outcome:** When a URL is loaded in any iframe tab, no loading spinner or overlay appears at any point — the iframe is shown immediately. Error messages still display if all proxy attempts fail.
+**User-visible outcome:** More websites load successfully inside tabs due to a longer proxy chain; TikTok has a best-effort embed strategy with a direct link fallback; users can retry or open any failed tab in a new window from the error screen.

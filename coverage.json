@@ -1,26 +1,51 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-27T00:54:50.004Z",
+  "generatedAt": "2026-02-27T01:12:49.167Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 1,
-    "implemented": 1,
+    "total": 3,
+    "implemented": 3,
     "items": [
       {
-        "id": "REQ-14",
-        "summary": "Remove all loading spinners, loading overlays, and loading state indicators from the iframe tab browsing experience. When a URL is loaded in a tab, the iframe must appear immediately with no loading screen, no spinner, and no in-progress visual state. This applies to TabBar.tsx (remove per-tab loading indicators), TabContent.tsx (remove the loading overlay/spinner shown while the iframe loads), and useTabs.ts (remove the isLoading/loading state tracking for tabs entirely or stop using it to gate rendering).",
+        "id": "REQ-15",
+        "summary": "Expand the CORS proxy fallback chain in `useTabs.ts` and `TabContent.tsx` to maximize the number of sites that successfully load in iframes. Add the following additional proxies to the rotation after the existing ones: `https://api.codetabs.com/v1/proxy?quest=<url>`, `https://thingproxy.freeboard.io/fetch/<url>`, and `https://yacdn.org/proxy/<url>`. Attempt each proxy in sequence and only show the error/fallback state after all proxies have been exhausted.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/tabs/TabBar.tsx",
+          "frontend/src/hooks/useTabs.ts",
+          "frontend/src/components/tabs/TabContent.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/hooks/useTabs.ts",
+          "frontend/src/components/tabs/TabContent.tsx"
+        ]
+      },
+      {
+        "id": "REQ-16",
+        "summary": "For TikTok (tiktok.com) specifically, implement a dedicated handling strategy in `useTabs.ts` and `TabContent.tsx`. When the URL being loaded matches `tiktok.com` (or `www.tiktok.com`), use an embedded `<iframe>` with `src` set to `https://www.tiktok.com/embed/` as the primary attempt, and also try the full proxy chain using `https://tiktok.com` as the target. Additionally, in `QuickOpen.tsx`, update the TikTok card's URL to use `https://www.tiktok.com` and add a note in the error fallback state that links directly to `https://www.tiktok.com` with `target=\"_blank\"` for cases where embedding is blocked by TikTok's own X-Frame-Options headers.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/hooks/useTabs.ts",
+          "frontend/src/components/tabs/TabContent.tsx",
+          "frontend/src/pages/QuickOpen.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/hooks/useTabs.ts",
+          "frontend/src/components/tabs/TabContent.tsx"
+        ]
+      },
+      {
+        "id": "REQ-17",
+        "summary": "Add a per-tab retry mechanism in `TabContent.tsx`. When the error state is displayed (all proxies exhausted), show a 'Try Again' button that re-initiates the full proxy fallback chain for the current URL. Also add a 'Open in New Window' button that opens the raw (non-proxied) URL directly in a new browser tab via `window.open(url, '_blank')`.",
+        "status": "implemented",
+        "plannedFiles": [
           "frontend/src/components/tabs/TabContent.tsx",
           "frontend/src/hooks/useTabs.ts"
         ],
         "matchedFiles": [
-          "frontend/src/components/tabs/TabBar.tsx",
           "frontend/src/components/tabs/TabContent.tsx",
           "frontend/src/hooks/useTabs.ts"
         ]
@@ -32,7 +57,7 @@
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/components/tabs/TabBar.tsx",
+    "frontend/src/App.tsx",
     "frontend/src/components/tabs/TabContent.tsx",
     "frontend/src/hooks/useTabs.ts",
     "frontend/src/pages/HomeSearch.tsx",

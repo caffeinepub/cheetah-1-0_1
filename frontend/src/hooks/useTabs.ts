@@ -9,6 +9,7 @@ export interface Tab {
     proxyIndex: number;
     favicon?: string;
     hasError: boolean;
+    isTikTokEmbed?: boolean;
 }
 
 // Ordered list of proxy strategies
@@ -16,9 +17,23 @@ const PROXY_LIST = [
     (url: string) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
     (url: string) => `https://corsproxy.io/?url=${encodeURIComponent(url)}`,
     (url: string) => `https://cors-anywhere.herokuapp.com/${url}`,
+    (url: string) => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
+    (url: string) => `https://thingproxy.freeboard.io/fetch/${url}`,
 ];
 
 export const PROXY_COUNT = PROXY_LIST.length;
+
+// TikTok embed URL used as a final fallback before showing error
+const TIKTOK_EMBED_URL = 'https://www.tiktok.com/embed/';
+
+export function isTikTokUrl(url: string): boolean {
+    try {
+        const hostname = new URL(url).hostname.replace('www.', '');
+        return hostname === 'tiktok.com';
+    } catch {
+        return url.includes('tiktok.com');
+    }
+}
 
 export function makeProxyUrl(url: string, proxyIndex = 0): string {
     if (!url) return '';
@@ -42,6 +57,7 @@ function createNewTab(url = '', title = 'New Tab'): Tab {
         proxyUrl: url ? makeProxyUrl(normalizeUrl(url), 0) : '',
         proxyIndex: 0,
         hasError: false,
+        isTikTokEmbed: false,
     };
 }
 
@@ -86,19 +102,53 @@ export function useTabs(addressBarRef?: React.RefObject<HTMLInputElement | null>
                 ...prev,
                 tabs: prev.tabs.map(t =>
                     t.id === activeTabId
-                        ? { ...t, url: normalized, proxyUrl: proxy, proxyIndex, title, hasError: false }
+                        ? { ...t, url: normalized, proxyUrl: proxy, proxyIndex, title, hasError: false, isTikTokEmbed: false }
                         : t
                 ),
             }));
         }
     }, [activeTabId, setTabs]);
 
+    /**
+     * Re-initiate the full proxy chain from the beginning for a given tab.
+     * Resets proxyIndex to 0 and clears error state.
+     */
+    const navigateToUrl = useCallback((id: string, url?: string) => {
+        setTabs(prev => {
+            const tab = prev.tabs.find(t => t.id === id);
+            if (!tab) return prev;
+            const targetUrl = url ?? tab.url;
+            const newProxyUrl = makeProxyUrl(targetUrl, 0);
+            return {
+                ...prev,
+                tabs: prev.tabs.map(t =>
+                    t.id === id
+                        ? { ...t, url: targetUrl, proxyUrl: newProxyUrl, proxyIndex: 0, hasError: false, isTikTokEmbed: false }
+                        : t
+                ),
+            };
+        });
+    }, [setTabs]);
+
     const retryWithNextProxy = useCallback((id: string) => {
         setTabs(prev => {
             const tab = prev.tabs.find(t => t.id === id);
             if (!tab) return prev;
+
             const nextIndex = tab.proxyIndex + 1;
+
             if (nextIndex >= PROXY_COUNT) {
+                // All standard proxies exhausted — try TikTok embed as final fallback
+                if (isTikTokUrl(tab.url) && !tab.isTikTokEmbed) {
+                    return {
+                        ...prev,
+                        tabs: prev.tabs.map(t =>
+                            t.id === id
+                                ? { ...t, proxyUrl: TIKTOK_EMBED_URL, proxyIndex: nextIndex, hasError: false, isTikTokEmbed: true }
+                                : t
+                        ),
+                    };
+                }
                 // All proxies exhausted — show error
                 return {
                     ...prev,
@@ -107,6 +157,7 @@ export function useTabs(addressBarRef?: React.RefObject<HTMLInputElement | null>
                     ),
                 };
             }
+
             const newProxyUrl = makeProxyUrl(tab.url, nextIndex);
             return {
                 ...prev,
@@ -198,6 +249,7 @@ export function useTabs(addressBarRef?: React.RefObject<HTMLInputElement | null>
         setTabError,
         setTabTitle,
         retryWithNextProxy,
+        navigateToUrl,
         makeProxyUrl,
         normalizeUrl,
     };

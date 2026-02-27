@@ -1,16 +1,24 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { ArrowLeft, ArrowRight, RotateCw, Globe, Search } from 'lucide-react';
+import { ArrowLeft, ArrowRight, RotateCw, Globe, Search, ExternalLink, RefreshCw } from 'lucide-react';
 import type { Tab } from '../hooks/useTabs';
-import { PROXY_COUNT, makeProxyUrl, normalizeUrl } from '../hooks/useTabs';
+import { PROXY_COUNT, isTikTokUrl } from '../hooks/useTabs';
 import { ProxyInfoPanel, ProxyInfoButton } from '../components/common/ProxyInfoPanel';
 
 interface HomeSearchProps {
     activeTab: Tab | null;
     onOpenUrl: (url: string, newTab?: boolean) => void;
     addressBarRef: React.RefObject<HTMLInputElement | null>;
+    onRetryProxy?: (id: string) => void;
+    onNavigateToUrl?: (id: string, url?: string) => void;
 }
 
-export const HomeSearch: React.FC<HomeSearchProps> = ({ activeTab, onOpenUrl, addressBarRef }) => {
+export const HomeSearch: React.FC<HomeSearchProps> = ({
+    activeTab,
+    onOpenUrl,
+    addressBarRef,
+    onRetryProxy,
+    onNavigateToUrl,
+}) => {
     const [addressValue, setAddressValue] = useState('');
     const [showSearch, setShowSearch] = useState(false);
     const [showProxyInfo, setShowProxyInfo] = useState(false);
@@ -47,8 +55,20 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({ activeTab, onOpenUrl, ad
 
     // Active proxy label for display
     const proxyIdx = activeTab?.proxyIndex ?? 0;
-    const proxyLabels = ['allorigins.win', 'corsproxy.io', 'cors-anywhere'];
+    const proxyLabels = ['allorigins.win', 'corsproxy.io', 'cors-anywhere', 'codetabs.com', 'thingproxy'];
     const activeProxyLabel = proxyLabels[proxyIdx] ?? `proxy ${proxyIdx + 1}`;
+
+    const handleTryAgain = () => {
+        if (activeTab && onNavigateToUrl) {
+            onNavigateToUrl(activeTab.id);
+        }
+    };
+
+    const handleOpenInNewWindow = () => {
+        if (activeTab?.url) {
+            window.open(activeTab.url, '_blank', 'noopener,noreferrer');
+        }
+    };
 
     return (
         <div className="flex flex-col h-full">
@@ -151,7 +171,11 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({ activeTab, onOpenUrl, ad
             {!activeTab?.proxyUrl ? (
                 <NewTabPage onOpenUrl={onOpenUrl} onShowSearch={() => setShowSearch(true)} />
             ) : activeTab.hasError ? (
-                <ErrorPage url={activeTab.url} />
+                <ErrorPage
+                    url={activeTab.url}
+                    onTryAgain={handleTryAgain}
+                    onOpenInNewWindow={handleOpenInNewWindow}
+                />
             ) : (
                 <div className="flex-1 relative" style={{ minHeight: 0 }}>
                     <iframe
@@ -222,24 +246,74 @@ const NewTabPage: React.FC<{ onOpenUrl: (url: string, newTab?: boolean) => void;
     );
 };
 
-const ErrorPage: React.FC<{ url: string }> = ({ url }) => (
-    <div className="flex-1 flex flex-col items-center justify-center gap-4 animated-bg" style={{ minHeight: 0 }}>
-        <div className="glass-panel rounded-xl p-8 max-w-md text-center">
-            <div className="text-4xl mb-4">⚠️</div>
-            <h3 className="text-lg font-display font-bold mb-2" style={{ color: 'oklch(0.85 0.1 295)' }}>
-                Unable to Load Page
-            </h3>
-            <p className="text-sm font-mono text-muted-foreground mb-2">
-                All {PROXY_COUNT} proxy routes were tried. This site may block embedding.
-            </p>
-            <a
-                href={url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="neon-btn inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm mt-2"
-            >
-                Open Directly ↗
-            </a>
+interface ErrorPageProps {
+    url: string;
+    onTryAgain?: () => void;
+    onOpenInNewWindow?: () => void;
+}
+
+const ErrorPage: React.FC<ErrorPageProps> = ({ url, onTryAgain, onOpenInNewWindow }) => {
+    const isTikTok = isTikTokUrl(url);
+
+    return (
+        <div className="flex-1 flex flex-col items-center justify-center gap-4 animated-bg" style={{ minHeight: 0 }}>
+            <div className="glass-panel rounded-xl p-8 max-w-md text-center">
+                <div className="text-4xl mb-4">⚠️</div>
+                <h3 className="text-lg font-display font-bold mb-2" style={{ color: 'oklch(0.85 0.1 295)' }}>
+                    Unable to Load Page
+                </h3>
+                {isTikTok ? (
+                    <>
+                        <p className="text-sm font-mono text-muted-foreground mb-2">
+                            TikTok blocks embedding via X-Frame-Options headers.
+                        </p>
+                        <p className="text-xs font-mono mb-4" style={{ color: 'oklch(0.5 0.08 295)' }}>
+                            Tried {PROXY_COUNT} proxy servers + embed fallback
+                        </p>
+                        <a
+                            href="https://www.tiktok.com"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="neon-btn inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold mb-4 w-full justify-center"
+                            style={{
+                                background: 'linear-gradient(135deg, oklch(0.18 0.04 200 / 0.8), oklch(0.22 0.06 340 / 0.6))',
+                                border: '1px solid oklch(0.75 0.05 200 / 0.5)',
+                                color: 'oklch(0.9 0.05 200)',
+                                boxShadow: '0 0 16px oklch(0.75 0.05 200 / 0.3)',
+                            }}
+                        >
+                            <ExternalLink size={16} />
+                            Open TikTok in New Tab
+                        </a>
+                    </>
+                ) : (
+                    <p className="text-sm font-mono text-muted-foreground mb-4">
+                        All {PROXY_COUNT} proxy routes were tried. This site may block embedding.
+                    </p>
+                )}
+                <div className="flex gap-3 justify-center flex-wrap">
+                    {onTryAgain && (
+                        <button
+                            onClick={onTryAgain}
+                            className="neon-btn inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm transition-all hover:scale-105"
+                            style={{ boxShadow: '0 0 12px oklch(0.62 0.25 295 / 0.3)' }}
+                        >
+                            <RefreshCw size={14} />
+                            Try Again
+                        </button>
+                    )}
+                    {onOpenInNewWindow && (
+                        <button
+                            onClick={onOpenInNewWindow}
+                            className="neon-btn inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm transition-all hover:scale-105"
+                            style={{ boxShadow: '0 0 12px oklch(0.62 0.25 295 / 0.3)' }}
+                        >
+                            <ExternalLink size={14} />
+                            Open in New Window
+                        </button>
+                    )}
+                </div>
+            </div>
         </div>
-    </div>
-);
+    );
+};

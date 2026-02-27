@@ -1,33 +1,75 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Remove all loading states for iframe tabs",
+  "title": "Improve proxy to open all websites and make TikTok work",
   "requirements": [
     {
-      "id": "REQ-14",
-      "summary": "Remove all loading spinners, overlays, and state indicators from iframe tab browsing so that iframes appear immediately with no loading UI",
+      "id": "REQ-15",
+      "summary": "Expand the CORS proxy fallback chain to maximize the number of sites that successfully load in iframes by adding three additional proxies and implementing sequential retry logic",
       "acceptanceCriteria": [
-        "Opening any URL in a proxy iframe tab shows no loading spinner or overlay at any point.",
-        "The tab bar shows no loading indicator on any tab while a site is loading.",
-        "The iframe is rendered immediately when a URL is set, without waiting for an onLoad event to hide a spinner.",
-        "No loading state (isLoading, loading, etc.) is used to conditionally render or hide the iframe content.",
-        "The error state (all proxies failed) is still shown if all proxy attempts fail — only the loading UI is removed, not error handling."
+        "The proxy fallback chain in useTabs.ts includes at least 5 proxy options tried in sequence.",
+        "When one proxy URL fails (iframe error event or timeout), the next proxy is automatically attempted.",
+        "The error state is only shown after all proxy options have failed.",
+        "Existing proxy order (allorigins.win first, corsproxy.io second, cors-anywhere third) is preserved as the first three attempts."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/tabs/TabBar.tsx",
+          "path": "frontend/src/hooks/useTabs.ts",
           "operation": "modify",
-          "description": "Remove the loading indicator display from individual tabs. Remove any conditional rendering or styling that shows a loading spinner, progress bar, or loading state icon on tabs while their content is loading."
+          "description": "Add three new proxy URLs to the proxy rotation array after the existing proxies: 'https://api.codetabs.com/v1/proxy?quest=<url>', 'https://thingproxy.freeboard.io/fetch/<url>', and 'https://yacdn.org/proxy/<url>'. Ensure the existing proxy order (allorigins.win, corsproxy.io, cors-anywhere) is preserved as the first three attempts. Update the proxy rotation logic to cycle through all five proxies sequentially before marking a tab as failed."
         },
         {
           "path": "frontend/src/components/tabs/TabContent.tsx",
           "operation": "modify",
-          "description": "Remove the loading overlay, spinner, and any conditional rendering that hides the iframe until the onLoad event fires. Render the iframe immediately when a URL is set, regardless of loading state. Preserve the error state UI that displays when all proxy attempts fail."
+          "description": "Update the iframe error handling to coordinate with the expanded proxy chain. Ensure that when an iframe load error occurs, the component triggers the next proxy attempt from useTabs.ts. Only display the error state after all five proxy options have been exhausted."
+        }
+      ]
+    },
+    {
+      "id": "REQ-16",
+      "summary": "Implement dedicated TikTok handling strategy with embed URL fallback and direct link option when embedding is blocked",
+      "acceptanceCriteria": [
+        "Clicking the TikTok card in QuickOpen opens a tab that attempts to load TikTok via proxy.",
+        "If direct proxy embedding fails, the TikTok embed URL (https://www.tiktok.com/embed/) is tried as a fallback.",
+        "If all embedding attempts fail, the error state displays a clearly visible direct link to https://www.tiktok.com that opens in a new browser tab.",
+        "The TikTok card in QuickOpen.tsx uses https://www.tiktok.com as its URL."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useTabs.ts",
+          "operation": "modify",
+          "description": "Add TikTok-specific URL detection logic that checks if the URL matches 'tiktok.com' or 'www.tiktok.com'. When TikTok is detected, implement a dual-strategy approach: first attempt the full proxy chain using 'https://tiktok.com' as the target, and if all proxies fail, try the TikTok embed URL 'https://www.tiktok.com/embed/' as a final fallback before showing the error state."
+        },
+        {
+          "path": "frontend/src/components/tabs/TabContent.tsx",
+          "operation": "modify",
+          "description": "Add TikTok-specific error state rendering. When a TikTok URL fails to embed after all proxy and embed attempts, display an error message with a clearly visible direct link to 'https://www.tiktok.com' that opens in a new browser tab using target='_blank'. Include explanatory text noting that TikTok blocks embedding due to X-Frame-Options headers."
+        },
+        {
+          "path": "frontend/src/pages/QuickOpen.tsx",
+          "operation": "modify",
+          "description": "Update the TikTok card's URL property from any existing value to 'https://www.tiktok.com' to ensure consistency with the new TikTok handling strategy."
+        }
+      ]
+    },
+    {
+      "id": "REQ-17",
+      "summary": "Add per-tab retry mechanism with 'Try Again' button to re-initiate proxy chain and 'Open in New Window' button to open the raw URL directly",
+      "acceptanceCriteria": [
+        "Error state in TabContent shows a 'Try Again' button that re-attempts all proxies from the beginning.",
+        "Error state shows an 'Open in New Window' button that calls window.open with the original URL and '_blank' target.",
+        "Both buttons are styled consistently with the amethyst/purple theme and have neon glow hover states."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/tabs/TabContent.tsx",
+          "operation": "modify",
+          "description": "Add two action buttons to the error state UI: a 'Try Again' button that calls the navigateToUrl function from useTabs.ts with the current tab's URL to re-initiate the full proxy fallback chain, and an 'Open in New Window' button that calls window.open(tab.url, '_blank') to open the raw non-proxied URL in a new browser tab. Style both buttons with the existing amethyst/purple theme using glassmorphism effects and neon glow hover states consistent with the app's design system defined in frontend/src/index.css."
         },
         {
           "path": "frontend/src/hooks/useTabs.ts",
           "operation": "modify",
-          "description": "Remove the isLoading or loading state tracking for tabs entirely, or stop using it to gate iframe rendering. If the loading state is still needed internally for proxy fallback logic, ensure it does not propagate to any UI components or affect rendering decisions."
+          "description": "Ensure the navigateToUrl function can be called multiple times for the same tab to support retry logic. Reset any proxy attempt counters or error flags when navigateToUrl is invoked so that the full proxy chain is re-attempted from the beginning."
         }
       ]
     }

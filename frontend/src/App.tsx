@@ -29,6 +29,8 @@ export default function App() {
         switchTab,
         setTabLoading,
         setTabError,
+        retryWithNextProxy,
+        navigateToUrl,
     } = useTabs(addressBarRef);
 
     const activatePanic = useCallback(() => {
@@ -111,6 +113,8 @@ export default function App() {
                             activeTab={activeTab}
                             onOpenUrl={handleOpenUrl}
                             addressBarRef={addressBarRef}
+                            onRetryProxy={retryWithNextProxy}
+                            onNavigateToUrl={navigateToUrl}
                         />
                     )}
                     {activePage === 'games' && (

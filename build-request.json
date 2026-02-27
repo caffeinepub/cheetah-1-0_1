@@ -1,38 +1,76 @@
 {
   "kind": "build_request",
-  "title": "Remove all loading states for iframe tabs",
+  "title": "Improve proxy to open all websites and make TikTok work",
   "projectName": "Cheetah 1.0",
-  "priority": "normal",
+  "priority": "high",
   "requirements": [
     {
-      "id": "REQ-14",
-      "text": "Remove all loading spinners, loading overlays, and loading state indicators from the iframe tab browsing experience. When a URL is loaded in a tab, the iframe must appear immediately with no loading screen, no spinner, and no in-progress visual state. This applies to TabBar.tsx (remove per-tab loading indicators), TabContent.tsx (remove the loading overlay/spinner shown while the iframe loads), and useTabs.ts (remove the isLoading/loading state tracking for tabs entirely or stop using it to gate rendering).",
+      "id": "REQ-15",
+      "text": "Expand the CORS proxy fallback chain in `useTabs.ts` and `TabContent.tsx` to maximize the number of sites that successfully load in iframes. Add the following additional proxies to the rotation after the existing ones: `https://api.codetabs.com/v1/proxy?quest=<url>`, `https://thingproxy.freeboard.io/fetch/<url>`, and `https://yacdn.org/proxy/<url>`. Attempt each proxy in sequence and only show the error/fallback state after all proxies have been exhausted.",
       "target": "frontend",
       "source": {
         "messageIds": [
           "msg-4"
         ],
         "quotes": [
-          "make NO loading for any website!"
+          "make all websites open when searched"
         ]
       },
       "acceptanceCriteria": [
-        "Opening any URL in a proxy iframe tab shows no loading spinner or overlay at any point.",
-        "The tab bar shows no loading indicator on any tab while a site is loading.",
-        "The iframe is rendered immediately when a URL is set, without waiting for an onLoad event to hide a spinner.",
-        "No loading state (isLoading, loading, etc.) is used to conditionally render or hide the iframe content.",
-        "The error state (all proxies failed) is still shown if all proxy attempts fail — only the loading UI is removed, not error handling."
+        "The proxy fallback chain in useTabs.ts includes at least 5 proxy options tried in sequence.",
+        "When one proxy URL fails (iframe error event or timeout), the next proxy is automatically attempted.",
+        "The error state is only shown after all proxy options have failed.",
+        "Existing proxy order (allorigins.win first, corsproxy.io second, cors-anywhere third) is preserved as the first three attempts."
+      ]
+    },
+    {
+      "id": "REQ-16",
+      "text": "For TikTok (tiktok.com) specifically, implement a dedicated handling strategy in `useTabs.ts` and `TabContent.tsx`. When the URL being loaded matches `tiktok.com` (or `www.tiktok.com`), use an embedded `<iframe>` with `src` set to `https://www.tiktok.com/embed/` as the primary attempt, and also try the full proxy chain using `https://tiktok.com` as the target. Additionally, in `QuickOpen.tsx`, update the TikTok card's URL to use `https://www.tiktok.com` and add a note in the error fallback state that links directly to `https://www.tiktok.com` with `target=\"_blank\"` for cases where embedding is blocked by TikTok's own X-Frame-Options headers.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "make TikTok work"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Clicking the TikTok card in QuickOpen opens a tab that attempts to load TikTok via proxy.",
+        "If direct proxy embedding fails, the TikTok embed URL (https://www.tiktok.com/embed/) is tried as a fallback.",
+        "If all embedding attempts fail, the error state displays a clearly visible direct link to https://www.tiktok.com that opens in a new browser tab.",
+        "The TikTok card in QuickOpen.tsx uses https://www.tiktok.com as its URL."
+      ]
+    },
+    {
+      "id": "REQ-17",
+      "text": "Add a per-tab retry mechanism in `TabContent.tsx`. When the error state is displayed (all proxies exhausted), show a 'Try Again' button that re-initiates the full proxy fallback chain for the current URL. Also add a 'Open in New Window' button that opens the raw (non-proxied) URL directly in a new browser tab via `window.open(url, '_blank')`.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "make all websites open when searched"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Error state in TabContent shows a 'Try Again' button that re-attempts all proxies from the beginning.",
+        "Error state shows an 'Open in New Window' button that calls window.open with the original URL and '_blank' target.",
+        "Both buttons are styled consistently with the amethyst/purple theme and have neon glow hover states."
       ]
     }
   ],
   "constraints": [
-    "Do not remove the error state UI — if all proxy fallbacks fail, the error message and direct-link fallback must still be shown.",
-    "Do not modify files in frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, or frontend/src/components/ui."
+    "Do not modify any files under frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, or frontend/src/components/ui.",
+    "Do not add any backend logic; this is a frontend-only change.",
+    "Preserve the existing proxy order: allorigins.win → corsproxy.io → cors-anywhere as the first three attempts."
   ],
   "nonGoals": [
-    "Changing proxy logic or fallback order.",
-    "Modifying the AI Assistant loading spinner (that is unrelated to iframe tabs).",
-    "Removing loading states from the Code Editor page."
+    "Implementing a real server-side proxy backend.",
+    "Guaranteeing that sites with strict X-Frame-Options or CSP headers (e.g., TikTok) will embed successfully — only best-effort proxy attempts are in scope.",
+    "Changes to the AI Assistant, Code Editor, Presentation Builder, or Games pages.",
+    "Adding new navigation destinations or pages."
   ],
   "imageRequirements": {
     "required": [],
