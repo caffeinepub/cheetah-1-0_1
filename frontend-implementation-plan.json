@@ -1,75 +1,23 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Improve proxy to open all websites and make TikTok work",
+  "title": "Add user-specified website to the Games/Education page",
   "requirements": [
     {
-      "id": "REQ-15",
-      "summary": "Expand the CORS proxy fallback chain to maximize the number of sites that successfully load in iframes by adding three additional proxies and implementing sequential retry logic",
+      "id": "REQ-18",
+      "summary": "Add a new education site card to the Games page with placeholder content that prompts the user to provide a URL, matching the existing card style and grid layout",
       "acceptanceCriteria": [
-        "The proxy fallback chain in useTabs.ts includes at least 5 proxy options tried in sequence.",
-        "When one proxy URL fails (iframe error event or timeout), the next proxy is automatically attempted.",
-        "The error state is only shown after all proxy options have failed.",
-        "Existing proxy order (allorigins.win first, corsproxy.io second, cors-anywhere third) is preserved as the first three attempts."
+        "A new card appears in the Games page grid alongside the existing 10 game site cards.",
+        "The card displays an icon, a site name, and a brief description consistent with the existing card style.",
+        "Clicking the card opens the target URL in a new proxy iframe tab using the same proxy fallback chain as all other cards.",
+        "The card has the same neon glow hover effect and glassmorphism styling as the existing cards.",
+        "The new card does not break the responsive grid layout on desktop or tablet widths."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/hooks/useTabs.ts",
+          "path": "frontend/src/pages/Games.tsx",
           "operation": "modify",
-          "description": "Add three new proxy URLs to the proxy rotation array after the existing proxies: 'https://api.codetabs.com/v1/proxy?quest=<url>', 'https://thingproxy.freeboard.io/fetch/<url>', and 'https://yacdn.org/proxy/<url>'. Ensure the existing proxy order (allorigins.win, corsproxy.io, cors-anywhere) is preserved as the first three attempts. Update the proxy rotation logic to cycle through all five proxies sequentially before marking a tab as failed."
-        },
-        {
-          "path": "frontend/src/components/tabs/TabContent.tsx",
-          "operation": "modify",
-          "description": "Update the iframe error handling to coordinate with the expanded proxy chain. Ensure that when an iframe load error occurs, the component triggers the next proxy attempt from useTabs.ts. Only display the error state after all five proxy options have been exhausted."
-        }
-      ]
-    },
-    {
-      "id": "REQ-16",
-      "summary": "Implement dedicated TikTok handling strategy with embed URL fallback and direct link option when embedding is blocked",
-      "acceptanceCriteria": [
-        "Clicking the TikTok card in QuickOpen opens a tab that attempts to load TikTok via proxy.",
-        "If direct proxy embedding fails, the TikTok embed URL (https://www.tiktok.com/embed/) is tried as a fallback.",
-        "If all embedding attempts fail, the error state displays a clearly visible direct link to https://www.tiktok.com that opens in a new browser tab.",
-        "The TikTok card in QuickOpen.tsx uses https://www.tiktok.com as its URL."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/hooks/useTabs.ts",
-          "operation": "modify",
-          "description": "Add TikTok-specific URL detection logic that checks if the URL matches 'tiktok.com' or 'www.tiktok.com'. When TikTok is detected, implement a dual-strategy approach: first attempt the full proxy chain using 'https://tiktok.com' as the target, and if all proxies fail, try the TikTok embed URL 'https://www.tiktok.com/embed/' as a final fallback before showing the error state."
-        },
-        {
-          "path": "frontend/src/components/tabs/TabContent.tsx",
-          "operation": "modify",
-          "description": "Add TikTok-specific error state rendering. When a TikTok URL fails to embed after all proxy and embed attempts, display an error message with a clearly visible direct link to 'https://www.tiktok.com' that opens in a new browser tab using target='_blank'. Include explanatory text noting that TikTok blocks embedding due to X-Frame-Options headers."
-        },
-        {
-          "path": "frontend/src/pages/QuickOpen.tsx",
-          "operation": "modify",
-          "description": "Update the TikTok card's URL property from any existing value to 'https://www.tiktok.com' to ensure consistency with the new TikTok handling strategy."
-        }
-      ]
-    },
-    {
-      "id": "REQ-17",
-      "summary": "Add per-tab retry mechanism with 'Try Again' button to re-initiate proxy chain and 'Open in New Window' button to open the raw URL directly",
-      "acceptanceCriteria": [
-        "Error state in TabContent shows a 'Try Again' button that re-attempts all proxies from the beginning.",
-        "Error state shows an 'Open in New Window' button that calls window.open with the original URL and '_blank' target.",
-        "Both buttons are styled consistently with the amethyst/purple theme and have neon glow hover states."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/tabs/TabContent.tsx",
-          "operation": "modify",
-          "description": "Add two action buttons to the error state UI: a 'Try Again' button that calls the navigateToUrl function from useTabs.ts with the current tab's URL to re-initiate the full proxy fallback chain, and an 'Open in New Window' button that calls window.open(tab.url, '_blank') to open the raw non-proxied URL in a new browser tab. Style both buttons with the existing amethyst/purple theme using glassmorphism effects and neon glow hover states consistent with the app's design system defined in frontend/src/index.css."
-        },
-        {
-          "path": "frontend/src/hooks/useTabs.ts",
-          "operation": "modify",
-          "description": "Ensure the navigateToUrl function can be called multiple times for the same tab to support retry logic. Reset any proxy attempt counters or error flags when navigateToUrl is invoked so that the full proxy chain is re-attempted from the beginning."
+          "description": "Add a new card object to the existing educationalSites array. The new card must be clearly labeled 'New Education Site' with a generic education icon (GraduationCap from lucide-react), description 'User-requested educational site', and a placeholder URL (e.g., 'https://example.com/education'). Use a visually distinct color (e.g., colors.indigo or colors.cyan) not already used by the existing 10 cards. Include a note in the description field prompting the user to update the URL. Ensure the card uses the same structure as existing cards: { name, url, icon, color, description } and that clicking it invokes openUrl with the URL to open in a proxy tab. Verify that the card integrates naturally into the responsive grid without breaking the layout on desktop or tablet."
         }
       ]
     }

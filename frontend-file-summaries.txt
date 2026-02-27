@@ -8,5 +8,6 @@
   "frontend/src/components/layout/Header.tsx": "App header with logo, proxy browser label, SECURE badge, and a red-glowing PANIC button that accepts an `onPanic` callback prop and triggers the panic overlay.",
   "frontend/src/hooks/useTabs.ts": "Tab state management hook with an expanded 5-proxy fallback chain (allorigins.win → corsproxy.io → cors-anywhere → codetabs.com → thingproxy), TikTok-specific embed URL fallback after all proxies fail, and a new `navigateToUrl` function that resets the proxy chain from the beginning for retry support.",
   "frontend/src/components/tabs/TabContent.tsx": "Tab iframe renderer with updated error state UI featuring \"Try Again\" (resets proxy chain via `onNavigateToUrl`) and \"Open in New Window\" buttons with neon glow styling, plus TikTok-specific error messaging with a prominent direct link to tiktok.com.",
-  "frontend/src/components/tabs/TabBar.tsx": "Tab bar component that renders all open tabs with a Globe icon (no loading spinner), active state styling, close buttons, and a new-tab button."
+  "frontend/src/components/tabs/TabBar.tsx": "Tab bar component that renders all open tabs with a Globe icon (no loading spinner), active state styling, close buttons, and a new-tab button.",
+  "frontend/src/pages/Games.tsx": "Games/Education page displaying a responsive grid of 11 educational site cards (added Blooket with a cyan GraduationCap icon), each opening the target URL in a proxy iframe tab via the `onOpenUrl` callback with neon glow hover effects and glassmorphism styling."
 }

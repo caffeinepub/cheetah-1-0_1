@@ -1,53 +1,24 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-27T01:12:49.167Z",
+  "generatedAt": "2026-02-27T01:31:29.604Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 3,
-    "implemented": 3,
+    "total": 1,
+    "implemented": 1,
     "items": [
       {
-        "id": "REQ-15",
-        "summary": "Expand the CORS proxy fallback chain in `useTabs.ts` and `TabContent.tsx` to maximize the number of sites that successfully load in iframes. Add the following additional proxies to the rotation after the existing ones: `https://api.codetabs.com/v1/proxy?quest=<url>`, `https://thingproxy.freeboard.io/fetch/<url>`, and `https://yacdn.org/proxy/<url>`. Attempt each proxy in sequence and only show the error/fallback state after all proxies have been exhausted.",
+        "id": "REQ-18",
+        "summary": "Add a new site card to the Games page (`frontend/src/pages/Games.tsx`). The user did not specify a URL in this message — the assistant must prompt the user for the website URL before implementing, or add a placeholder card that is clearly labeled 'New Education Site' with a generic education icon and description 'User-requested educational site', using the URL provided by the user. If no URL was provided, use a visually distinct placeholder card with a note to update the URL. The card must match the existing card style (icon, site name, brief description, neon glow hover, opens in a new proxy iframe tab via the existing `openUrl` mechanism) and fit naturally into the responsive grid layout.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/hooks/useTabs.ts",
-          "frontend/src/components/tabs/TabContent.tsx"
+          "frontend/src/pages/Games.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/hooks/useTabs.ts",
-          "frontend/src/components/tabs/TabContent.tsx"
-        ]
-      },
-      {
-        "id": "REQ-16",
-        "summary": "For TikTok (tiktok.com) specifically, implement a dedicated handling strategy in `useTabs.ts` and `TabContent.tsx`. When the URL being loaded matches `tiktok.com` (or `www.tiktok.com`), use an embedded `<iframe>` with `src` set to `https://www.tiktok.com/embed/` as the primary attempt, and also try the full proxy chain using `https://tiktok.com` as the target. Additionally, in `QuickOpen.tsx`, update the TikTok card's URL to use `https://www.tiktok.com` and add a note in the error fallback state that links directly to `https://www.tiktok.com` with `target=\"_blank\"` for cases where embedding is blocked by TikTok's own X-Frame-Options headers.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/hooks/useTabs.ts",
-          "frontend/src/components/tabs/TabContent.tsx",
-          "frontend/src/pages/QuickOpen.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/hooks/useTabs.ts",
-          "frontend/src/components/tabs/TabContent.tsx"
-        ]
-      },
-      {
-        "id": "REQ-17",
-        "summary": "Add a per-tab retry mechanism in `TabContent.tsx`. When the error state is displayed (all proxies exhausted), show a 'Try Again' button that re-initiates the full proxy fallback chain for the current URL. Also add a 'Open in New Window' button that opens the raw (non-proxied) URL directly in a new browser tab via `window.open(url, '_blank')`.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/components/tabs/TabContent.tsx",
-          "frontend/src/hooks/useTabs.ts"
-        ],
-        "matchedFiles": [
-          "frontend/src/components/tabs/TabContent.tsx",
-          "frontend/src/hooks/useTabs.ts"
+          "frontend/src/pages/Games.tsx"
         ]
       }
     ]
@@ -57,10 +28,7 @@
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/App.tsx",
-    "frontend/src/components/tabs/TabContent.tsx",
-    "frontend/src/hooks/useTabs.ts",
-    "frontend/src/pages/HomeSearch.tsx",
+    "frontend/src/pages/Games.tsx",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

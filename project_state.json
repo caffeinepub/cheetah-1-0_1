@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 11,
+  "projectStateVersion": 13,
   "summary": "Cheetah 1.0 is a fully-featured single-page proxy browser app with an amethyst/purple high-tech theme. It includes tab-based browsing with iframe proxy (allorigins.win), a Google CSE search bar, an unblocked games page, an AI homework helper (Puter.js), a code editor/presentation/website builder, and a quick-open links page. Built as a single index.html with embedded CSS and JS.",
   "architectural_notes": [
     "Single index.html with embedded CSS and JS, no build tools",
@@ -12,7 +12,7 @@
     "Panic button: triggered by click or Cmd/Ctrl+P or B; shows white screen overlay and blocks access for 60 seconds using localStorage timestamp"
   ],
   "known_issues": [],
-  "isFixRequest": true,
+  "isFixRequest": false,
   "existing_features": [
     {
       "id": "feature-create-a-single-page-react-application-named-cheetah-1-0-with-a-persistent-amethyst-purple-high-tech-theme-deep-purples-6c3483-violets-9b59b6-and-magenta-8e44ad-gradients-glassmorphism-panels-with-backdrop-blur-neon-glow-effects-on-interactive-elements-animated-gradient-backgrounds-and-a-sleek-monospace-font-display-cheetah-1-0-prominently-in-the-header-alongside-a-cheetah-icon-logo-dark-mode-is-the-default-and-only-mode",
@@ -149,6 +149,14 @@
         "REQ-17"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-add-a-new-site-card-to-the-games-page-frontend-src-pages-games-tsx-the-user-did-not-specify-a-url-in-this-message-the-assistant-must-prompt-the-user-for-the-website-url-before-implementing-or-add-a-placeholder-card-that-is-clearly-labeled-new-education-site-with-a-generic-education-icon-and-description-user-requested-educational-site-using-the-url-provided-by-the-user-if-no-url-was-provided-use-a-visually-distinct-placeholder-card-with-a-note-to-update-the-url-the-card-must-match-the-existing-card-style-icon-site-name-brief-description-neon-glow-hover-opens-in-a-new-proxy-iframe-tab-via-the-existing-openurl-mechanism-and-fit-naturally-into-the-responsive-grid-layout",
+      "title": "Add a new site card to the Games page (`frontend/src/pages/Games.tsx`). The user did not specify a URL in this message — the assistant must prompt the user for the website URL before implementing, or add a placeholder card that is clearly labeled 'New Education Site' with a generic education icon and description 'User-requested educational site', using the URL provided by the user. If no URL was provided, use a visually distinct placeholder card with a note to update the URL. The card must match the existing card style (icon, site name, brief description, neon glow hover, opens in a new proxy iframe tab via the existing `openUrl` mechanism) and fit naturally into the responsive grid layout.",
+      "reqIds": [
+        "REQ-18"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -203,6 +211,12 @@
     {
       "id": "AR-9",
       "summary": "Remove loading spinner/overlay for all websites in iframe tabs — load instantly with no loading state",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-10",
+      "summary": "Add a user-specified website to the education/games list",
       "reqIds": [],
       "status": "pending"
     }

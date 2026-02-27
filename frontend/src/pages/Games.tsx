@@ -1,5 +1,5 @@
 import React from 'react';
-import { Gamepad2, Calculator, BookOpen, Keyboard, Code, Trophy, Atom, Pencil, Star, Zap } from 'lucide-react';
+import { Gamepad2, Calculator, BookOpen, Keyboard, Code, Trophy, Atom, Pencil, Star, Zap, GraduationCap } from 'lucide-react';
 
 interface GameSite {
     name: string;
@@ -90,6 +90,14 @@ const gameSites: GameSite[] = [
         icon: <Gamepad2 size={28} />,
         color: 'oklch(0.65 0.22 295)',
         bgColor: 'oklch(0.22 0.1 295 / 0.3)',
+    },
+    {
+        name: 'Blooket',
+        url: 'https://www.blooket.com',
+        description: 'Game-based learning platform',
+        icon: <GraduationCap size={28} />,
+        color: 'oklch(0.68 0.22 195)',
+        bgColor: 'oklch(0.22 0.1 195 / 0.3)',
     },
 ];
 

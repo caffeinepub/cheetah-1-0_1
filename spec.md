@@ -1,14 +1,11 @@
 # Specification
 
 ## Summary
-**Goal:** Expand the proxy fallback chain to load more websites successfully in iframes, add dedicated TikTok handling, and improve the error state with retry and open-in-new-window options.
+**Goal:** Add a placeholder education site card to the Games/Education page in Cheetah 1.0.
 
 **Planned changes:**
-- Add three additional proxies to the fallback chain (`codetabs.com`, `thingproxy.freeboard.io`, `yacdn.org`) after the existing three, attempted in sequence before showing an error state
-- Add dedicated TikTok handling: try full proxy chain first, then fall back to `https://www.tiktok.com/embed/`, and if all fail show a direct link to TikTok opening in a new tab
-- Update the TikTok card in QuickOpen to use `https://www.tiktok.com`
-- Add a "Try Again" button in the error state that re-initiates the full proxy chain from the beginning
-- Add an "Open in New Window" button in the error state that opens the original URL directly in a new browser tab
-- Style both new buttons with the existing amethyst/purple neon glow theme
+- Add a new card to the grid in `frontend/src/pages/Games.tsx` labeled "New Education Site" with a generic education icon and description "User-requested educational site"
+- Use a placeholder URL that is clearly marked for update
+- Apply the same neon glow hover, glassmorphism styling, and `openUrl` proxy mechanism as existing cards
 
-**User-visible outcome:** More websites load successfully inside tabs due to a longer proxy chain; TikTok has a best-effort embed strategy with a direct link fallback; users can retry or open any failed tab in a new window from the error screen.
+**User-visible outcome:** A new education site card appears in the Games page grid, styled consistently with existing cards, ready to open a user-specified URL in a proxy iframe tab once the URL is updated.
