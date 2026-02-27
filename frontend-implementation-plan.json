@@ -1,267 +1,33 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Cheetah 1.0 – Amethyst Proxy Browser SPA",
+  "title": "Remove all loading states for iframe tabs",
   "requirements": [
     {
-      "id": "REQ-1",
-      "summary": "Create amethyst/purple high-tech themed React SPA with glassmorphism, neon glow effects, animated gradient backgrounds, and prominent 'Cheetah 1.0' branding with cheetah icon in header",
+      "id": "REQ-14",
+      "summary": "Remove all loading spinners, overlays, and state indicators from iframe tab browsing so that iframes appear immediately with no loading UI",
       "acceptanceCriteria": [
-        "Header shows 'Cheetah 1.0' text and cheetah icon at all times",
-        "Background uses animated amethyst gradient (purple → deep violet → magenta)",
-        "UI panels use glassmorphism (frosted glass, backdrop-filter: blur)",
-        "Interactive elements (buttons, tabs, links) have neon glow on hover/focus",
-        "Monospace font applied to navigation and code-related elements",
-        "Dark mode is default with no light-mode toggle required"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/index.css",
-          "operation": "modify",
-          "description": "Add amethyst theme CSS custom properties (#6C3483, #9B59B6, #8E44AD), animated gradient background keyframes, glassmorphism utilities (backdrop-filter: blur), neon glow effects for interactive elements, and monospace font family declarations. Set dark mode as default with amethyst color palette."
-        },
-        {
-          "path": "frontend/tailwind.config.js",
-          "operation": "modify",
-          "description": "Extend Tailwind theme with amethyst color palette (deepPurple, violet, magenta), glassmorphism backdrop-blur utilities, custom animation definitions for gradient backgrounds, neon glow shadows, and monospace font configuration."
-        },
-        {
-          "path": "frontend/src/components/layout/Header.tsx",
-          "operation": "create",
-          "description": "Create Header component displaying 'Cheetah 1.0' text and the generated cheetah logo image (frontend/public/assets/generated/cheetah-logo.dim_128x128.png). Apply amethyst gradient background, glassmorphism styling, and neon glow effects. This component will be used in App.tsx."
-        }
-      ]
-    },
-    {
-      "id": "REQ-2",
-      "summary": "Implement navigation with five destinations (Home/Search, Games, AI Assistant, Code Editor, Quick Open) and smooth page transitions",
-      "acceptanceCriteria": [
-        "All five nav items are visible and reachable",
-        "Active page is visually highlighted in the nav",
-        "Switching pages does not cause a full reload",
-        "Transition animation plays when switching pages"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/layout/Navigation.tsx",
-          "operation": "create",
-          "description": "Create Navigation component (sidebar or top nav) with five navigation items: Home/Search, Games, AI Assistant, Code Editor, Quick Open. Apply amethyst theme styling, neon glow hover effects, and highlight active page. Use React Router for navigation."
-        },
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Integrate Header and Navigation components. Set up React Router with routes for the five pages. Add CSS transition animations for route changes to ensure smooth page switching without full reloads."
-        }
-      ]
-    },
-    {
-      "id": "REQ-3",
-      "summary": "Implement persistent multi-tab system with tab bar showing titles, favicons, close buttons, and keyboard shortcuts (Ctrl+T, Ctrl+W, Ctrl+L)",
-      "acceptanceCriteria": [
-        "Multiple tabs can be open at the same time",
-        "Each tab shows title, favicon placeholder, and close button",
-        "Clicking a tab switches the visible iframe",
-        "Ctrl+T opens a new blank tab",
-        "Ctrl+W closes the currently active tab",
-        "Ctrl+L focuses the address bar input"
+        "Opening any URL in a proxy iframe tab shows no loading spinner or overlay at any point.",
+        "The tab bar shows no loading indicator on any tab while a site is loading.",
+        "The iframe is rendered immediately when a URL is set, without waiting for an onLoad event to hide a spinner.",
+        "No loading state (isLoading, loading, etc.) is used to conditionally render or hide the iframe content.",
+        "The error state (all proxies failed) is still shown if all proxy attempts fail — only the loading UI is removed, not error handling."
       ],
       "file_operations": [
         {
           "path": "frontend/src/components/tabs/TabBar.tsx",
-          "operation": "create",
-          "description": "Create TabBar component displaying all open tabs with titles, favicon placeholders, close (×) buttons, and a '+' new-tab button. Apply amethyst theme and neon glow effects. Manage tab state (active tab index, tab list) and switching logic."
+          "operation": "modify",
+          "description": "Remove the loading indicator display from individual tabs. Remove any conditional rendering or styling that shows a loading spinner, progress bar, or loading state icon on tabs while their content is loading."
         },
         {
           "path": "frontend/src/components/tabs/TabContent.tsx",
-          "operation": "create",
-          "description": "Create TabContent component rendering the active tab's iframe. Maintain independent iframe state per tab. Integrate loading spinner and error handling for iframe load failures."
-        },
-        {
-          "path": "frontend/src/hooks/useTabs.ts",
-          "operation": "create",
-          "description": "Create useTabs hook managing tab state (tabs array, active tab, add/remove/switch operations) and localStorage persistence. Implement keyboard shortcuts: Ctrl+T (new tab), Ctrl+W (close active tab), Ctrl+L (focus address bar)."
-        },
-        {
-          "path": "frontend/src/App.tsx",
           "operation": "modify",
-          "description": "Integrate TabBar and TabContent components into the main layout. Wire useTabs hook to provide global tab state context accessible across all pages."
-        }
-      ]
-    },
-    {
-      "id": "REQ-4",
-      "summary": "Build Home/Search page with address bar, Google CSE (ID: 464f1cf85006c4770), Back/Forward/Refresh buttons, allorigins.win proxy iframe loading, spinner, and error fallback",
-      "acceptanceCriteria": [
-        "Address bar accepts and navigates to typed URLs on Enter",
-        "Google CSE search widget is rendered and functional using CSE ID 464f1cf85006c4770",
-        "Clicking a search result opens the URL in a new iframe tab via the allorigins proxy",
-        "Back, Forward, Refresh buttons control the active iframe where applicable",
-        "A spinner is shown while the iframe is loading",
-        "If the iframe fails to load, a user-friendly error message with a direct link is shown"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/HomeSearch.tsx",
-          "operation": "create",
-          "description": "Create HomeSearch page with address bar input (accepts full URLs, navigates on Enter using https://api.allorigins.win/raw?url=<encoded-url>), Google Custom Search Engine widget (CSE ID: 464f1cf85006c4770), and Back/Forward/Refresh navigation buttons. Integrate with useTabs hook to open URLs in new iframe tabs. Include loading spinner and error message with direct link fallback. Apply amethyst theme styling."
-        },
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Register HomeSearch page route in React Router and wire it to the 'Home/Search' navigation item."
-        }
-      ]
-    },
-    {
-      "id": "REQ-5",
-      "summary": "Build Games page displaying 10 unblocked school game site cards in responsive grid, each opening in proxy iframe tab when clicked",
-      "acceptanceCriteria": [
-        "All 10 game site cards are displayed in a responsive grid",
-        "Each card shows an icon/thumbnail, site name, and short description",
-        "Clicking a card opens the corresponding URL in a new proxy iframe tab",
-        "Cards have neon/glow hover effects consistent with the amethyst theme"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/Games.tsx",
-          "operation": "create",
-          "description": "Create Games page displaying 10 game site cards in a responsive grid: Math Playground, Cool Math Games, Hooda Math, ABCya, Funbrain, PBS Kids Games, Typing Club, Scratch, Khan Academy, Prodigy Game. Each card includes icon/thumbnail, site name, and description. Clicking a card opens the site URL via allorigins proxy in a new iframe tab using useTabs hook. Apply amethyst theme, glassmorphism, and neon glow hover effects."
-        },
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Register Games page route in React Router and wire it to the 'Games' navigation item."
-        }
-      ]
-    },
-    {
-      "id": "REQ-6",
-      "summary": "Build AI Assistant (Homework Helper) page with subject selector, question textarea, Puter.js AI integration, markdown response rendering, Copy Answer button, and scrollable history",
-      "acceptanceCriteria": [
-        "Puter.js script is loaded via CDN script tag",
-        "Subject selector has all 6 options",
-        "Submitting a question calls window.puter.ai.chat and displays the response",
-        "A spinner is shown while the request is in flight",
-        "Response area renders basic markdown (bold, inline code, lists)",
-        "'Copy Answer' copies the response text to clipboard",
-        "Recent Q&A pairs are shown in a scrollable history section"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/index.html",
-          "operation": "modify",
-          "description": "Add Puter.js CDN script tag to the HTML head to load window.puter.ai.chat API."
-        },
-        {
-          "path": "frontend/src/pages/AIAssistant.tsx",
-          "operation": "create",
-          "description": "Create AI Assistant page with heading 'AI Homework Helper', subject selector dropdown (Math, Science, English, History, Computer Science, Other), large question textarea, 'Get Answer' button, response area with basic markdown rendering (bold, inline code, lists), loading spinner, 'Copy Answer' button, and scrollable history of recent Q&A pairs. Use window.puter.ai.chat for AI responses. Persist history in localStorage. Apply amethyst theme styling."
-        },
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Register AIAssistant page route in React Router and wire it to the 'AI Assistant' navigation item."
-        }
-      ]
-    },
-    {
-      "id": "REQ-7",
-      "summary": "Build Code Editor page with three sub-tabs (Code Editor, Presentation Builder, Website Builder) featuring CodeMirror, live preview, localStorage persistence, slide management, and component-based website builder",
-      "acceptanceCriteria": [
-        "Three sub-tabs are visible and switchable within the Code Editor page",
-        "CodeMirror is loaded via CDN and supports HTML, CSS, JS, Python syntax highlighting",
-        "Run button executes HTML/CSS/JS and renders output in a preview iframe/panel",
-        "Code editor content is saved to and restored from localStorage",
-        "Presentation builder allows adding, editing (title/body/bg color), and deleting slides",
-        "Presentation prev/next navigation works; Present mode goes fullscreen",
-        "Website builder allows adding text, image placeholder, button, and header components",
-        "Website builder shows a live preview of the composed page",
-        "Website builder displays the 'Public sharing' note"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/index.html",
-          "operation": "modify",
-          "description": "Add CodeMirror CDN script and stylesheet links to the HTML head to enable code editor functionality."
-        },
-        {
-          "path": "frontend/src/pages/CodeEditor.tsx",
-          "operation": "create",
-          "description": "Create CodeEditor page with three internal sub-tabs: 'Code Editor', 'Presentation Builder', 'Website Builder'. Implement sub-tab switching logic and amethyst theme styling."
-        },
-        {
-          "path": "frontend/src/components/codeeditor/CodeEditorTab.tsx",
-          "operation": "create",
-          "description": "Create CodeEditorTab component embedding CodeMirror with language selector (HTML, CSS, JavaScript, Python), Run/Execute button, live preview panel for HTML/CSS/JS output, and localStorage persistence for editor content. Apply amethyst theme styling."
-        },
-        {
-          "path": "frontend/src/components/codeeditor/PresentationBuilderTab.tsx",
-          "operation": "create",
-          "description": "Create PresentationBuilderTab component allowing users to add/delete slides with title, body text, and background color picker. Include prev/next navigation and fullscreen 'Present' mode. Persist slides in localStorage. Apply amethyst theme styling."
-        },
-        {
-          "path": "frontend/src/components/codeeditor/WebsiteBuilderTab.tsx",
-          "operation": "create",
-          "description": "Create WebsiteBuilderTab component with simple component-based builder allowing users to add text blocks, image placeholders, button components, and headers. Include live preview panel and display note: 'Public sharing only available through the Cheetah proxy'. Persist compositions in localStorage. Apply amethyst theme styling."
-        },
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Register CodeEditor page route in React Router and wire it to the 'Code Editor' navigation item."
-        }
-      ]
-    },
-    {
-      "id": "REQ-8",
-      "summary": "Build Quick Open page displaying six quick-access site cards (TikTok, YouTube, Wikipedia, Disney Plus, ChatGPT, Google Gemini) with brand colors, each opening in proxy iframe tab",
-      "acceptanceCriteria": [
-        "All 6 quick-open cards are displayed in a responsive grid",
-        "Each card has a large icon, site name, and brief description",
-        "Each card uses a brand-relevant accent color",
-        "Clicking any card opens the site URL in a new proxy iframe tab"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/QuickOpen.tsx",
-          "operation": "create",
-          "description": "Create QuickOpen page displaying six large, visually distinct cards in a responsive grid: TikTok, YouTube, Wikipedia, Disney Plus, ChatGPT, Google Gemini. Each card includes large icon, site name, brief description, and brand-representative accent color. Clicking a card opens the site URL via allorigins proxy in a new iframe tab using useTabs hook. Apply amethyst theme with glassmorphism and neon glow hover effects."
-        },
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Register QuickOpen page route in React Router and wire it to the 'Quick Open' navigation item."
-        }
-      ]
-    },
-    {
-      "id": "REQ-9",
-      "summary": "Implement global UX polish: smooth transitions/animations, iframe loading overlays, responsive layout, consistent neon glow hover states, and localStorage persistence for tabs and settings",
-      "acceptanceCriteria": [
-        "All page transitions use CSS animations",
-        "iframe loading states show a visible spinner",
-        "Layout is usable on screen widths from 768px upward",
-        "Tab and settings state is persisted in localStorage and restored on reload"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/index.css",
-          "operation": "modify",
-          "description": "Add global CSS transition and animation rules for page/tab switches, interactive element hover states, and iframe loading overlays. Ensure responsive layout utilities for desktop and tablet widths (768px+). Apply consistent neon glow hover states throughout."
-        },
-        {
-          "path": "frontend/src/components/common/LoadingSpinner.tsx",
-          "operation": "create",
-          "description": "Create LoadingSpinner component with amethyst-themed neon glow animation. This component will be used in TabContent and other pages to indicate iframe loading states."
+          "description": "Remove the loading overlay, spinner, and any conditional rendering that hides the iframe until the onLoad event fires. Render the iframe immediately when a URL is set, regardless of loading state. Preserve the error state UI that displays when all proxy attempts fail."
         },
         {
           "path": "frontend/src/hooks/useTabs.ts",
           "operation": "modify",
-          "description": "Ensure useTabs hook persists open tabs state (tabs array, active tab index) to localStorage and restores it on app initialization. Add logic to save/restore tab state across sessions."
-        },
-        {
-          "path": "frontend/src/hooks/useLocalStorage.ts",
-          "operation": "create",
-          "description": "Create useLocalStorage hook utility for generic localStorage persistence and retrieval with JSON serialization. This hook will be used by useTabs and other components requiring localStorage."
+          "description": "Remove the isLoading or loading state tracking for tabs entirely, or stop using it to gate iframe rendering. If the loading state is still needed internally for proxy fallback logic, ensure it does not propagate to any UI components or affect rendering decisions."
         }
       ]
     }

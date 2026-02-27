@@ -1,4 +1,4 @@
-## Cheetah 1.0
+## 
 
 This source code has been exported from [Caffeine](https://caffeine.ai/)
 

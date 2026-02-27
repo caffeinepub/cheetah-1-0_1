@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { ArrowLeft, ArrowRight, RotateCw, Globe, Search } from 'lucide-react';
 import type { Tab } from '../hooks/useTabs';
+import { PROXY_COUNT, makeProxyUrl, normalizeUrl } from '../hooks/useTabs';
+import { ProxyInfoPanel, ProxyInfoButton } from '../components/common/ProxyInfoPanel';
 
 interface HomeSearchProps {
     activeTab: Tab | null;
@@ -11,6 +13,7 @@ interface HomeSearchProps {
 export const HomeSearch: React.FC<HomeSearchProps> = ({ activeTab, onOpenUrl, addressBarRef }) => {
     const [addressValue, setAddressValue] = useState('');
     const [showSearch, setShowSearch] = useState(false);
+    const [showProxyInfo, setShowProxyInfo] = useState(false);
     const iframeRef = useRef<HTMLIFrameElement>(null);
 
     useEffect(() => {
@@ -37,16 +40,21 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({ activeTab, onOpenUrl, ad
         try { iframeRef.current?.contentWindow?.history.forward(); } catch { /* cross-origin */ }
     };
     const handleRefresh = () => {
-        if (activeTab?.proxyUrl) {
+        if (activeTab?.url) {
             onOpenUrl(activeTab.url);
         }
     };
+
+    // Active proxy label for display
+    const proxyIdx = activeTab?.proxyIndex ?? 0;
+    const proxyLabels = ['allorigins.win', 'corsproxy.io', 'cors-anywhere'];
+    const activeProxyLabel = proxyLabels[proxyIdx] ?? `proxy ${proxyIdx + 1}`;
 
     return (
         <div className="flex flex-col h-full">
             {/* Address Bar */}
             <div
-                className="flex items-center gap-2 px-3 py-2 flex-shrink-0"
+                className="flex items-center gap-2 px-3 py-2 flex-shrink-0 relative"
                 style={{
                     background: 'oklch(0.15 0.04 290 / 0.8)',
                     borderBottom: '1px solid oklch(0.3 0.08 295 / 0.3)',
@@ -90,6 +98,26 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({ activeTab, onOpenUrl, ad
                     />
                 </div>
 
+                {/* Active proxy indicator */}
+                {activeTab?.proxyUrl && (
+                    <span
+                        className="hidden sm:flex items-center text-xs font-mono px-2 py-0.5 rounded-full flex-shrink-0"
+                        style={{
+                            background: 'oklch(0.2 0.08 295 / 0.5)',
+                            border: '1px solid oklch(0.4 0.12 295 / 0.3)',
+                            color: 'oklch(0.55 0.12 295)',
+                        }}
+                        title={`Using proxy: ${activeProxyLabel}`}
+                    >
+                        {activeProxyLabel}
+                    </span>
+                )}
+
+                <ProxyInfoButton
+                    onClick={() => setShowProxyInfo(s => !s)}
+                    isActive={showProxyInfo}
+                />
+
                 <button
                     onClick={() => setShowSearch(s => !s)}
                     className={`p-1.5 rounded transition-all ${showSearch ? 'text-primary' : ''}`}
@@ -98,6 +126,12 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({ activeTab, onOpenUrl, ad
                 >
                     <Search size={15} />
                 </button>
+
+                {/* Proxy Info Panel — anchored below address bar */}
+                <ProxyInfoPanel
+                    isOpen={showProxyInfo}
+                    onClose={() => setShowProxyInfo(false)}
+                />
             </div>
 
             {/* Google CSE Search */}
@@ -120,19 +154,6 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({ activeTab, onOpenUrl, ad
                 <ErrorPage url={activeTab.url} />
             ) : (
                 <div className="flex-1 relative" style={{ minHeight: 0 }}>
-                    {activeTab.isLoading && (
-                        <div
-                            className="absolute inset-0 z-10 flex items-center justify-center"
-                            style={{ background: 'oklch(0.12 0.025 290 / 0.85)', backdropFilter: 'blur(4px)' }}
-                        >
-                            <div className="flex flex-col items-center gap-3">
-                                <div className="spinner" />
-                                <span className="text-xs font-mono text-muted-foreground animate-pulse">
-                                    Loading via Cheetah proxy...
-                                </span>
-                            </div>
-                        </div>
-                    )}
                     <iframe
                         ref={iframeRef}
                         src={activeTab.proxyUrl}
@@ -172,55 +193,50 @@ const NewTabPage: React.FC<{ onOpenUrl: (url: string, newTab?: boolean) => void;
                 </p>
             </div>
 
-            <div className="flex gap-3">
+            <div className="flex gap-3 flex-wrap justify-center">
                 <button
                     onClick={onShowSearch}
-                    className="neon-btn px-5 py-2.5 rounded-lg text-sm flex items-center gap-2"
+                    className="neon-btn px-4 py-2 rounded-lg text-sm font-mono"
                 >
-                    <Search size={14} />
-                    Google Search
+                    Search
                 </button>
-            </div>
-
-            <div className="grid grid-cols-3 gap-3 w-full max-w-sm">
                 {quickLinks.map(link => (
                     <button
-                        key={link.url}
+                        key={link.label}
                         onClick={() => onOpenUrl(link.url)}
-                        className="glass-panel rounded-lg p-3 text-center site-card"
-                        style={{ borderColor: `${link.color} / 0.3` }}
+                        className="glass-panel px-4 py-2 rounded-lg text-sm font-mono transition-all hover:scale-105"
+                        style={{ color: link.color, border: `1px solid ${link.color}40` }}
                     >
-                        <div
-                            className="w-8 h-8 rounded-full mx-auto mb-1.5 flex items-center justify-center text-xs font-mono font-bold"
-                            style={{ background: `${link.color} / 0.2`, color: link.color }}
-                        >
-                            {link.label[0]}
-                        </div>
-                        <span className="text-xs font-mono" style={{ color: 'oklch(0.75 0.08 290)' }}>
-                            {link.label}
-                        </span>
+                        {link.label}
                     </button>
                 ))}
+            </div>
+
+            <div className="flex gap-3 text-xs font-mono text-muted-foreground flex-wrap justify-center">
+                <span className="glass-panel px-3 py-1.5 rounded-full">Ctrl+T New Tab</span>
+                <span className="glass-panel px-3 py-1.5 rounded-full">Ctrl+W Close</span>
+                <span className="glass-panel px-3 py-1.5 rounded-full">Ctrl+L Address Bar</span>
+                <span className="glass-panel px-3 py-1.5 rounded-full">Ctrl/⌘+P Panic</span>
             </div>
         </div>
     );
 };
 
 const ErrorPage: React.FC<{ url: string }> = ({ url }) => (
-    <div className="flex-1 flex items-center justify-center animated-bg" style={{ minHeight: 0 }}>
+    <div className="flex-1 flex flex-col items-center justify-center gap-4 animated-bg" style={{ minHeight: 0 }}>
         <div className="glass-panel rounded-xl p-8 max-w-md text-center">
             <div className="text-4xl mb-4">⚠️</div>
             <h3 className="text-lg font-display font-bold mb-2" style={{ color: 'oklch(0.85 0.1 295)' }}>
                 Unable to Load Page
             </h3>
-            <p className="text-sm font-mono text-muted-foreground mb-4">
-                This site cannot be embedded due to security restrictions (X-Frame-Options or CSP).
+            <p className="text-sm font-mono text-muted-foreground mb-2">
+                All {PROXY_COUNT} proxy routes were tried. This site may block embedding.
             </p>
             <a
                 href={url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="neon-btn inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm"
+                className="neon-btn inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm mt-2"
             >
                 Open Directly ↗
             </a>

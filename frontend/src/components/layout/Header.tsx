@@ -1,7 +1,11 @@
 import React from 'react';
-import { Zap } from 'lucide-react';
+import { Zap, AlertTriangle } from 'lucide-react';
 
-export const Header: React.FC = () => {
+interface HeaderProps {
+    onPanic: () => void;
+}
+
+export const Header: React.FC<HeaderProps> = ({ onPanic }) => {
     return (
         <header
             className="flex items-center gap-3 px-4 py-2 flex-shrink-0"
@@ -49,7 +53,8 @@ export const Header: React.FC = () => {
                 </span>
             </div>
 
-            <div className="ml-auto flex items-center gap-2">
+            <div className="ml-auto flex items-center gap-3">
+                {/* SECURE badge */}
                 <div
                     className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-mono"
                     style={{
@@ -68,6 +73,31 @@ export const Header: React.FC = () => {
                     />
                     SECURE
                 </div>
+
+                {/* Panic Button */}
+                <button
+                    onClick={onPanic}
+                    className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold transition-all active:scale-95"
+                    title="Panic (Ctrl/Cmd+P or Ctrl/Cmd+B)"
+                    style={{
+                        background: 'oklch(0.25 0.18 25 / 0.5)',
+                        border: '1px solid oklch(0.55 0.25 25 / 0.7)',
+                        color: 'oklch(0.85 0.2 25)',
+                        boxShadow: '0 0 10px oklch(0.55 0.25 25 / 0.35)',
+                        letterSpacing: '0.08em',
+                    }}
+                    onMouseEnter={e => {
+                        (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 0 18px oklch(0.6 0.28 25 / 0.7)';
+                        (e.currentTarget as HTMLButtonElement).style.background = 'oklch(0.3 0.22 25 / 0.7)';
+                    }}
+                    onMouseLeave={e => {
+                        (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 0 10px oklch(0.55 0.25 25 / 0.35)';
+                        (e.currentTarget as HTMLButtonElement).style.background = 'oklch(0.25 0.18 25 / 0.5)';
+                    }}
+                >
+                    <AlertTriangle size={11} />
+                    PANIC
+                </button>
             </div>
         </header>
     );

@@ -28,21 +28,7 @@ export const TabBar: React.FC<TabBarProps> = ({ tabs, activeTabId, onSwitch, onC
                     onClick={() => onSwitch(tab.id)}
                     title={tab.url || 'New Tab'}
                 >
-                    {tab.isLoading ? (
-                        <div
-                            style={{
-                                width: 12,
-                                height: 12,
-                                border: '1.5px solid oklch(0.4 0.1 295)',
-                                borderTopColor: 'oklch(0.7 0.25 295)',
-                                borderRadius: '50%',
-                                animation: 'spin 0.8s linear infinite',
-                                flexShrink: 0,
-                            }}
-                        />
-                    ) : (
-                        <Globe size={11} className="flex-shrink-0 opacity-60" />
-                    )}
+                    <Globe size={11} className="flex-shrink-0 opacity-60" />
                     <span className="truncate flex-1 text-xs">
                         {tab.title || 'New Tab'}
                     </span>

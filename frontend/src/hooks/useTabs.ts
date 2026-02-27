@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useLocalStorage } from './useLocalStorage';
 
 export interface Tab {
@@ -6,19 +6,27 @@ export interface Tab {
     title: string;
     url: string;
     proxyUrl: string;
+    proxyIndex: number;
     favicon?: string;
-    isLoading: boolean;
     hasError: boolean;
 }
 
-const PROXY_BASE = 'https://api.allorigins.win/raw?url=';
+// Ordered list of proxy strategies
+const PROXY_LIST = [
+    (url: string) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+    (url: string) => `https://corsproxy.io/?url=${encodeURIComponent(url)}`,
+    (url: string) => `https://cors-anywhere.herokuapp.com/${url}`,
+];
 
-function makeProxyUrl(url: string): string {
+export const PROXY_COUNT = PROXY_LIST.length;
+
+export function makeProxyUrl(url: string, proxyIndex = 0): string {
     if (!url) return '';
-    return PROXY_BASE + encodeURIComponent(url);
+    const idx = Math.min(proxyIndex, PROXY_LIST.length - 1);
+    return PROXY_LIST[idx](url);
 }
 
-function normalizeUrl(input: string): string {
+export function normalizeUrl(input: string): string {
     const trimmed = input.trim();
     if (!trimmed) return '';
     if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) return trimmed;
@@ -31,8 +39,8 @@ function createNewTab(url = '', title = 'New Tab'): Tab {
         id: Date.now().toString() + Math.random().toString(36).slice(2),
         title,
         url,
-        proxyUrl: url ? makeProxyUrl(normalizeUrl(url)) : '',
-        isLoading: false,
+        proxyUrl: url ? makeProxyUrl(normalizeUrl(url), 0) : '',
+        proxyIndex: 0,
         hasError: false,
     };
 }
@@ -58,17 +66,17 @@ export function useTabs(addressBarRef?: React.RefObject<HTMLInputElement | null>
         setState(prev => updater(prev));
     }, [setState]);
 
-    const openUrl = useCallback((url: string, newTab = false) => {
+    const openUrl = useCallback((url: string, newTab = false, proxyIndex = 0) => {
         const normalized = normalizeUrl(url);
-        const proxyUrl = makeProxyUrl(normalized);
+        const proxy = makeProxyUrl(normalized, proxyIndex);
         const title = (() => {
             try { return new URL(normalized).hostname; } catch { return url; }
         })();
 
         if (newTab) {
             const tab = createNewTab(normalized, title);
-            tab.proxyUrl = proxyUrl;
-            tab.isLoading = true;
+            tab.proxyUrl = proxy;
+            tab.proxyIndex = proxyIndex;
             setTabs(prev => ({
                 tabs: [...prev.tabs, tab],
                 activeTabId: tab.id,
@@ -78,12 +86,38 @@ export function useTabs(addressBarRef?: React.RefObject<HTMLInputElement | null>
                 ...prev,
                 tabs: prev.tabs.map(t =>
                     t.id === activeTabId
-                        ? { ...t, url: normalized, proxyUrl, title, isLoading: true, hasError: false }
+                        ? { ...t, url: normalized, proxyUrl: proxy, proxyIndex, title, hasError: false }
                         : t
                 ),
             }));
         }
     }, [activeTabId, setTabs]);
+
+    const retryWithNextProxy = useCallback((id: string) => {
+        setTabs(prev => {
+            const tab = prev.tabs.find(t => t.id === id);
+            if (!tab) return prev;
+            const nextIndex = tab.proxyIndex + 1;
+            if (nextIndex >= PROXY_COUNT) {
+                // All proxies exhausted — show error
+                return {
+                    ...prev,
+                    tabs: prev.tabs.map(t =>
+                        t.id === id ? { ...t, hasError: true } : t
+                    ),
+                };
+            }
+            const newProxyUrl = makeProxyUrl(tab.url, nextIndex);
+            return {
+                ...prev,
+                tabs: prev.tabs.map(t =>
+                    t.id === id
+                        ? { ...t, proxyUrl: newProxyUrl, proxyIndex: nextIndex, hasError: false }
+                        : t
+                ),
+            };
+        });
+    }, [setTabs]);
 
     const addTab = useCallback(() => {
         const tab = createNewTab();
@@ -113,17 +147,14 @@ export function useTabs(addressBarRef?: React.RefObject<HTMLInputElement | null>
         setTabs(prev => ({ ...prev, activeTabId: id }));
     }, [setTabs]);
 
-    const setTabLoading = useCallback((id: string, isLoading: boolean) => {
-        setTabs(prev => ({
-            ...prev,
-            tabs: prev.tabs.map(t => t.id === id ? { ...t, isLoading } : t),
-        }));
-    }, [setTabs]);
+    const setTabLoading = useCallback((_id: string, _isLoading: boolean) => {
+        // No-op: loading state removed
+    }, []);
 
     const setTabError = useCallback((id: string, hasError: boolean) => {
         setTabs(prev => ({
             ...prev,
-            tabs: prev.tabs.map(t => t.id === id ? { ...t, hasError, isLoading: false } : t),
+            tabs: prev.tabs.map(t => t.id === id ? { ...t, hasError } : t),
         }));
     }, [setTabs]);
 
@@ -166,6 +197,7 @@ export function useTabs(addressBarRef?: React.RefObject<HTMLInputElement | null>
         setTabLoading,
         setTabError,
         setTabTitle,
+        retryWithNextProxy,
         makeProxyUrl,
         normalizeUrl,
     };

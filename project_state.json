@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 3,
+  "projectStateVersion": 9,
   "summary": "Cheetah 1.0 is a fully-featured single-page proxy browser app with an amethyst/purple high-tech theme. It includes tab-based browsing with iframe proxy (allorigins.win), a Google CSE search bar, an unblocked games page, an AI homework helper (Puter.js), a code editor/presentation/website builder, and a quick-open links page. Built as a single index.html with embedded CSS and JS.",
   "architectural_notes": [
     "Single index.html with embedded CSS and JS, no build tools",
@@ -8,11 +8,11 @@
     "Amethyst/purple glassmorphism theme with neon glow effects and monospace fonts",
     "Puter.js (window.puter.ai.chat) used for AI homework helper",
     "LocalStorage used for code editor content and app settings",
-    "Keyboard shortcuts: Ctrl+T (new tab), Ctrl+W (close tab), Ctrl+L (focus address bar)"
+    "Keyboard shortcuts: Ctrl+T (new tab), Ctrl+W (close tab), Ctrl+L (focus address bar)",
+    "Panic button: triggered by click or Cmd/Ctrl+P or B; shows white screen overlay and blocks access for 60 seconds using localStorage timestamp"
   ],
   "known_issues": [],
   "isFixRequest": false,
-  "imageRequirements": "## Required Images\n- Stylized cheetah head icon in amethyst/purple neon glow style on a transparent background (cheetah-logo.dim_128x128.png)",
   "existing_features": [
     {
       "id": "feature-create-a-single-page-react-application-named-cheetah-1-0-with-a-persistent-amethyst-purple-high-tech-theme-deep-purples-6c3483-violets-9b59b6-and-magenta-8e44ad-gradients-glassmorphism-panels-with-backdrop-blur-neon-glow-effects-on-interactive-elements-animated-gradient-backgrounds-and-a-sleek-monospace-font-display-cheetah-1-0-prominently-in-the-header-alongside-a-cheetah-icon-logo-dark-mode-is-the-default-and-only-mode",
@@ -85,6 +85,46 @@
         "REQ-9"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-add-a-proxy-info-section-or-modal-in-the-home-search-page-that-displays-the-built-in-proxy-configuration-details-showing-users-that-cheetah-1-0-uses-a-cors-proxy-allorigins-win-to-tunnel-requests-referencing-the-node-js-http-proxy-pattern-the-user-submitted-as-context-display-a-human-readable-explanation-such-as-cheetah-routes-all-browsing-through-a-proxy-layer-to-bypass-restrictions-requests-are-forwarded-via-https-api-allorigins-win-raw-url-encoded-url-include-the-target-url-pattern-and-port-8000-conceptually-as-informational-text-only-this-is-a-frontend-only-display-change-no-backend-proxy-server-is-implemented",
+      "title": "Add a 'Proxy Info' section or modal in the Home/Search page that displays the built-in proxy configuration details, showing users that Cheetah 1.0 uses a CORS proxy (allorigins.win) to tunnel requests — referencing the Node.js http-proxy pattern the user submitted as context. Display a human-readable explanation such as: 'Cheetah routes all browsing through a proxy layer to bypass restrictions. Requests are forwarded via https://api.allorigins.win/raw?url=<encoded-url>.' Include the target URL pattern and port (8000 conceptually) as informational text only. This is a frontend-only display change; no backend proxy server is implemented.",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-improve-iframe-proxy-loading-so-more-websites-successfully-open-use-multiple-cors-proxy-fallbacks-in-priority-order-first-try-https-api-allorigins-win-raw-url-encoded-then-https-corsproxy-io-encoded-then-https-cors-anywhere-herokuapp-com-url-if-all-proxies-fail-display-the-error-state-with-a-direct-link-fallback-update-the-usetabs-hook-and-tabcontent-component-accordingly",
+      "title": "Improve iframe proxy loading so more websites successfully open. Use multiple CORS proxy fallbacks in priority order: first try `https://api.allorigins.win/raw?url=<encoded>`, then `https://corsproxy.io/?<encoded>`, then `https://cors-anywhere.herokuapp.com/<url>`. If all proxies fail, display the error state with a direct-link fallback. Update the `useTabs` hook and `TabContent` component accordingly.",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-remove-all-copyright-notices-footer-copyright-text-and-any-caffeine-ai-or-similar-attribution-strings-from-every-visible-area-of-the-app-including-the-footer-in-app-tsx-and-any-other-components-that-render-copyright-text",
+      "title": "Remove all copyright notices, footer copyright text, and any '© Caffeine.ai' or similar attribution strings from every visible area of the app, including the footer in `App.tsx` and any other components that render copyright text.",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-visible-panic-button-in-the-app-header-next-to-the-existing-header-elements-in-header-tsx-when-activated-either-by-clicking-the-button-or-by-pressing-cmd-p-ctrl-p-cmd-b-or-ctrl-b-the-following-behavior-must-occur-1-a-full-viewport-white-overlay-is-immediately-rendered-on-top-of-all-content-completely-hiding-the-app-2-a-countdown-timer-runs-for-60-seconds-3-all-user-interaction-with-the-app-is-blocked-during-this-60-second-period-4-after-60-seconds-the-white-overlay-is-automatically-removed-and-the-app-returns-to-its-normal-state-the-panic-button-itself-should-be-styled-to-fit-the-existing-amethyst-purple-theme-e-g-a-red-or-warning-colored-button-with-neon-glow-the-keyboard-shortcut-listener-must-be-registered-globally-so-it-works-regardless-of-which-page-or-element-has-focus",
+      "title": "Add a visible 'Panic' button in the app header (next to the existing header elements in `Header.tsx`). When activated — either by clicking the button or by pressing Cmd+P, Ctrl+P, Cmd+B, or Ctrl+B — the following behavior must occur: (1) A full-viewport white overlay is immediately rendered on top of all content, completely hiding the app; (2) A countdown timer runs for 60 seconds; (3) All user interaction with the app is blocked during this 60-second period; (4) After 60 seconds, the white overlay is automatically removed and the app returns to its normal state. The panic button itself should be styled to fit the existing amethyst/purple theme (e.g., a red or warning-colored button with neon glow). The keyboard shortcut listener must be registered globally so it works regardless of which page or element has focus.",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-remove-all-loading-spinners-loading-overlays-and-loading-state-indicators-from-the-iframe-tab-browsing-experience-when-a-url-is-loaded-in-a-tab-the-iframe-must-appear-immediately-with-no-loading-screen-no-spinner-and-no-in-progress-visual-state-this-applies-to-tabbar-tsx-remove-per-tab-loading-indicators-tabcontent-tsx-remove-the-loading-overlay-spinner-shown-while-the-iframe-loads-and-usetabs-ts-remove-the-isloading-loading-state-tracking-for-tabs-entirely-or-stop-using-it-to-gate-rendering",
+      "title": "Remove all loading spinners, loading overlays, and loading state indicators from the iframe tab browsing experience. When a URL is loaded in a tab, the iframe must appear immediately with no loading screen, no spinner, and no in-progress visual state. This applies to TabBar.tsx (remove per-tab loading indicators), TabContent.tsx (remove the loading overlay/spinner shown while the iframe loads), and useTabs.ts (remove the isLoading/loading state tracking for tabs entirely or stop using it to gate rendering).",
+      "reqIds": [
+        "REQ-14"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -115,6 +155,30 @@
     {
       "id": "AR-5",
       "summary": "Quick Open page with cards for TikTok, YouTube, Wikipedia, Disney+, ChatGPT, Gemini opening in proxy tabs",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Improve proxy to make all websites open and load faster",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Remove copyright notices from the app",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Panic button (clickable + Cmd/Ctrl+P or B shortcut) that triggers a white screen and locks the user out for 60 seconds",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-9",
+      "summary": "Remove loading spinner/overlay for all websites in iframe tabs — load instantly with no loading state",
       "reqIds": [],
       "status": "pending"
     }

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Header } from './components/layout/Header';
 import { Navigation, type PageId } from './components/layout/Navigation';
 import { TabBar } from './components/tabs/TabBar';
@@ -13,6 +13,12 @@ export default function App() {
     const [activePage, setActivePage] = useState<PageId>('home');
     const addressBarRef = useRef<HTMLInputElement | null>(null);
 
+    // Panic mode state
+    const [panicActive, setPanicActive] = useState(false);
+    const [panicCountdown, setPanicCountdown] = useState(60);
+    const panicTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+    const panicCountdownRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
     const {
         tabs,
         activeTabId,
@@ -25,8 +31,56 @@ export default function App() {
         setTabError,
     } = useTabs(addressBarRef);
 
+    const activatePanic = useCallback(() => {
+        if (panicActive) return;
+        setPanicActive(true);
+        setPanicCountdown(60);
+
+        // Clear any existing timers
+        if (panicTimerRef.current) clearTimeout(panicTimerRef.current);
+        if (panicCountdownRef.current) clearInterval(panicCountdownRef.current);
+
+        // Countdown display
+        let remaining = 60;
+        panicCountdownRef.current = setInterval(() => {
+            remaining -= 1;
+            setPanicCountdown(remaining);
+            if (remaining <= 0) {
+                if (panicCountdownRef.current) clearInterval(panicCountdownRef.current);
+            }
+        }, 1000);
+
+        // Auto-dismiss after 60 seconds
+        panicTimerRef.current = setTimeout(() => {
+            setPanicActive(false);
+            setPanicCountdown(60);
+            if (panicCountdownRef.current) clearInterval(panicCountdownRef.current);
+        }, 60000);
+    }, [panicActive]);
+
+    // Global keyboard shortcut for panic: Cmd/Ctrl + P or Cmd/Ctrl + B
+    useEffect(() => {
+        const handler = (e: KeyboardEvent) => {
+            const isMeta = e.metaKey || e.ctrlKey;
+            if (isMeta && (e.key === 'p' || e.key === 'P' || e.key === 'b' || e.key === 'B')) {
+                e.preventDefault();
+                e.stopPropagation();
+                activatePanic();
+            }
+        };
+        window.addEventListener('keydown', handler, true);
+        return () => window.removeEventListener('keydown', handler, true);
+    }, [activatePanic]);
+
+    // Cleanup on unmount
+    useEffect(() => {
+        return () => {
+            if (panicTimerRef.current) clearTimeout(panicTimerRef.current);
+            if (panicCountdownRef.current) clearInterval(panicCountdownRef.current);
+        };
+    }, []);
+
     const handleOpenUrl = (url: string, newTab = false) => {
-        // When opening a URL from any page, switch to home to show the proxy
         openUrl(url, newTab);
         setActivePage('home');
     };
@@ -34,7 +88,7 @@ export default function App() {
     return (
         <div className="flex flex-col h-screen w-screen overflow-hidden animated-bg">
             {/* App Header */}
-            <Header />
+            <Header onPanic={activatePanic} />
 
             {/* Tab Bar */}
             <TabBar
@@ -74,32 +128,25 @@ export default function App() {
                 </main>
             </div>
 
-            {/* Footer */}
-            <footer
-                className="flex-shrink-0 flex items-center justify-center px-4 py-1.5 text-xs font-mono"
-                style={{
-                    background: 'oklch(0.12 0.03 290 / 0.95)',
-                    borderTop: '1px solid oklch(0.3 0.08 295 / 0.3)',
-                    color: 'oklch(0.4 0.08 295)',
-                }}
-            >
-                <span>
-                    © {new Date().getFullYear()} Cheetah 1.0 · Built with{' '}
-                    <span style={{ color: 'oklch(0.65 0.22 0)' }}>♥</span>{' '}
-                    using{' '}
-                    <a
-                        href={`https://caffeine.ai/?utm_source=Caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(window.location.hostname || 'cheetah-proxy')}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="transition-colors"
-                        style={{ color: 'oklch(0.62 0.18 295)' }}
-                        onMouseEnter={e => ((e.target as HTMLAnchorElement).style.color = 'oklch(0.75 0.25 295)')}
-                        onMouseLeave={e => ((e.target as HTMLAnchorElement).style.color = 'oklch(0.62 0.18 295)')}
-                    >
-                        caffeine.ai
-                    </a>
-                </span>
-            </footer>
+            {/* Panic Overlay — full-viewport white screen, cannot be dismissed */}
+            {panicActive && (
+                <div
+                    style={{
+                        position: 'fixed',
+                        inset: 0,
+                        zIndex: 99999,
+                        background: '#ffffff',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        pointerEvents: 'all',
+                        userSelect: 'none',
+                    }}
+                    onContextMenu={e => e.preventDefault()}
+                >
+                    {/* Invisible — pure white screen, no text visible */}
+                </div>
+            )}
         </div>
     );
 }
