@@ -1,16 +1,26 @@
 import React from 'react';
 import { Gamepad2, Calculator, BookOpen, Keyboard, Code, Trophy, Atom, Pencil, Star, Zap, GraduationCap } from 'lucide-react';
+import type { PageId } from '../components/layout/Navigation';
 
 interface GameSite {
     name: string;
-    url: string;
+    url?: string;
     description: string;
     icon: React.ReactNode;
     color: string;
     bgColor: string;
+    internalPage?: PageId;
 }
 
 const gameSites: GameSite[] = [
+    {
+        name: 'Cheetah Education Hub',
+        description: "Cheetah's built-in education page — AI tutor, quizzes, and more!",
+        icon: <GraduationCap size={28} />,
+        color: 'oklch(0.72 0.25 295)',
+        bgColor: 'oklch(0.22 0.12 295 / 0.4)',
+        internalPage: 'education',
+    },
     {
         name: 'Math Playground',
         url: 'https://www.mathplayground.com',
@@ -103,9 +113,18 @@ const gameSites: GameSite[] = [
 
 interface GamesProps {
     onOpenUrl: (url: string, newTab?: boolean) => void;
+    onNavigate: (page: PageId) => void;
 }
 
-export const Games: React.FC<GamesProps> = ({ onOpenUrl }) => {
+export const Games: React.FC<GamesProps> = ({ onOpenUrl, onNavigate }) => {
+    const handleCardClick = (site: GameSite) => {
+        if (site.internalPage) {
+            onNavigate(site.internalPage);
+        } else if (site.url) {
+            onOpenUrl(site.url, true);
+        }
+    };
+
     return (
         <div className="h-full overflow-y-auto p-6 page-enter">
             <div className="max-w-4xl mx-auto">
@@ -121,11 +140,12 @@ export const Games: React.FC<GamesProps> = ({ onOpenUrl }) => {
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                     {gameSites.map(site => (
                         <button
-                            key={site.url}
-                            onClick={() => onOpenUrl(site.url, true)}
+                            key={site.name}
+                            onClick={() => handleCardClick(site)}
                             className="site-card glass-panel rounded-xl p-4 text-left flex flex-col gap-3 group"
                             style={{
                                 border: `1px solid ${site.color.replace(')', ' / 0.25)')}`,
+                                ...(site.internalPage ? { boxShadow: `0 0 18px ${site.color.replace(')', ' / 0.12)')}` } : {}),
                             }}
                         >
                             <div
@@ -141,7 +161,7 @@ export const Games: React.FC<GamesProps> = ({ onOpenUrl }) => {
                             <div>
                                 <div
                                     className="font-display font-semibold text-sm mb-0.5 group-hover:text-primary transition-colors"
-                                    style={{ color: 'oklch(0.88 0.06 290)' }}
+                                    style={{ color: site.internalPage ? site.color : 'oklch(0.88 0.06 290)' }}
                                 >
                                     {site.name}
                                 </div>
@@ -153,7 +173,7 @@ export const Games: React.FC<GamesProps> = ({ onOpenUrl }) => {
                                 className="text-xs font-mono mt-auto opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1"
                                 style={{ color: site.color }}
                             >
-                                Open in proxy →
+                                {site.internalPage ? 'Open Education Hub →' : 'Open in proxy →'}
                             </div>
                         </button>
                     ))}

@@ -7,6 +7,8 @@ import { Games } from './pages/Games';
 import { AIAssistant } from './pages/AIAssistant';
 import { CodeEditorPage } from './pages/CodeEditorPage';
 import { QuickOpen } from './pages/QuickOpen';
+import { Education } from './pages/Education';
+import { ProxyLinks } from './pages/ProxyLinks';
 import { useTabs } from './hooks/useTabs';
 
 export default function App() {
@@ -118,7 +120,7 @@ export default function App() {
                         />
                     )}
                     {activePage === 'games' && (
-                        <Games onOpenUrl={handleOpenUrl} />
+                        <Games onOpenUrl={handleOpenUrl} onNavigate={setActivePage} />
                     )}
                     {activePage === 'ai' && (
                         <AIAssistant />
@@ -128,6 +130,12 @@ export default function App() {
                     )}
                     {activePage === 'quickopen' && (
                         <QuickOpen onOpenUrl={handleOpenUrl} />
+                    )}
+                    {activePage === 'education' && (
+                        <Education />
+                    )}
+                    {activePage === 'proxy' && (
+                        <ProxyLinks onOpenUrl={handleOpenUrl} />
                     )}
                 </main>
             </div>

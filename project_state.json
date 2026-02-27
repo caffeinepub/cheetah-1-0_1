@@ -1,160 +1,16 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 13,
-  "summary": "Cheetah 1.0 is a fully-featured single-page proxy browser app with an amethyst/purple high-tech theme. It includes tab-based browsing with iframe proxy (allorigins.win), a Google CSE search bar, an unblocked games page, an AI homework helper (Puter.js), a code editor/presentation/website builder, and a quick-open links page. Built as a single index.html with embedded CSS and JS.",
-  "architectural_notes": [
-    "Single index.html with embedded CSS and JS, no build tools",
-    "Iframe proxy uses allorigins.win CORS proxy: https://api.allorigins.win/raw?url=",
-    "Amethyst/purple glassmorphism theme with neon glow effects and monospace fonts",
-    "Puter.js (window.puter.ai.chat) used for AI homework helper",
-    "LocalStorage used for code editor content and app settings",
-    "Keyboard shortcuts: Ctrl+T (new tab), Ctrl+W (close tab), Ctrl+L (focus address bar)",
-    "Panic button: triggered by click or Cmd/Ctrl+P or B; shows white screen overlay and blocks access for 60 seconds using localStorage timestamp"
-  ],
+  "projectStateVersion": 3,
+  "summary": "Project includes an Education page with Ed AI Q&A and self-challenge subjects, and a Proxy page listing proxy services used.",
+  "architectural_notes": [],
   "known_issues": [],
   "isFixRequest": false,
   "existing_features": [
     {
-      "id": "feature-create-a-single-page-react-application-named-cheetah-1-0-with-a-persistent-amethyst-purple-high-tech-theme-deep-purples-6c3483-violets-9b59b6-and-magenta-8e44ad-gradients-glassmorphism-panels-with-backdrop-blur-neon-glow-effects-on-interactive-elements-animated-gradient-backgrounds-and-a-sleek-monospace-font-display-cheetah-1-0-prominently-in-the-header-alongside-a-cheetah-icon-logo-dark-mode-is-the-default-and-only-mode",
-      "title": "Create a single-page React application named 'Cheetah 1.0' with a persistent amethyst/purple high-tech theme: deep purples (#6C3483), violets (#9B59B6), and magenta (#8E44AD) gradients; glassmorphism panels with backdrop blur; neon glow effects on interactive elements; animated gradient backgrounds; and a sleek monospace font. Display 'Cheetah 1.0' prominently in the header alongside a cheetah icon/logo. Dark mode is the default and only mode.",
+      "id": "feature-add-a-new-proxy-page-accessible-from-the-sidebar-navigation-alongside-home-games-ai-code-quick-open-education-the-page-must-list-the-three-proxy-services-used-by-the-app-1-proxysite-https-www-proxysite-com-2-proxyorb-https-proxyorb-com-and-3-proxyproxy-primary-most-used-https-proxyproxy-net-cpo-ahr0chm6ly9jagvldgfomtitngv2lmnhzmzlaw5llnh5eg-caffeineadmintoken-4e5885a0f3111a08883c7259d557d207cdc0e8c8ef2349289317f3bbf1bb43b2-the-primary-proxy-must-be-visually-distinguished-e-g-a-primary-badge-or-highlighted-card-each-proxy-card-must-include-a-launch-open-button-that-navigates-to-the-proxy-url-in-the-app-s-existing-proxy-tab-system",
+      "title": "Add a new 'Proxy' page accessible from the sidebar navigation (alongside Home, Games, AI, Code, Quick Open, Education). The page must list the three proxy services used by the app: 1) ProxySite — https://www.proxysite.com, 2) ProxyOrb — https://proxyorb.com, and 3) ProxyProxy (primary/most-used) — https://proxyproxy.net/?__cpo=aHR0cHM6Ly9jaGVldGFoMTItNGV2LmNhZmZlaW5lLnh5eg#caffeineAdminToken=4e5885a0f3111a08883c7259d557d207cdc0e8c8ef2349289317f3bbf1bb43b2. The primary proxy must be visually distinguished (e.g., a 'Primary' badge or highlighted card). Each proxy card must include a launch/open button that navigates to the proxy URL in the app's existing proxy tab system.",
       "reqIds": [
         "REQ-1"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-implement-a-sidebar-or-top-navigation-bar-with-five-navigation-destinations-home-search-games-ai-assistant-code-editor-and-quick-open-navigating-between-them-updates-the-main-content-area-without-a-page-reload-include-smooth-transitions-between-pages",
-      "title": "Implement a sidebar (or top navigation bar) with five navigation destinations: Home/Search, Games, AI Assistant, Code Editor, and Quick Open. Navigating between them updates the main content area without a page reload. Include smooth transitions between pages.",
-      "reqIds": [
-        "REQ-2"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-implement-a-persistent-tab-bar-above-the-main-content-area-that-supports-multiple-open-iframe-tabs-simultaneously-each-tab-shows-the-page-title-favicon-and-a-close-button-a-new-tab-button-is-always-visible-tabs-maintain-independent-iframe-state-support-keyboard-shortcuts-ctrl-t-new-tab-ctrl-w-close-active-tab-ctrl-l-focus-address-bar",
-      "title": "Implement a persistent tab bar above the main content area that supports multiple open iframe tabs simultaneously. Each tab shows the page title, favicon, and a close (×) button. A '+' new-tab button is always visible. Tabs maintain independent iframe state. Support keyboard shortcuts: Ctrl+T (new tab), Ctrl+W (close active tab), Ctrl+L (focus address bar).",
-      "reqIds": [
-        "REQ-3"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-build-the-home-search-page-include-1-an-address-bar-that-accepts-full-urls-2-a-google-custom-search-engine-cse-id-464f1cf85006c4770-search-bar-3-back-forward-and-refresh-navigation-buttons-for-the-active-iframe-4-when-a-url-is-entered-or-a-search-result-is-clicked-load-the-target-url-inside-an-iframe-tab-using-the-allorigins-win-cors-proxy-https-api-allorigins-win-raw-url-encoded-url-as-the-iframe-src-5-a-loading-spinner-while-the-iframe-loads-6-an-error-message-with-a-direct-link-fallback-when-the-site-cannot-be-embedded",
-      "title": "Build the Home/Search page. Include: (1) An address bar that accepts full URLs; (2) A Google Custom Search Engine (CSE ID: 464f1cf85006c4770) search bar; (3) Back, Forward, and Refresh navigation buttons for the active iframe; (4) When a URL is entered or a search result is clicked, load the target URL inside an iframe tab using the allorigins.win CORS proxy (`https://api.allorigins.win/raw?url=<encoded-url>`) as the iframe src; (5) A loading spinner while the iframe loads; (6) An error message with a direct link fallback when the site cannot be embedded.",
-      "reqIds": [
-        "REQ-4"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-build-the-games-page-display-the-following-unblocked-school-game-sites-as-clickable-cards-in-a-responsive-grid-each-with-a-thumbnail-icon-site-name-and-brief-description-clicking-a-card-opens-the-site-in-a-new-proxy-iframe-tab-math-playground-mathplayground-com-cool-math-games-coolmathgames-com-hooda-math-hoodamath-com-abcya-abcya-com-funbrain-funbrain-com-pbs-kids-games-pbskids-org-games-typing-club-typingclub-com-scratch-scratch-mit-edu-khan-academy-khanacademy-org-prodigy-game-prodigygame-com",
-      "title": "Build the Games page. Display the following unblocked school game sites as clickable cards in a responsive grid, each with a thumbnail/icon, site name, and brief description. Clicking a card opens the site in a new proxy iframe tab: Math Playground (mathplayground.com), Cool Math Games (coolmathgames.com), Hooda Math (hoodamath.com), ABCya (abcya.com), Funbrain (funbrain.com), PBS Kids Games (pbskids.org/games), Typing Club (typingclub.com), Scratch (scratch.mit.edu), Khan Academy (khanacademy.org), Prodigy Game (prodigygame.com).",
-      "reqIds": [
-        "REQ-5"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-build-the-ai-assistant-homework-helper-page-include-1-a-heading-ai-homework-helper-2-a-subject-selector-dropdown-math-science-english-history-computer-science-other-3-a-large-textarea-for-the-question-4-a-get-answer-button-5-a-response-area-that-renders-the-ai-answer-with-basic-markdown-like-formatting-bold-code-blocks-lists-6-a-loading-spinner-while-awaiting-the-response-7-a-copy-answer-button-8-a-scrollable-history-list-of-recent-question-answer-pairs-use-the-puter-js-api-via-window-puter-ai-chat-include-the-puter-js-cdn-script-tag-in-the-page",
-      "title": "Build the AI Assistant (Homework Helper) page. Include: (1) A heading 'AI Homework Helper'; (2) A subject selector dropdown (Math, Science, English, History, Computer Science, Other); (3) A large textarea for the question; (4) A 'Get Answer' button; (5) A response area that renders the AI answer with basic markdown-like formatting (bold, code blocks, lists); (6) A loading spinner while awaiting the response; (7) A 'Copy Answer' button; (8) A scrollable history list of recent question/answer pairs. Use the Puter.js API via `window.puter.ai.chat` — include the Puter.js CDN script tag in the page.",
-      "reqIds": [
-        "REQ-6"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-build-the-code-editor-page-with-three-internal-sub-tabs-code-editor-presentation-builder-and-website-builder-1-code-editor-sub-tab-embed-codemirror-cdn-language-selector-html-css-javascript-python-a-run-execute-button-a-live-preview-panel-for-html-css-js-output-and-localstorage-persistence-for-editor-content-2-presentation-builder-sub-tab-add-delete-slides-each-with-a-title-body-text-and-background-color-picker-prev-next-navigation-a-fullscreen-present-mode-3-website-builder-sub-tab-simple-component-based-builder-allowing-users-to-add-text-blocks-image-placeholders-button-components-and-headers-a-live-preview-panel-note-displayed-public-sharing-only-available-through-the-cheetah-proxy",
-      "title": "Build the Code Editor page with three internal sub-tabs: 'Code Editor', 'Presentation Builder', and 'Website Builder'. (1) Code Editor sub-tab: embed CodeMirror (CDN), language selector (HTML, CSS, JavaScript, Python), a Run/Execute button, a live preview panel for HTML/CSS/JS output, and localStorage persistence for editor content. (2) Presentation Builder sub-tab: add/delete slides each with a title, body text, and background color picker; prev/next navigation; a fullscreen 'Present' mode. (3) Website Builder sub-tab: simple component-based builder allowing users to add text blocks, image placeholders, button components, and headers; a live preview panel; note displayed: 'Public sharing only available through the Cheetah proxy'.",
-      "reqIds": [
-        "REQ-7"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-build-the-quick-open-page-display-the-following-six-sites-as-large-visually-distinct-cards-in-a-grid-each-with-a-big-icon-site-name-and-brief-description-clicking-a-card-opens-the-site-in-a-new-proxy-iframe-tab-tiktok-tiktok-com-youtube-youtube-com-wikipedia-wikipedia-org-disney-plus-disneyplus-com-chatgpt-chat-openai-com-google-gemini-gemini-google-com-use-brand-representative-accent-colors-for-each-card",
-      "title": "Build the Quick Open page. Display the following six sites as large, visually distinct cards in a grid, each with a big icon, site name, and brief description. Clicking a card opens the site in a new proxy iframe tab: TikTok (tiktok.com), YouTube (youtube.com), Wikipedia (wikipedia.org), Disney Plus (disneyplus.com), ChatGPT (chat.openai.com), Google Gemini (gemini.google.com). Use brand-representative accent colors for each card.",
-      "reqIds": [
-        "REQ-8"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-implement-global-ux-polish-smooth-css-transitions-and-animations-on-all-page-tab-switches-and-interactive-elements-a-loading-overlay-spinner-when-iframes-are-loading-responsive-layout-that-works-across-desktop-and-tablet-widths-consistent-neon-glow-hover-states-throughout-and-localstorage-used-to-persist-open-tabs-state-and-settings-across-sessions",
-      "title": "Implement global UX polish: smooth CSS transitions and animations on all page/tab switches and interactive elements; a loading overlay/spinner when iframes are loading; responsive layout that works across desktop and tablet widths; consistent neon glow hover states throughout; and localStorage used to persist open tabs state and settings across sessions.",
-      "reqIds": [
-        "REQ-9"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-a-proxy-info-section-or-modal-in-the-home-search-page-that-displays-the-built-in-proxy-configuration-details-showing-users-that-cheetah-1-0-uses-a-cors-proxy-allorigins-win-to-tunnel-requests-referencing-the-node-js-http-proxy-pattern-the-user-submitted-as-context-display-a-human-readable-explanation-such-as-cheetah-routes-all-browsing-through-a-proxy-layer-to-bypass-restrictions-requests-are-forwarded-via-https-api-allorigins-win-raw-url-encoded-url-include-the-target-url-pattern-and-port-8000-conceptually-as-informational-text-only-this-is-a-frontend-only-display-change-no-backend-proxy-server-is-implemented",
-      "title": "Add a 'Proxy Info' section or modal in the Home/Search page that displays the built-in proxy configuration details, showing users that Cheetah 1.0 uses a CORS proxy (allorigins.win) to tunnel requests — referencing the Node.js http-proxy pattern the user submitted as context. Display a human-readable explanation such as: 'Cheetah routes all browsing through a proxy layer to bypass restrictions. Requests are forwarded via https://api.allorigins.win/raw?url=<encoded-url>.' Include the target URL pattern and port (8000 conceptually) as informational text only. This is a frontend-only display change; no backend proxy server is implemented.",
-      "reqIds": [
-        "REQ-10"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-improve-iframe-proxy-loading-so-more-websites-successfully-open-use-multiple-cors-proxy-fallbacks-in-priority-order-first-try-https-api-allorigins-win-raw-url-encoded-then-https-corsproxy-io-encoded-then-https-cors-anywhere-herokuapp-com-url-if-all-proxies-fail-display-the-error-state-with-a-direct-link-fallback-update-the-usetabs-hook-and-tabcontent-component-accordingly",
-      "title": "Improve iframe proxy loading so more websites successfully open. Use multiple CORS proxy fallbacks in priority order: first try `https://api.allorigins.win/raw?url=<encoded>`, then `https://corsproxy.io/?<encoded>`, then `https://cors-anywhere.herokuapp.com/<url>`. If all proxies fail, display the error state with a direct-link fallback. Update the `useTabs` hook and `TabContent` component accordingly.",
-      "reqIds": [
-        "REQ-11"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-remove-all-copyright-notices-footer-copyright-text-and-any-caffeine-ai-or-similar-attribution-strings-from-every-visible-area-of-the-app-including-the-footer-in-app-tsx-and-any-other-components-that-render-copyright-text",
-      "title": "Remove all copyright notices, footer copyright text, and any '© Caffeine.ai' or similar attribution strings from every visible area of the app, including the footer in `App.tsx` and any other components that render copyright text.",
-      "reqIds": [
-        "REQ-12"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-a-visible-panic-button-in-the-app-header-next-to-the-existing-header-elements-in-header-tsx-when-activated-either-by-clicking-the-button-or-by-pressing-cmd-p-ctrl-p-cmd-b-or-ctrl-b-the-following-behavior-must-occur-1-a-full-viewport-white-overlay-is-immediately-rendered-on-top-of-all-content-completely-hiding-the-app-2-a-countdown-timer-runs-for-60-seconds-3-all-user-interaction-with-the-app-is-blocked-during-this-60-second-period-4-after-60-seconds-the-white-overlay-is-automatically-removed-and-the-app-returns-to-its-normal-state-the-panic-button-itself-should-be-styled-to-fit-the-existing-amethyst-purple-theme-e-g-a-red-or-warning-colored-button-with-neon-glow-the-keyboard-shortcut-listener-must-be-registered-globally-so-it-works-regardless-of-which-page-or-element-has-focus",
-      "title": "Add a visible 'Panic' button in the app header (next to the existing header elements in `Header.tsx`). When activated — either by clicking the button or by pressing Cmd+P, Ctrl+P, Cmd+B, or Ctrl+B — the following behavior must occur: (1) A full-viewport white overlay is immediately rendered on top of all content, completely hiding the app; (2) A countdown timer runs for 60 seconds; (3) All user interaction with the app is blocked during this 60-second period; (4) After 60 seconds, the white overlay is automatically removed and the app returns to its normal state. The panic button itself should be styled to fit the existing amethyst/purple theme (e.g., a red or warning-colored button with neon glow). The keyboard shortcut listener must be registered globally so it works regardless of which page or element has focus.",
-      "reqIds": [
-        "REQ-13"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-remove-all-loading-spinners-loading-overlays-and-loading-state-indicators-from-the-iframe-tab-browsing-experience-when-a-url-is-loaded-in-a-tab-the-iframe-must-appear-immediately-with-no-loading-screen-no-spinner-and-no-in-progress-visual-state-this-applies-to-tabbar-tsx-remove-per-tab-loading-indicators-tabcontent-tsx-remove-the-loading-overlay-spinner-shown-while-the-iframe-loads-and-usetabs-ts-remove-the-isloading-loading-state-tracking-for-tabs-entirely-or-stop-using-it-to-gate-rendering",
-      "title": "Remove all loading spinners, loading overlays, and loading state indicators from the iframe tab browsing experience. When a URL is loaded in a tab, the iframe must appear immediately with no loading screen, no spinner, and no in-progress visual state. This applies to TabBar.tsx (remove per-tab loading indicators), TabContent.tsx (remove the loading overlay/spinner shown while the iframe loads), and useTabs.ts (remove the isLoading/loading state tracking for tabs entirely or stop using it to gate rendering).",
-      "reqIds": [
-        "REQ-14"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-expand-the-cors-proxy-fallback-chain-in-usetabs-ts-and-tabcontent-tsx-to-maximize-the-number-of-sites-that-successfully-load-in-iframes-add-the-following-additional-proxies-to-the-rotation-after-the-existing-ones-https-api-codetabs-com-v1-proxy-quest-url-https-thingproxy-freeboard-io-fetch-url-and-https-yacdn-org-proxy-url-attempt-each-proxy-in-sequence-and-only-show-the-error-fallback-state-after-all-proxies-have-been-exhausted",
-      "title": "Expand the CORS proxy fallback chain in `useTabs.ts` and `TabContent.tsx` to maximize the number of sites that successfully load in iframes. Add the following additional proxies to the rotation after the existing ones: `https://api.codetabs.com/v1/proxy?quest=<url>`, `https://thingproxy.freeboard.io/fetch/<url>`, and `https://yacdn.org/proxy/<url>`. Attempt each proxy in sequence and only show the error/fallback state after all proxies have been exhausted.",
-      "reqIds": [
-        "REQ-15"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-for-tiktok-tiktok-com-specifically-implement-a-dedicated-handling-strategy-in-usetabs-ts-and-tabcontent-tsx-when-the-url-being-loaded-matches-tiktok-com-or-www-tiktok-com-use-an-embedded-iframe-with-src-set-to-https-www-tiktok-com-embed-as-the-primary-attempt-and-also-try-the-full-proxy-chain-using-https-tiktok-com-as-the-target-additionally-in-quickopen-tsx-update-the-tiktok-card-s-url-to-use-https-www-tiktok-com-and-add-a-note-in-the-error-fallback-state-that-links-directly-to-https-www-tiktok-com-with-target-blank-for-cases-where-embedding-is-blocked-by-tiktok-s-own-x-frame-options-headers",
-      "title": "For TikTok (tiktok.com) specifically, implement a dedicated handling strategy in `useTabs.ts` and `TabContent.tsx`. When the URL being loaded matches `tiktok.com` (or `www.tiktok.com`), use an embedded `<iframe>` with `src` set to `https://www.tiktok.com/embed/` as the primary attempt, and also try the full proxy chain using `https://tiktok.com` as the target. Additionally, in `QuickOpen.tsx`, update the TikTok card's URL to use `https://www.tiktok.com` and add a note in the error fallback state that links directly to `https://www.tiktok.com` with `target=\"_blank\"` for cases where embedding is blocked by TikTok's own X-Frame-Options headers.",
-      "reqIds": [
-        "REQ-16"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-a-per-tab-retry-mechanism-in-tabcontent-tsx-when-the-error-state-is-displayed-all-proxies-exhausted-show-a-try-again-button-that-re-initiates-the-full-proxy-fallback-chain-for-the-current-url-also-add-a-open-in-new-window-button-that-opens-the-raw-non-proxied-url-directly-in-a-new-browser-tab-via-window-open-url-blank",
-      "title": "Add a per-tab retry mechanism in `TabContent.tsx`. When the error state is displayed (all proxies exhausted), show a 'Try Again' button that re-initiates the full proxy fallback chain for the current URL. Also add a 'Open in New Window' button that opens the raw (non-proxied) URL directly in a new browser tab via `window.open(url, '_blank')`.",
-      "reqIds": [
-        "REQ-17"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-a-new-site-card-to-the-games-page-frontend-src-pages-games-tsx-the-user-did-not-specify-a-url-in-this-message-the-assistant-must-prompt-the-user-for-the-website-url-before-implementing-or-add-a-placeholder-card-that-is-clearly-labeled-new-education-site-with-a-generic-education-icon-and-description-user-requested-educational-site-using-the-url-provided-by-the-user-if-no-url-was-provided-use-a-visually-distinct-placeholder-card-with-a-note-to-update-the-url-the-card-must-match-the-existing-card-style-icon-site-name-brief-description-neon-glow-hover-opens-in-a-new-proxy-iframe-tab-via-the-existing-openurl-mechanism-and-fit-naturally-into-the-responsive-grid-layout",
-      "title": "Add a new site card to the Games page (`frontend/src/pages/Games.tsx`). The user did not specify a URL in this message — the assistant must prompt the user for the website URL before implementing, or add a placeholder card that is clearly labeled 'New Education Site' with a generic education icon and description 'User-requested educational site', using the URL provided by the user. If no URL was provided, use a visually distinct placeholder card with a note to update the URL. The card must match the existing card style (icon, site name, brief description, neon glow hover, opens in a new proxy iframe tab via the existing `openUrl` mechanism) and fit naturally into the responsive grid layout.",
-      "reqIds": [
-        "REQ-18"
       ],
       "version": 1
     }
@@ -162,61 +18,7 @@
   "new_feature_requests": [
     {
       "id": "AR-1",
-      "summary": "Tab-based iframe proxy browsing with address bar, navigation buttons, and Google CSE search",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-2",
-      "summary": "Unblocked games page with game site cards that open in proxy iframe tabs",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-3",
-      "summary": "AI homework helper page using Puter.js with subject selector, Q&A history, and markdown rendering",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-4",
-      "summary": "Code editor (CodeMirror/Monaco), presentation builder, and website builder as sub-tabs",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-5",
-      "summary": "Quick Open page with cards for TikTok, YouTube, Wikipedia, Disney+, ChatGPT, Gemini opening in proxy tabs",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-6",
-      "summary": "Improve proxy to make all websites open and load faster",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-7",
-      "summary": "Remove copyright notices from the app",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-8",
-      "summary": "Panic button (clickable + Cmd/Ctrl+P or B shortcut) that triggers a white screen and locks the user out for 60 seconds",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-9",
-      "summary": "Remove loading spinner/overlay for all websites in iframe tabs — load instantly with no loading state",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-10",
-      "summary": "Add a user-specified website to the education/games list",
+      "summary": "Create a Proxy page listing: 1) https://www.proxysite.com, 2) https://proxyorb.com, and primary proxy https://proxyproxy.net (with token)",
       "reqIds": [],
       "status": "pending"
     }

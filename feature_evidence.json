@@ -2,10 +2,12 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-add-a-new-site-card-to-the-games-page-frontend-src-pages-games-tsx-the-user-did-not-specify-a-url-in-this-message-the-assistant-must-prompt-the-user-for-the-website-url-before-implementing-or-add-a-placeholder-card-that-is-clearly-labeled-new-education-site-with-a-generic-education-icon-and-description-user-requested-educational-site-using-the-url-provided-by-the-user-if-no-url-was-provided-use-a-visually-distinct-placeholder-card-with-a-note-to-update-the-url-the-card-must-match-the-existing-card-style-icon-site-name-brief-description-neon-glow-hover-opens-in-a-new-proxy-iframe-tab-via-the-existing-openurl-mechanism-and-fit-naturally-into-the-responsive-grid-layout",
-      "featureTitle": "Add a new site card to the Games page (`frontend/src/pages/Games.tsx`). The user did not specify a URL in this message — the assistant must prompt the user for the website URL before implementing, or add a placeholder card that is clearly labeled 'New Education Site' with a generic education icon and description 'User-requested educational site', using the URL provided by the user. If no URL was provided, use a visually distinct placeholder card with a note to update the URL. The card must match the existing card style (icon, site name, brief description, neon glow hover, opens in a new proxy iframe tab via the existing `openUrl` mechanism) and fit naturally into the responsive grid layout.",
+      "featureId": "feature-add-a-new-proxy-page-accessible-from-the-sidebar-navigation-alongside-home-games-ai-code-quick-open-education-the-page-must-list-the-three-proxy-services-used-by-the-app-1-proxysite-https-www-proxysite-com-2-proxyorb-https-proxyorb-com-and-3-proxyproxy-primary-most-used-https-proxyproxy-net-cpo-ahr0chm6ly9jagvldgfomtitngv2lmnhzmzlaw5llnh5eg-caffeineadmintoken-4e5885a0f3111a08883c7259d557d207cdc0e8c8ef2349289317f3bbf1bb43b2-the-primary-proxy-must-be-visually-distinguished-e-g-a-primary-badge-or-highlighted-card-each-proxy-card-must-include-a-launch-open-button-that-navigates-to-the-proxy-url-in-the-app-s-existing-proxy-tab-system",
+      "featureTitle": "Add a new 'Proxy' page accessible from the sidebar navigation (alongside Home, Games, AI, Code, Quick Open, Education). The page must list the three proxy services used by the app: 1) ProxySite — https://www.proxysite.com, 2) ProxyOrb — https://proxyorb.com, and 3) ProxyProxy (primary/most-used) — https://proxyproxy.net/?__cpo=aHR0cHM6Ly9jaGVldGFoMTItNGV2LmNhZmZlaW5lLnh5eg#caffeineAdminToken=4e5885a0f3111a08883c7259d557d207cdc0e8c8ef2349289317f3bbf1bb43b2. The primary proxy must be visually distinguished (e.g., a 'Primary' badge or highlighted card). Each proxy card must include a launch/open button that navigates to the proxy URL in the app's existing proxy tab system.",
       "files": [
-        "frontend/src/pages/Games.tsx"
+        "frontend/src/App.tsx",
+        "frontend/src/components/layout/Navigation.tsx",
+        "frontend/src/pages/ProxyLinks.tsx"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -15,7 +17,7 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-18"
+        "REQ-1"
       ],
       "confidence": "high"
     }

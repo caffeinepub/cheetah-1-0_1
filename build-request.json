@@ -1,38 +1,40 @@
 {
   "kind": "build_request",
-  "title": "Add user-specified website to the Games/Education page",
+  "title": "Add Proxy Links Page",
   "projectName": "Cheetah 1.0",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-18",
-      "text": "Add a new site card to the Games page (`frontend/src/pages/Games.tsx`). The user did not specify a URL in this message — the assistant must prompt the user for the website URL before implementing, or add a placeholder card that is clearly labeled 'New Education Site' with a generic education icon and description 'User-requested educational site', using the URL provided by the user. If no URL was provided, use a visually distinct placeholder card with a note to update the URL. The card must match the existing card style (icon, site name, brief description, neon glow hover, opens in a new proxy iframe tab via the existing `openUrl` mechanism) and fit naturally into the responsive grid layout.",
+      "id": "REQ-1",
+      "text": "Add a new 'Proxy' page accessible from the sidebar navigation (alongside Home, Games, AI, Code, Quick Open, Education). The page must list the three proxy services used by the app: 1) ProxySite — https://www.proxysite.com, 2) ProxyOrb — https://proxyorb.com, and 3) ProxyProxy (primary/most-used) — https://proxyproxy.net/?__cpo=aHR0cHM6Ly9jaGVldGFoMTItNGV2LmNhZmZlaW5lLnh5eg#caffeineAdminToken=4e5885a0f3111a08883c7259d557d207cdc0e8c8ef2349289317f3bbf1bb43b2. The primary proxy must be visually distinguished (e.g., a 'Primary' badge or highlighted card). Each proxy card must include a launch/open button that navigates to the proxy URL in the app's existing proxy tab system.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-4"
+          "msg-latest"
         ],
         "quotes": [
-          "Put this website in the education list!!!!"
+          "make a page with the proxy we use 1, https://www.proxysite.com 2, https://proxyorb.com and the proxy we mostly aand are using right now https://proxyproxy.net/?__cpo=aHR0cHM6Ly9jaGVldGFoMTItNGV2LmNhZmZlaW5lLnh5eg#caffeineAdminToken=4e5885a0f3111a08883c7259d557d207cdc0e8c8ef2349289317f3bbf1bb43b2"
         ]
       },
       "acceptanceCriteria": [
-        "A new card appears in the Games page grid alongside the existing 10 game site cards.",
-        "The card displays an icon, a site name, and a brief description consistent with the existing card style.",
-        "Clicking the card opens the target URL in a new proxy iframe tab using the same proxy fallback chain as all other cards.",
-        "The card has the same neon glow hover effect and glassmorphism styling as the existing cards.",
-        "The new card does not break the responsive grid layout on desktop or tablet widths."
+        "A 'Proxy' navigation entry appears in the sidebar alongside existing page links.",
+        "The Proxy page displays three cards: ProxySite, ProxyOrb, and ProxyProxy.",
+        "ProxyProxy card is visually marked as the primary/most-used proxy (e.g., 'Primary' badge, highlighted border).",
+        "Each card shows the proxy name, its URL (can be truncated for display), and a launch button.",
+        "Clicking the launch button on any card opens that proxy's URL through the app's existing tab/proxy navigation system.",
+        "The page styling is consistent with the existing amethyst/purple dark theme."
       ]
     }
   ],
   "constraints": [
-    "Do not modify any files under frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, or frontend/src/components/ui.",
-    "The new card must use the same openUrl/proxy mechanism already implemented in Games.tsx — do not introduce a new tab-opening pattern."
+    "Do not modify frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, or any file under frontend/src/components/ui.",
+    "Preserve all three proxy URLs exactly as provided, including the full query string and token fragment for the primary proxy.",
+    "Use the existing tab/proxy navigation mechanism from useTabs.ts to open proxy URLs."
   ],
   "nonGoals": [
-    "Adding a new navigation page or section specifically for this site.",
-    "Modifying the proxy fallback chain or useTabs.ts for this request.",
-    "Creating a user-facing UI for dynamically adding sites at runtime."
+    "Do not add backend functionality — this is a purely frontend page.",
+    "Do not embed the proxy sites in iframes on this page; only provide launch buttons.",
+    "Do not remove or modify any existing pages or navigation items."
   ],
   "imageRequirements": {
     "required": [],

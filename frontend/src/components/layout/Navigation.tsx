@@ -1,7 +1,7 @@
 import React from 'react';
-import { Home, Gamepad2, Brain, Code2, Zap } from 'lucide-react';
+import { Home, Gamepad2, Brain, Code2, Zap, GraduationCap, Globe } from 'lucide-react';
 
-export type PageId = 'home' | 'games' | 'ai' | 'code' | 'quickopen';
+export type PageId = 'home' | 'games' | 'ai' | 'code' | 'quickopen' | 'education' | 'proxy';
 
 interface NavItem {
     id: PageId;
@@ -16,6 +16,8 @@ const navItems: NavItem[] = [
     { id: 'ai', label: 'AI Assistant', icon: <Brain size={16} />, shortLabel: 'AI' },
     { id: 'code', label: 'Code Editor', icon: <Code2 size={16} />, shortLabel: 'Code' },
     { id: 'quickopen', label: 'Quick Open', icon: <Zap size={16} />, shortLabel: 'Quick' },
+    { id: 'education', label: 'Education', icon: <GraduationCap size={16} />, shortLabel: 'Edu' },
+    { id: 'proxy', label: 'Proxy Links', icon: <Globe size={16} />, shortLabel: 'Proxy' },
 ];
 
 interface NavigationProps {

@@ -1,23 +1,34 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Add user-specified website to the Games/Education page",
+  "title": "Add Proxy Links Page",
   "requirements": [
     {
-      "id": "REQ-18",
-      "summary": "Add a new education site card to the Games page with placeholder content that prompts the user to provide a URL, matching the existing card style and grid layout",
+      "id": "REQ-1",
+      "summary": "Add a new 'Proxy' page accessible from the sidebar navigation that lists the three proxy services with a launch button for each, distinguishing the primary proxy visually",
       "acceptanceCriteria": [
-        "A new card appears in the Games page grid alongside the existing 10 game site cards.",
-        "The card displays an icon, a site name, and a brief description consistent with the existing card style.",
-        "Clicking the card opens the target URL in a new proxy iframe tab using the same proxy fallback chain as all other cards.",
-        "The card has the same neon glow hover effect and glassmorphism styling as the existing cards.",
-        "The new card does not break the responsive grid layout on desktop or tablet widths."
+        "A 'Proxy' navigation entry appears in the sidebar alongside existing page links.",
+        "The Proxy page displays three cards: ProxySite, ProxyOrb, and ProxyProxy.",
+        "ProxyProxy card is visually marked as the primary/most-used proxy (e.g., 'Primary' badge, highlighted border).",
+        "Each card shows the proxy name, its URL (can be truncated for display), and a launch button.",
+        "Clicking the launch button on any card opens that proxy's URL through the app's existing tab/proxy navigation system.",
+        "The page styling is consistent with the existing amethyst/purple dark theme."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/pages/Games.tsx",
+          "path": "frontend/src/pages/ProxyLinks.tsx",
+          "operation": "create",
+          "description": "Create the ProxyLinks page component that displays three proxy service cards (ProxySite, ProxyOrb, and ProxyProxy). Each card includes the proxy name, URL (truncated for display), and a launch button. The ProxyProxy card must be visually distinguished as primary with a badge and highlighted styling. Use useTabs hook to handle navigation when launch buttons are clicked. Style the page with glassmorphism effects and amethyst/purple theme colors consistent with the existing design system."
+        },
+        {
+          "path": "frontend/src/components/layout/Navigation.tsx",
           "operation": "modify",
-          "description": "Add a new card object to the existing educationalSites array. The new card must be clearly labeled 'New Education Site' with a generic education icon (GraduationCap from lucide-react), description 'User-requested educational site', and a placeholder URL (e.g., 'https://example.com/education'). Use a visually distinct color (e.g., colors.indigo or colors.cyan) not already used by the existing 10 cards. Include a note in the description field prompting the user to update the URL. Ensure the card uses the same structure as existing cards: { name, url, icon, color, description } and that clicking it invokes openUrl with the URL to open in a proxy tab. Verify that the card integrates naturally into the responsive grid without breaking the layout on desktop or tablet."
+          "description": "Add a 'Proxy' navigation button to the sidebar between 'Quick Open' and 'Education'. Include an appropriate icon (e.g., Globe or Network icon) and maintain the existing styling pattern with keyboard shortcut hint support. Wire the button to set the active page to 'proxy' when clicked."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Import the new ProxyLinks component and add a case for 'proxy' in the page routing logic to render the ProxyLinks component when the proxy page is active. Ensure the proxy page is included in the page state management alongside existing pages (home, games, ai, code, quickOpen, education)."
         }
       ]
     }
